@@ -10,17 +10,17 @@ import model.Position;
  * Created by tgdflto1 on 30/09/16.
  */
 public abstract class Person extends Circle {
-    protected ArrayList<Position> oldPositions = new ArrayList<>();
+	protected ArrayList<Position> oldPositions = new ArrayList<>();
 	protected Position currentPosition;
 	protected ArrayList<Position> path;
 	protected int age;
 	protected double speed;
-    public final static int PERSON_RADIUS = 2;
+	public final static int PERSON_RADIUS = 2;
 	// protected Character character;
 
-    public Person(){
-        super(PERSON_RADIUS, Color.BLUE);
-    }
+	public Person() {
+		super(PERSON_RADIUS, Color.BLUE);
+	}
 
 	public ArrayList<Position> getOldPositions() {
 		return oldPositions;
@@ -39,6 +39,7 @@ public abstract class Person extends Circle {
 	}
 
 	public ArrayList<Position> getPath() {
+		this.path.add(new Position(375.0, 390.0));
 		return path;
 	}
 
