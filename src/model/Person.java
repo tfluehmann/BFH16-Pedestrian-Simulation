@@ -12,7 +12,7 @@ public abstract class Person extends Circle{
     protected ArrayList<Position> currentPosition;
     protected ArrayList<Position> path;
     protected int age;
-    protected int speed;
+    protected double speed;
     //protected Character character;
 
 
@@ -48,11 +48,11 @@ public abstract class Person extends Circle{
         this.age = age;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 }
