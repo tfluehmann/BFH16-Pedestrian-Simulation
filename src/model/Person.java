@@ -1,11 +1,13 @@
 package model;
 
+import javafx.scene.shape.Circle;
+
 import java.util.ArrayList;
 
 /**
  * Created by tgdflto1 on 30/09/16.
  */
-public abstract class Person {
+public abstract class Person extends Circle{
     protected  ArrayList<Position> oldPositions = new ArrayList<>();
     protected ArrayList<Position> currentPosition;
     protected ArrayList<Position> path;
