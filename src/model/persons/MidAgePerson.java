@@ -1,4 +1,4 @@
-package model;
+package model.persons;
 
 import java.util.Random;
 

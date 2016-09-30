@@ -1,9 +1,10 @@
-package model;
+package model.persons;
 
 import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import model.Position;
 
 /**
  * Created by tgdflto1 on 30/09/16.
