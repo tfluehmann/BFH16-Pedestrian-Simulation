@@ -21,7 +21,8 @@ public class Room extends Pane {
         super();
         this.setStyle("-fx-background-color: gray;");
 
-        this.setPrefSize(200,200);
+        this.setPrefSize(400,400);
+        SpawnArea sa = new SpawnArea(200, 200, new Position(0, 0));
         for(int i = 0; i < 5; i++)
             persons.add(new MidAgePerson(200, 200));
         this.getChildren().addAll(persons);
