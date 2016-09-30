@@ -5,4 +5,6 @@
 <?import javafx.scene.shape.*?>
 
 
-<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cacbcd" height="400.0" stroke="BLACK" strokeType="INSIDE" width="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cacbcd" height="400.0"
+           stroke="#803839" strokeType="INSIDE" width="600.0"
+           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
