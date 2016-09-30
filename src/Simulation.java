@@ -10,15 +10,16 @@ import javafx.stage.Stage;
 
 public class Simulation extends Application {
 
-private AnchorPane rootLayout;
-	
+	private AnchorPane rootLayout;
+	private Scene scene;
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Simulation.class.getResource("view/BaseView.fxml"));
 			rootLayout = loader.load();
-			Scene scene = new Scene(rootLayout);
+			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Test");
 			primaryStage.show();

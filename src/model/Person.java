@@ -2,18 +2,24 @@ package model;
 
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
  * Created by tgdflto1 on 30/09/16.
  */
 public abstract class Person extends Circle {
-	protected ArrayList<Position> oldPositions = new ArrayList<>();
+    protected ArrayList<Position> oldPositions = new ArrayList<>();
 	protected Position currentPosition;
 	protected ArrayList<Position> path;
 	protected int age;
 	protected double speed;
+    public final static int PERSON_RADIUS = 2;
 	// protected Character character;
+
+    public Person(){
+        super(PERSON_RADIUS, Color.BLUE);
+    }
 
 	public ArrayList<Position> getOldPositions() {
 		return oldPositions;
