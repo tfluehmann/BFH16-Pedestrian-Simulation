@@ -2,7 +2,10 @@ package model;
 
 
 
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import model.areas.*;
 import model.persons.MidAgePerson;
 import model.persons.Person;
@@ -28,7 +31,7 @@ public class Room extends Pane {
 
 	public static final int SPAWN_HEIGHT = 150;
 	public static final int SPAWN_WIDTH = 150;
-	public Room() {
+	public Room() throws InterruptedException {
 		super();
 		this.setStyle("-fx-background-color: gray;");
 
@@ -39,11 +42,14 @@ public class Room extends Pane {
 		this.getChildren().add(sa);
 		this.getChildren().add(ga);
 		for (int i = 0; i < 5; i++)
-			persons.add(new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT));
+			persons.add(new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, ga.getEdges()));
 
 		this.getChildren().addAll(persons);
-
-
 	}
 
+	public void start(){
+		for(Person p : persons)
+			p.doStep();
+		System.out.println("did step");
+	}
 }

@@ -1,7 +1,9 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import model.Room;
 
 import java.net.URL;
@@ -15,12 +17,19 @@ public class BaseViewController implements Initializable{
     @FXML
     private Room simulationRoom;
 
+    @FXML
+    private Button startButton;
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         System.out.print("hell");
-
+        startButton.setOnAction((event) -> {
+            System.out.println("started simulation");
+            simulationRoom.start();
+        });
         // initialize your logic here: all @FXML variables will have been injected
 
     }
+
 
 }

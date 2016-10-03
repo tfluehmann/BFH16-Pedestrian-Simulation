@@ -20,6 +20,7 @@ public class Simulation extends Application {
 			loader.setLocation(Simulation.class.getResource("view/BaseView.fxml"));
 			rootLayout = loader.load();
 			scene = new Scene(rootLayout);
+
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Test");
 			primaryStage.show();

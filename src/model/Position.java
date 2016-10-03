@@ -18,4 +18,16 @@ public class Position {
     public double getY() {
         return y;
     }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public String toString(){
+        return "X coordinate: "+ getX() + " Y coordinate: " + getY();
+    }
 }

@@ -11,6 +11,7 @@ import model.Position;
 public class GoalArea extends Area {
 	private double height;
 	private double width;
+
 	private Position position;
 
 	public GoalArea(double width, double height, Position position) {
