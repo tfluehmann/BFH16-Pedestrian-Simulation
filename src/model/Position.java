@@ -3,7 +3,7 @@ package model;
 /**
  * Created by tgdflto1 on 30/09/16.
  */
-public class Position {
+public class Position implements Cloneable {
     private double x;
     private double y;
 
@@ -29,5 +29,9 @@ public class Position {
 
     public String toString(){
         return "X coordinate: "+ getX() + " Y coordinate: " + getY();
+    }
+
+    public boolean isInRange(Position position, int range) {
+        return (this.getX() - position.getX() < range && this.getY() - position.getY()  < range);
     }
 }

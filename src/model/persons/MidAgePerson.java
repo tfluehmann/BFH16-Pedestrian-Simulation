@@ -1,5 +1,6 @@
 package model.persons;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,8 +16,11 @@ public class MidAgePerson extends Person {
 		double randomHeight = 0 + (maxHeigth - PERSON_RADIUS) * r.nextDouble();
 		this.setCurrentPosition(new Position(randomWidth, randomHeight));
 		this.relocate(randomWidth, randomHeight);
-		System.out.println("initial position: "+this.currentPosition);
-		this.path = path;
+		//System.out.println("initial position: "+this.currentPosition);
+
+		this.path = new ArrayList<>();
+		this.path.addAll(path);
+		//System.out.println(System.identityHashCode(this.path));
 		this.speed = 2.0;
 	}
 }

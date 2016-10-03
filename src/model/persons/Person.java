@@ -45,7 +45,6 @@ public abstract class Person extends Circle {
 	}
 
 	public List<Position> getPath() {
-		this.path.add(new Position(375.0, 390.0));
 		return path;
 	}
 
@@ -72,40 +71,27 @@ public abstract class Person extends Circle {
 	public void doStep() {
 		Platform.runLater(() -> {
 			Position nextTarget = this.path.get(0);
-			System.out.println("target: " + nextTarget);
-			double oldX = this.currentPosition.getX();
-			double oldY = this.currentPosition.getY();
+			//System.out.println("target: " + nextTarget);
 			double x = nextTarget.getX() - this.currentPosition.getX();
 			double y = nextTarget.getY() - this.currentPosition.getY();
 			double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-			System.out.println("length vector: "+ length);
+			//System.out.println("length vector: "+ length);
 			double lambda = speed / length;
-			this.setPosition(roundWithDecimalFormat(this.currentPosition.getX() + x * lambda),
-					roundWithDecimalFormat(this.currentPosition.getY() + y * lambda));
-
-			System.out.println("speed: "+ roundWithDecimalFormat(Math.sqrt(
-					Math.pow(this.currentPosition.getX()-oldX, 2)+
-					Math.pow(this.currentPosition.getY()-oldY, 2)))
-			);
-			System.out.println("new position: " + this.currentPosition + " lambda: "+ lambda);
-			//this.setPosition(this.currentPosition.getX()+1, this.currentPosition.getY()+1);
+			this.setPosition(this.currentPosition.getX() + x * lambda,
+					this.currentPosition.getY() + y * lambda);
         });
-
-
 	}
 
 	public void setPosition(double x, double y) {
-		this.currentPosition.setX(x);
-		this.currentPosition.setY(y);
+		this.oldPositions.add(new Position(this.currentPosition.getX(),
+				this.currentPosition.getY()));
+		this.currentPosition.setX(roundWithDecimalFormat(x));
+		this.currentPosition.setY(roundWithDecimalFormat(y));
+		if(isInNextPathArea() && !isInGoalArea()){
+		//	System.out.println("remove"+path.get(0));
+			path.remove(0);
+		}
 		this.relocate(x, y);
-	}
-
-	public static double round(double value, int places) {
-		if (places < 0) throw new IllegalArgumentException();
-
-		BigDecimal bd = new BigDecimal(value);
-		bd = bd.setScale(places, RoundingMode.HALF_UP);
-		return bd.doubleValue();
 	}
 
 	public double roundWithDecimalFormat(double val){
@@ -113,4 +99,12 @@ public abstract class Person extends Circle {
 		return Double.parseDouble(df.format(val));
 	}
 
+	public boolean isInNextPathArea(){
+		Position nextPosition = path.get(0);
+		return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+	}
+	public boolean isInGoalArea() {
+		Position targetPosition = path.get(path.size()-1);
+		return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+	}
 }
