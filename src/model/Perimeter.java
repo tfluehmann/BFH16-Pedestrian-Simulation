@@ -8,9 +8,9 @@ public class Perimeter {
     private double heigth;
     private double width;
 
-    public Perimeter(Position position, double heigth, double width){
+    public Perimeter(Position position, double height, double width){
         this.position = position;
-        this.heigth = heigth;
+        this.heigth = height;
         this.width = width;
     }
 }

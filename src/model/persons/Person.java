@@ -1,16 +1,13 @@
 package model.persons;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Position;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tgdflto1 on 30/09/16.
@@ -87,11 +84,14 @@ public abstract class Person extends Circle {
 				this.currentPosition.getY()));
 		this.currentPosition.setX(roundWithDecimalFormat(x));
 		this.currentPosition.setY(roundWithDecimalFormat(y));
-		if(isInNextPathArea() && !isInGoalArea()){
-		//	System.out.println("remove"+path.get(0));
-			path.remove(0);
-		}
+		if(isInNextPathArea() && !isInGoalArea()) path.remove(0);
 		this.relocate(x, y);
+	}
+
+	public boolean checkCollision(Person otherPerson){
+//		if(Math.abs(this.currentPosition.getX() - otherPerson.getCurrentPosition().getX()) <  )
+//		this.currentPosition.getX()
+		return false;
 	}
 
 	public double roundWithDecimalFormat(double val){

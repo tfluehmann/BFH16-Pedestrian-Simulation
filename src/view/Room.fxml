@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import model.Room?>
-<Room xmlns="http://javafx.com/javafx/8"  xmlns:fx="http://javafx.com/fxml/1" />
+<Room xmlns="http://javafx.com/javafx/8"  xmlns:fx="http://javafx.com/fxml/1" styleClass="room" />

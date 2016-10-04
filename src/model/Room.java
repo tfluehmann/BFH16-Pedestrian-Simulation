@@ -37,9 +37,8 @@ public class Room extends Pane {
 	public static final int SPAWN_WIDTH = 150;
 	public Room() throws InterruptedException {
 		super();
-		this.setStyle("-fx-background-color: gray;");
-
 		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
+
 		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
 		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(350.0, 380.0));
 
