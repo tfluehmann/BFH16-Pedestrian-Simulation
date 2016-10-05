@@ -109,7 +109,7 @@ public abstract class Person extends Circle implements Positionable{
 		this.speed = speed;
 	}
 
-	public boolean intersects(double x, double y){
-		return false;
+	public boolean intersects(double x, double y) {
+		return this.intersects(x, y);
 	}
 }
