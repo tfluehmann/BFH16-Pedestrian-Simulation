@@ -82,7 +82,8 @@ public abstract class Person extends Circle implements Positionable{
 
 	public boolean isCollidating(double x, double y, Person otherPerson){
 		return (Math.abs(x - otherPerson.getPosition().getX()) < this.getRadius() + otherPerson.getRadius() &&
-				Math.abs(y - otherPerson.getPosition().getY()) < this.getRadius() + otherPerson.getRadius());
+				Math.abs(y - otherPerson.getPosition().getY()) < this.getRadius() + otherPerson.getRadius() &&
+				!otherPerson.isInGoalArea());
 	}
 
 	public double roundWithDecimalFormat(double val){
