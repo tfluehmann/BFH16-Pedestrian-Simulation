@@ -1,6 +1,8 @@
 package model;
 
 import javafx.scene.shape.Shape;
+import manager.PerimeterManager;
+import model.persons.Person;
 
 import java.util.*;
 
@@ -8,32 +10,51 @@ import java.util.*;
  * Created by fluth1 on 30/09/16.
  */
 public class Perimeter {
-    private static final int NUMBER_OF_PERIMETERS = 50;
+    public static final int PERIMETER_WIDHT = 2;
+    public static final int PERIMETER_HEIGHT = 2;
     private Position position;
     private double heigth;
     private double width;
-   // private List<Shape>
+    private int verticalArrayPosition;
+    private int horizontalArrayPosition;
+    private List<Person> registredPersons = new ArrayList<>();
 
 
-    public Perimeter(Position position, double height, double width){
+    public Perimeter(Position position, double height, double width, int verticalArrayPosition, int horizontalArrayPosition){
         this.position = position;
         this.heigth = height;
         this.width = width;
+        this.verticalArrayPosition = verticalArrayPosition;
+        this.horizontalArrayPosition = horizontalArrayPosition;
     }
 
-    public static Collection<? extends Perimeter> initializeAll(double roomWidth, double roomHeight) {
-        List<Perimeter> perimeters = new ArrayList<>();
-        double perimeterWidth = roomWidth / NUMBER_OF_PERIMETERS;
-        double perimeterHeight =  roomHeight / NUMBER_OF_PERIMETERS;
-        for(int i = 0; i < NUMBER_OF_PERIMETERS; i++)
-            perimeters.add(
-                    new Perimeter(
-                            new Position(i * perimeterWidth, i * perimeterHeight),
-                            perimeterHeight, perimeterWidth));
-        return perimeters;
+
+
+    public boolean isInRange(Position position){
+        return (((this.position.getX() < position.getX()) || (position.getX() < this.position.getX()+width) ) &&
+                ((this.position.getY() < position.getY()) || (position.getY() < this.position.getY() + heigth)));
+
     }
 
-    public boolean isInRange(Shape shape){
-        return shape.getBoundsInLocal().contains(this.position.getX(), this.position.getY());
+    public void register(Person person) {
+        registredPersons.add(person);
+        person.setCurrentPerimeter(this);
+    }
+
+    public List<Perimeter> getNeighbors() {
+        PerimeterManager pm  = PerimeterManager.getInstance();
+        return pm.getNeighbors(this);
+    }
+
+    public int getVerticalArrayPosition() {
+        return verticalArrayPosition;
+    }
+
+    public int getHorizontalArrayPosition() {
+        return horizontalArrayPosition;
+    }
+
+    public List<Person> getRegistredPersons() {
+        return registredPersons;
     }
 }

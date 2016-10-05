@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import manager.PerimeterManager;
 import model.areas.*;
 import model.persons.MidAgePerson;
 import model.persons.Person;
@@ -23,8 +24,7 @@ public class Room extends Pane {
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
 
-
-	private List<Perimeter> perimeters = new LinkedList<>();
+	private PerimeterManager perimeterManager = PerimeterManager.getInstance();
 	private ArrayList<Area> obstacles;
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
@@ -40,17 +40,21 @@ public class Room extends Pane {
 	public Room() throws InterruptedException {
 		super();
 		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
-		perimeters.addAll(Perimeter.initializeAll(ROOM_WIDTH, ROOM_HEIGHT));
+		perimeterManager.setRoom(this);
+		perimeterManager.initializeAll();
 		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
 		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(350.0, 380.0));
 
 		this.getChildren().add(sa);
 		this.getChildren().add(ga);
 		List<Position> edges = ga.getEdges();
-		edges.add(0, new Position(0, 300));
-		edges.add(0, new Position(300, 0));
-		for (int i = 0; i < 500; i++)
-			persons.add(new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges));
+//		edges.add(0, new Position(0, 300));
+//		edges.add(0, new Position(300, 0));
+		for (int i = 0; i < 200; i++){
+			Person p = new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges);
+			persons.add(p);
+			perimeterManager.registerPerson(p);
+		}
 
 		this.getChildren().addAll(persons);
 	}
@@ -65,8 +69,7 @@ public class Room extends Pane {
 					handlePersonsInRange();
 					Platform.runLater(() -> {
 						for(Person p : persons){
-							Position nextPos = p.nextPosition();
-							p.setPosition(nextPos);
+							p.doStep();
 						}
 					});
 					updateMessage(++i + " seconds");
