@@ -8,12 +8,12 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import model.areas.*;
-import model.persons.MidAgePerson;
-import model.persons.Person;
+import model.persons.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -49,9 +49,34 @@ public class Room extends Pane {
 		List<Position> edges = ga.getEdges();
 		edges.add(0, new Position(0, 300));
 		edges.add(0, new Position(300, 0));
-		for (int i = 0; i < 500; i++)
-			persons.add(new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges));
 
+		/**
+		 * Generating different aged persons randomly
+		 * Created by suter1 on 05.10.2016
+		 */
+		Random rnd = new Random();
+		int type = 0;
+		for (int i = 0; i < 500; i++) {
+			type = rnd.nextInt(3);
+			switch (type) {
+				case 0:
+					persons.add(new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					break;
+				case 1:
+					persons.add(new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					break;
+				case 2:
+					persons.add(new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					break;
+				case 3:
+					persons.add(new HandycappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					break;
+				default:
+					persons.add(new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					break;
+			}
+			//persons.add(new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges));
+		}
 		this.getChildren().addAll(persons);
 	}
 

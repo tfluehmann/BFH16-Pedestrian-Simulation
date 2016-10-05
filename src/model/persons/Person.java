@@ -9,6 +9,7 @@ import model.Positionable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -24,6 +25,24 @@ public abstract class Person extends Circle implements Positionable{
 
 	public Person() {
 		super(PERSON_RADIUS, Color.BLUE);
+	}
+
+	/**
+	 * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
+	 * Created by suter1 on 05.10.2016
+	 */
+	public Person(double maxHeight, double maxWidth, List<Position> path, double speed) {
+		super(PERSON_RADIUS, Color.BLUE);
+		this.speed = speed;
+		Random r = new Random();
+		double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
+		double randomHeight = 0 + (maxHeight - PERSON_RADIUS) * r.nextDouble();
+		this.setCurrentPosition(new Position(randomWidth, randomHeight));
+		this.relocate(randomWidth, randomHeight);
+		//System.out.println("initial position: "+this.currentPosition);
+
+		this.path = new ArrayList<>();
+		this.path.addAll(path);
 	}
 
 	/**
