@@ -7,7 +7,7 @@ import java.util.Random;
 import model.Position;
 
 /**
- * Created by tgdflto1 on 30/09/16.
+ * Created by fluth1 on 30/09/16.
  */
 public class MidAgePerson extends Person {
 	public MidAgePerson(double maxHeigth, double maxWidth, List<Position> path) {

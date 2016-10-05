@@ -6,7 +6,7 @@ import model.Position;
 import java.util.List;
 
 /**
- * Created by tgdflto1 on 30/09/16.
+ * Created by fluth1 on 30/09/16.
  */
 public class SpawnArea extends Area {
 	public SpawnArea(double width, double height, Position position) {

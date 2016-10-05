@@ -12,17 +12,19 @@ import model.persons.MidAgePerson;
 import model.persons.Person;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by tgdflto1 on 30/09/16.
+ * Created by fluth1 on 30/09/16.
  */
 public class Room extends Pane {
 
-	private ArrayList<Person> persons = new ArrayList<>();
-	private ArrayList<Person> passivePersons = new ArrayList<>();
+	private List<Person> persons = new ArrayList<>();
+	private List<Person> passivePersons = new ArrayList<>();
 
-	private ArrayList<Perimeter> perimeters;
+
+	private List<Perimeter> perimeters = new LinkedList<>();
 	private ArrayList<Area> obstacles;
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
@@ -38,7 +40,7 @@ public class Room extends Pane {
 	public Room() throws InterruptedException {
 		super();
 		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
-
+		perimeters.addAll(Perimeter.initializeAll(ROOM_WIDTH, ROOM_HEIGHT));
 		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
 		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(350.0, 380.0));
 
@@ -61,7 +63,12 @@ public class Room extends Pane {
 				int i = 0;
 				while (!isSimulationFinished()) {
 					handlePersonsInRange();
-					Platform.runLater(() -> persons.forEach(Person::doStep));
+					Platform.runLater(() -> {
+						for(Person p : persons){
+							Position nextPos = p.nextPosition();
+							p.setPosition(nextPos);
+						}
+					});
 					updateMessage(++i + " seconds");
 					Thread.sleep(30);
 				}
@@ -78,13 +85,12 @@ public class Room extends Pane {
 
 	private void handlePersonsInRange() {
 		ArrayList<Person> newPersons = new ArrayList<>();
-		for(Person p : persons){
-			if(p.isInGoalArea()){
+		for(Person p : persons)
+			if (p.isInGoalArea())
 				passivePersons.add(p);
-			}else{
+			else
 				newPersons.add(p);
-			}
-		}
+
 		this.persons = newPersons;
 	}
 

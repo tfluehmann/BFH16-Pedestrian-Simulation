@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import model.Position;
 
 /**
- * Created by tgdflto1 on 30/09/16.
+ * Created by fluth1 on 30/09/16.
  */
 public class GoalArea extends Area {
 	private double height;
@@ -28,4 +28,6 @@ public class GoalArea extends Area {
 		edges.add(new Position(this.position.getX() + this.width / 2, this.position.getY() + this.height / 2));
 		return edges;
 	}
+
+
 }

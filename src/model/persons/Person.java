@@ -4,15 +4,16 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Position;
+import model.Positionable;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by tgdflto1 on 30/09/16.
+ * Created by fluth1 on 30/09/16.
  */
-public abstract class Person extends Circle {
+public abstract class Person extends Circle implements Positionable{
 	protected ArrayList<Position> oldPositions = new ArrayList<>();
 	protected Position currentPosition;
 	protected List<Position> path;
@@ -25,6 +26,49 @@ public abstract class Person extends Circle {
 		super(PERSON_RADIUS, Color.BLUE);
 	}
 
+	/**
+	 * Calculates the vector and the next position depending on the step size
+	 * @return next Position
+	 */
+	public Position nextPosition() {
+			Position nextTarget = this.path.get(0);
+			double x = nextTarget.getX() - this.currentPosition.getX();
+			double y = nextTarget.getY() - this.currentPosition.getY();
+			double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+			double lambda = speed / length;
+//			if(checkCollision())
+			return new Position(this.currentPosition.getX() + x * lambda,
+					this.currentPosition.getY() + y * lambda);
+	}
+
+	public void setPosition(Position position) {
+		this.oldPositions.add(new Position(this.currentPosition.getX(),
+				this.currentPosition.getY()));
+		this.currentPosition.setX(roundWithDecimalFormat(position.getX()));
+		this.currentPosition.setY(roundWithDecimalFormat(position.getY()));
+		if(isInNextPathArea() && !isInGoalArea()) path.remove(0);
+		this.relocate(position.getX(), position.getY());
+	}
+
+	public boolean checkCollision(double x, double y, Person otherPerson){
+		return (Math.abs(x - otherPerson.getPosition().getX()) < this.getRadius() + otherPerson.getRadius() &&
+				Math.abs(y - otherPerson.getPosition().getY()) < this.getRadius() + otherPerson.getRadius());
+	}
+
+	public double roundWithDecimalFormat(double val){
+		DecimalFormat df = new DecimalFormat("#0.##");
+		return Double.parseDouble(df.format(val));
+	}
+
+	public boolean isInNextPathArea(){
+		Position nextPosition = path.get(0);
+		return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+	}
+	public boolean isInGoalArea() {
+		Position targetPosition = path.get(path.size()-1);
+		return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+	}
+
 	public ArrayList<Position> getOldPositions() {
 		return oldPositions;
 	}
@@ -33,7 +77,7 @@ public abstract class Person extends Circle {
 		this.oldPositions = oldPositions;
 	}
 
-	public Position getCurrentPosition() {
+	public Position getPosition() {
 		return currentPosition;
 	}
 
@@ -65,46 +109,7 @@ public abstract class Person extends Circle {
 		this.speed = speed;
 	}
 
-	public void doStep() {
-		Platform.runLater(() -> {
-			Position nextTarget = this.path.get(0);
-			//System.out.println("target: " + nextTarget);
-			double x = nextTarget.getX() - this.currentPosition.getX();
-			double y = nextTarget.getY() - this.currentPosition.getY();
-			double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-			//System.out.println("length vector: "+ length);
-			double lambda = speed / length;
-			this.setPosition(this.currentPosition.getX() + x * lambda,
-					this.currentPosition.getY() + y * lambda);
-        });
-	}
-
-	public void setPosition(double x, double y) {
-		this.oldPositions.add(new Position(this.currentPosition.getX(),
-				this.currentPosition.getY()));
-		this.currentPosition.setX(roundWithDecimalFormat(x));
-		this.currentPosition.setY(roundWithDecimalFormat(y));
-		if(isInNextPathArea() && !isInGoalArea()) path.remove(0);
-		this.relocate(x, y);
-	}
-
-	public boolean checkCollision(Person otherPerson){
-//		if(Math.abs(this.currentPosition.getX() - otherPerson.getCurrentPosition().getX()) <  )
-//		this.currentPosition.getX()
+	public boolean intersects(double x, double y){
 		return false;
-	}
-
-	public double roundWithDecimalFormat(double val){
-		DecimalFormat df = new DecimalFormat("#0.##");
-		return Double.parseDouble(df.format(val));
-	}
-
-	public boolean isInNextPathArea(){
-		Position nextPosition = path.get(0);
-		return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
-	}
-	public boolean isInGoalArea() {
-		Position targetPosition = path.get(path.size()-1);
-		return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
 	}
 }
