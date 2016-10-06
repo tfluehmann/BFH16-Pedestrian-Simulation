@@ -1,8 +1,7 @@
 package model.persons;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import model.Position;
 
@@ -10,20 +9,11 @@ import model.Position;
  * Created by fluth1 on 30/09/16.
  */
 public class MidAgePerson extends Person {
-	public MidAgePerson(double maxHeigth, double maxWidth, List<Position> path) {
-		Random r = new Random();
-		double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
-		double randomHeight = 0 + (maxHeigth - PERSON_RADIUS) * r.nextDouble();
-		this.setCurrentPosition(new Position(randomWidth, randomHeight));
-		this.centerXProperty().bind(this.currentPosition.getXProperty());
-		this.centerYProperty().bind(this.currentPosition.getYProperty());
-//		this.setCenterX(randomWidth);
-//		this.setCenterY(randomHeight);
-		//System.out.println("initial position: "+this.currentPosition);
 
-		this.path = new ArrayList<>();
-		this.path.addAll(path);
-		//System.out.println(System.identityHashCode(this.path));
-		this.speed = 2.0;
+	public static final double MIN_SPEED = 1.41;
+	public static final double MAX_SPEED = 1.55;
+
+	public MidAgePerson(double maxHeigth, double maxWidth, List<Position> path) {
+		super(maxHeigth, maxWidth,path, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED));
 	}
 }

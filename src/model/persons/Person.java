@@ -1,9 +1,8 @@
 package model.persons;
 
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import manager.PerimeterManager;
-import model.Perimeter;
 import model.Position;
 import model.Positionable;
 
@@ -14,19 +13,38 @@ import java.util.List;
 /**
  * Created by fluth1 on 30/09/16.
  */
-public abstract class Person extends Circle implements Positionable{
-	protected ArrayList<Position> oldPositions = new ArrayList<>();
-	protected Position currentPosition;
-	protected List<Position> path;
-	protected Perimeter currentPerimeter;
-	protected int age;
-	protected double speed;
-	public final static int PERSON_RADIUS = 2;
-	// protected Character character;
+public abstract class Person extends Circle implements Positionable {
+    public final static int PERSON_RADIUS = 2;
+    protected ArrayList<Position> oldPositions = new ArrayList<>();
+    protected Position currentPosition;
+    protected List<Position> path;
+    protected int age;
+    protected double speed;
+    // protected Character character;
 
-	public Person() {
-		super(PERSON_RADIUS, Color.BLUE);
-	}
+	protected Perimeter currentPerimeter;
+
+    public Person() {
+        super(PERSON_RADIUS, Color.BLUE);
+    }
+
+    /**
+     * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
+     * Created by suter1 on 05.10.2016
+     */
+    public Person(double maxHeight, double maxWidth, List<Position> path, double speed) {
+        super(PERSON_RADIUS, Color.BLUE);
+        this.speed = speed;
+        Random r = new Random();
+        double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
+        double randomHeight = 0 + (maxHeight - PERSON_RADIUS) * r.nextDouble();
+        this.setCurrentPosition(new Position(randomWidth, randomHeight));
+        this.relocate(randomWidth, randomHeight);
+        //System.out.println("initial position: "+this.currentPosition);
+
+        this.path = new ArrayList<>();
+        this.path.addAll(path);
+    }
 
 	/**
 	 * Calculates the vector and the next position depending on the step size
@@ -51,6 +69,23 @@ public abstract class Person extends Circle implements Positionable{
 		}
 		return null;
 	}
+
+
+    /**
+     * Calculates the vector and the next position depending on the step size
+     *
+     * @return next Position
+     */
+    public Position nextPosition() {
+        Position nextTarget = this.path.get(0);
+        double x = nextTarget.getX() - this.currentPosition.getX();
+        double y = nextTarget.getY() - this.currentPosition.getY();
+        double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double lambda = speed / length;
+//			if(checkCollision())
+        return new Position(this.currentPosition.getX() + x * lambda,
+                this.currentPosition.getY() + y * lambda);
+    }
 
 	private boolean isNewPositionAllowed(Position position) {
 		if(position == null) return false;
@@ -85,27 +120,28 @@ public abstract class Person extends Circle implements Positionable{
 				!otherPerson.isInGoalArea());
 	}
 
-	public double roundWithDecimalFormat(double val){
-		DecimalFormat df = new DecimalFormat("#0.##");
-		return Double.parseDouble(df.format(val));
-	}
+    public double roundWithDecimalFormat(double val) {
+        DecimalFormat df = new DecimalFormat("#0.##");
+        return Double.parseDouble(df.format(val));
+    }
 
-	public boolean isInNextPathArea(){
-		Position nextPosition = path.get(0);
-		return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
-	}
-	public boolean isInGoalArea() {
-		Position targetPosition = path.get(path.size()-1);
-		return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
-	}
+    public boolean isInNextPathArea() {
+        Position nextPosition = path.get(0);
+        return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+    }
 
-	public ArrayList<Position> getOldPositions() {
-		return oldPositions;
-	}
+    public boolean isInGoalArea() {
+        Position targetPosition = path.get(path.size() - 1);
+        return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+    }
 
-	public void setOldPositions(ArrayList<Position> oldPositions) {
-		this.oldPositions = oldPositions;
-	}
+    public ArrayList<Position> getOldPositions() {
+        return oldPositions;
+    }
+
+    public void setOldPositions(ArrayList<Position> oldPositions) {
+        this.oldPositions = oldPositions;
+    }
 
 	public Position getCurrentPosition() {
 		return currentPosition;
@@ -115,17 +151,17 @@ public abstract class Person extends Circle implements Positionable{
 		this.currentPosition = currentPosition;
 	}
 
-	public List<Position> getPath() {
-		return path;
-	}
+    public List<Position> getPath() {
+        return path;
+    }
 
-	public void setPath(ArrayList<Position> path) {
-		this.path = path;
-	}
+    public void setPath(ArrayList<Position> path) {
+        this.path = path;
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public int getAge() {
+        return age;
+    }
 
 	public void setAge(int age) {
 		this.age = age;
