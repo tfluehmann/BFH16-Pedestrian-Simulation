@@ -7,13 +7,14 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import manager.PerimeterManager;
 import model.areas.*;
-import model.persons.MidAgePerson;
-import model.persons.Person;
+import model.persons.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -24,7 +25,7 @@ public class Room extends Pane {
 	private List<Person> passivePersons = new ArrayList<>();
 
 	private PerimeterManager perimeterManager = PerimeterManager.getInstance();
-	private ArrayList<Area> obstacles;
+	private ArrayList<Area> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
@@ -51,43 +52,37 @@ public class Room extends Pane {
 		this.getChildren().add(sa);
 		this.getChildren().add(ga);
 		List<Position> edges = ga.getEdges();
-//		edges.add(0, new Position(0, 300));
-//		edges.add(0, new Position(300, 0));
-
-		for (int i = 0; i < 20; i++){
-			Person p = new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges);
-			p.getCurrentPosition().setX(i * (Person.PERSON_RADIUS * 2) );
-			p.getCurrentPosition().setY(10);
-			persons.add(p);
-			perimeterManager.registerPerson(p);
-		}
+        for(Area o : obstacles)
+            edges.addAll(o.getEdges());
 
 		/**
 		 * Generating different aged persons randomly
 		 * Created by suter1 on 05.10.2016
 		 */
 		Random rnd = new Random();
-		int type = 0;
-		for (int i = 0; i < 500; i++) {
+		int type;
+		for (int i = 0; i < 15; i++) {
+            Person p;
 			type = rnd.nextInt(3);
 			switch (type) {
 				case 0:
-					persons.add(new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					p = new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
 					break;
 				case 1:
-					persons.add(new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					p = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
 					break;
 				case 2:
-					persons.add(new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					p = new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
 					break;
 				case 3:
-					persons.add(new HandycappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					p = new HandycappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
 					break;
 				default:
-					persons.add(new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges));
+					p = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
 					break;
 			}
-			//persons.add(new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges));
+			perimeterManager.registerPerson(p);
+			persons.add(p);
 		}
 		this.getChildren().addAll(persons);
 	}

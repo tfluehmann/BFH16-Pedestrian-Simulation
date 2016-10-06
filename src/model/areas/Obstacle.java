@@ -51,23 +51,23 @@ public class Obstacle extends Area {
             }
             a = this.edges.get(i);
 
-            Position c = new Position(b.getX() - a.getX(), b.getY() - a.getY());
-            double lengthC = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2));
-            Position unitVector = new Position(c.getX() / lengthC, c.getY() / lengthC);
+            Position c = new Position(b.getXValue() - a.getXValue(), b.getYValue() - a.getYValue());
+            double lengthC = Math.sqrt(Math.pow(c.getXValue(), 2) + Math.pow(c.getYValue(), 2));
+            Position unitVector = new Position(c.getXValue() / lengthC, c.getYValue() / lengthC);
 
-            if (a.getX() > b.getX()) {
-                aX = a.getX() + EDGE_EXTENDER * unitVector.getX();
-                bX = b.getX() - EDGE_EXTENDER * unitVector.getX();
+            if (a.getXValue() > b.getXValue()) {
+                aX = a.getXValue() + EDGE_EXTENDER * unitVector.getXValue();
+                bX = b.getXValue() - EDGE_EXTENDER * unitVector.getXValue();
             } else {
-                aX = a.getX() - EDGE_EXTENDER * unitVector.getX();
-                bX = b.getX() + EDGE_EXTENDER * unitVector.getX();
+                aX = a.getXValue() - EDGE_EXTENDER * unitVector.getXValue();
+                bX = b.getXValue() + EDGE_EXTENDER * unitVector.getXValue();
             }
-            if (a.getY() > b.getY()) {
-                aY = a.getY() + EDGE_EXTENDER * unitVector.getY();
-                bY = b.getY() - EDGE_EXTENDER * unitVector.getY();
+            if (a.getYValue() > b.getYValue()) {
+                aY = a.getYValue() + EDGE_EXTENDER * unitVector.getYValue();
+                bY = b.getYValue() - EDGE_EXTENDER * unitVector.getYValue();
             } else {
-                aY = a.getY() - EDGE_EXTENDER * unitVector.getY();
-                bY = b.getY() + EDGE_EXTENDER * unitVector.getY();
+                aY = a.getYValue() - EDGE_EXTENDER * unitVector.getYValue();
+                bY = b.getYValue() + EDGE_EXTENDER * unitVector.getYValue();
             }
 
             if (aX > 0 && aX < Room.ROOM_WIDTH && aY > 0 && aY < Room.ROOM_HEIGHT)
