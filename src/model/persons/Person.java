@@ -1,6 +1,5 @@
 package model.persons;
 
-import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import manager.PerimeterManager;
@@ -74,13 +73,19 @@ public abstract class Person extends Circle implements Positionable {
 			if(isNewPositionAllowed(newPosition)){
 				return newPosition;
 			}else if(tries == 2){
+				/**
+				 * Try to walk into the left or right hand position
+				 */
 				Position leftPos = calculateSideStep(currentPosition.getXValue(), currentPosition.getYValue(),
 						newPosition.getXValue(), newPosition.getYValue(), true);
 				Position rightPos = calculateSideStep(currentPosition.getXValue(), currentPosition.getYValue(),
 						newPosition.getXValue(), newPosition.getYValue(), false);
 				if(isNewPositionAllowed(leftPos)) return leftPos;
 				if(isNewPositionAllowed(rightPos)) return rightPos;
-
+			} else if (tries == 5) {
+				/**
+				 * go back one step --> -x -y vector
+				 */
 			}
 		}
 		return null;
@@ -109,8 +114,6 @@ public abstract class Person extends Circle implements Positionable {
 		double newEndVectorY = targetY + normalizedY;
 		return new Position(newEndVectorX, newEndVectorY);
 	}
-
-
 
     /**
      * Calculates the vector and the next position depending on the step size

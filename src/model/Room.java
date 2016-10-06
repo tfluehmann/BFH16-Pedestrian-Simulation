@@ -1,18 +1,18 @@
 package model;
 
 
-
-
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import manager.PerimeterManager;
-import model.areas.*;
+import model.areas.Area;
+import model.areas.GoalArea;
+import model.areas.Obstacle;
+import model.areas.SpawnArea;
 import model.persons.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,22 +21,19 @@ import java.util.Random;
  */
 public class Room extends Pane {
 
+	public static final int ROOM_HEIGHT = 400;
+	public static final int ROOM_WIDTH = 400;
+	public static final int GOAL_HEIGHT = 20;
+	public static final int GOAL_WIDTH = 50;
+	public static final int SPAWN_HEIGHT = 150;
+	public static final int SPAWN_WIDTH = 150;
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
-
 	private PerimeterManager perimeterManager = PerimeterManager.getInstance();
 	private ArrayList<Area> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
-	public static final int ROOM_HEIGHT = 400;
-	public static final int ROOM_WIDTH = 400;
-
-	public static final int GOAL_HEIGHT = 20;
-	public static final int GOAL_WIDTH = 50;
-
-	public static final int SPAWN_HEIGHT = 150;
-	public static final int SPAWN_WIDTH = 150;
 	public Room() throws InterruptedException {
 		super();
 		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
@@ -61,8 +58,8 @@ public class Room extends Pane {
 		 */
 		Random rnd = new Random();
 		int type;
-		for (int i = 0; i < 15; i++) {
-            Person p;
+		for (int i = 0; i < 100; i++) {
+			Person p;
 			type = rnd.nextInt(3);
 			switch (type) {
 				case 0:

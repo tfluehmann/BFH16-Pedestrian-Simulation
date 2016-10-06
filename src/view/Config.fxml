@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="config.ConfigController" maxHeight="-Infinity"
+            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0"
+            xmlns="http://javafx.com/javafx/8">
+    <children>
+        <VBox prefHeight="500.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <AnchorPane prefHeight="450.0" prefWidth="400.0">
+                    <children>
+                        <TabPane prefHeight="450.0" prefWidth="400.0" styleClass="TabPaneStyle"
+                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
+                                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <tabs>
+                                <Tab text="Room">
+                                    <content>
+                                        <AnchorPane prefHeight="450.0" prefWidth="400.0">
+                                            <children>
+                                                <Label text="Room Width" AnchorPane.leftAnchor="5.0"
+                                                       AnchorPane.topAnchor="20.0"/>
+                                                <TextField fx:id="roomWidth" layoutX="126.0" layoutY="16.0"
+                                                           promptText="Room width in meters" text="40"/>
+                                                <Label layoutX="14.0" layoutY="59.0" text="Room Height"
+                                                       AnchorPane.leftAnchor="5.0"/>
+                                                <TextField fx:id="roomHeight" layoutX="126.0" layoutY="55.0"
+                                                           promptText="Room height in meters" text="40"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Persons">
+                                    <content>
+                                        <AnchorPane prefHeight="330.0" prefWidth="400.0">
+                                            <children>
+                                                <Label layoutX="14.0" layoutY="18.0" text="Total persons"/>
+                                                <TextField alignment="CENTER" layoutX="155.0" layoutY="14.0"
+                                                           prefHeight="25.0" prefWidth="40.0" text="50"/>
+                                                <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="81.0"
+                                                        minorTickCount="1" showTickMarks="true" snapToTicks="true"
+                                                        value="30.0"/>
+                                                <Slider fx:id="sliderMidage" layoutX="155.0" layoutY="132.0"
+                                                        minorTickCount="1" showTickMarks="true" snapToTicks="true"
+                                                        value="40.0"/>
+                                                <Slider fx:id="sliderOld" layoutX="155.0" layoutY="178.0"
+                                                        minorTickCount="1" showTickMarks="true" snapToTicks="true"
+                                                        value="25.0"/>
+                                                <Slider fx:id="sliderHandycap" layoutX="155.0" layoutY="228.0"
+                                                        minorTickCount="1" showTickMarks="true" snapToTicks="true"
+                                                        value="5.0"/>
+                                                <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" layoutX="306.0"
+                                                           layoutY="76.0" prefHeight="25.0" prefWidth="40.0" text="30"/>
+                                                <TextField fx:id="weightMidage" alignment="CENTER_RIGHT" layoutX="306.0"
+                                                           layoutY="127.0" prefHeight="25.0" prefWidth="40.0"
+                                                           text="40"/>
+                                                <TextField fx:id="weightOld" alignment="CENTER_RIGHT" layoutX="306.0"
+                                                           layoutY="173.0" prefHeight="25.0" prefWidth="40.0"
+                                                           text="25"/>
+                                                <TextField fx:id="weightHandycap" alignment="CENTER_RIGHT"
+                                                           layoutX="306.0" layoutY="223.0" prefHeight="25.0"
+                                                           prefWidth="40.0" text="5"/>
+                                                <Label layoutX="14.0" layoutY="131.0" text="30 to 50 years"/>
+                                                <Label layoutX="14.0" layoutY="177.0" text="over 50 years"/>
+                                                <Label layoutX="14.0" layoutY="227.0" text="handycapped persons"/>
+                                                <Text layoutX="353.0" layoutY="93.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="\%"/>
+                                                <Text layoutX="353.0" layoutY="144.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="\%"/>
+                                                <Text layoutX="353.0" layoutY="190.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="\%"/>
+                                                <Text layoutX="353.0" layoutY="240.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="\%"/>
+                                                <Label layoutX="14.0" layoutY="80.0" text="under 30 years"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Obstacles">
+                                    <content>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
