@@ -1,13 +1,14 @@
 package model;
 
 
-
-
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import model.areas.*;
+import model.areas.Area;
+import model.areas.GoalArea;
+import model.areas.Obstacle;
+import model.areas.SpawnArea;
 import model.persons.*;
 
 import java.util.ArrayList;
@@ -20,29 +21,28 @@ import java.util.Random;
  */
 public class Room extends Pane {
 
+	public static final int ROOM_HEIGHT = 400;
+	public static final int ROOM_WIDTH = 400;
+	public static final int GOAL_HEIGHT = 20;
+	public static final int GOAL_WIDTH = 50;
+	public static final int SPAWN_HEIGHT = 150;
+	public static final int SPAWN_WIDTH = 150;
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
-
-
 	private List<Perimeter> perimeters = new LinkedList<>();
 	private ArrayList<Area> obstacles;
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
-
-	public static final int ROOM_HEIGHT = 400;
-	public static final int ROOM_WIDTH = 400;
-
-	public static final int GOAL_HEIGHT = 20;
-	public static final int GOAL_WIDTH = 50;
-
-	public static final int SPAWN_HEIGHT = 150;
-	public static final int SPAWN_WIDTH = 150;
 	public Room() throws InterruptedException {
 		super();
 		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
 		perimeters.addAll(Perimeter.initializeAll(ROOM_WIDTH, ROOM_HEIGHT));
 		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
 		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(350.0, 380.0));
+
+		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
+
+		this.getChildren().add(o1);
 
 		this.getChildren().add(sa);
 		this.getChildren().add(ga);
