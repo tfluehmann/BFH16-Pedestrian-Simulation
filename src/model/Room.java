@@ -13,7 +13,6 @@ import model.persons.MidAgePerson;
 import model.persons.Person;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -50,8 +49,11 @@ public class Room extends Pane {
 		List<Position> edges = ga.getEdges();
 //		edges.add(0, new Position(0, 300));
 //		edges.add(0, new Position(300, 0));
-		for (int i = 0; i < 200; i++){
+
+		for (int i = 0; i < 20; i++){
 			Person p = new MidAgePerson(SPAWN_WIDTH, SPAWN_HEIGHT, edges);
+			p.getCurrentPosition().setX(i * (Person.PERSON_RADIUS * 2) );
+			p.getCurrentPosition().setY(10);
 			persons.add(p);
 			perimeterManager.registerPerson(p);
 		}

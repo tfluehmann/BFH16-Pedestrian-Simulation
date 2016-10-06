@@ -38,7 +38,7 @@ public class PerimeterManager {
     public void registerPerson(Person person){
         for(int i = 0; i < numberOfPerimetersX; i++)
             for(int j = 0; j < numberOfPerimetersY; j++)
-                if(perimeters[i][j].isInRange(person.getPosition())) perimeters[i][j].register(person);
+                if(perimeters[i][j].isInRange(person.getCurrentPosition())) perimeters[i][j].register(person);
     }
 
     public void setRoom(Room room) {

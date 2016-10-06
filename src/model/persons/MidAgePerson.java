@@ -15,7 +15,10 @@ public class MidAgePerson extends Person {
 		double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
 		double randomHeight = 0 + (maxHeigth - PERSON_RADIUS) * r.nextDouble();
 		this.setCurrentPosition(new Position(randomWidth, randomHeight));
-		this.relocate(randomWidth, randomHeight);
+		this.centerXProperty().bind(this.currentPosition.getXProperty());
+		this.centerYProperty().bind(this.currentPosition.getYProperty());
+//		this.setCenterX(randomWidth);
+//		this.setCenterY(randomHeight);
 		//System.out.println("initial position: "+this.currentPosition);
 
 		this.path = new ArrayList<>();

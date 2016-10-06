@@ -41,12 +41,12 @@ public abstract class Person extends Circle implements Positionable{
 		int tries = 1;
 		while(tries < 5) {
 			Position nextTarget = this.path.get(0);
-			double x = nextTarget.getX() - this.currentPosition.getX();
-			double y = nextTarget.getY() - this.currentPosition.getY();
+			double x = nextTarget.getXValue() - this.currentPosition.getXValue();
+			double y = nextTarget.getYValue() - this.currentPosition.getYValue();
 			double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 			double lambda = (speed / tries++) / length;
-			Position newPosition = new Position(this.currentPosition.getX() + x * lambda,
-					this.currentPosition.getY() + y * lambda);
+			Position newPosition = new Position(this.currentPosition.getXValue() + x * lambda,
+					this.currentPosition.getYValue() + y * lambda);
 			if(isNewPositionAllowed(newPosition)) return newPosition;
 		}
 		return null;
@@ -58,7 +58,7 @@ public abstract class Person extends Circle implements Positionable{
 		for(Perimeter perimeter : neighPerimeters)
 			for(Person person : perimeter.getRegistredPersons()){
 				if(person.equals(this)) continue;
-				boolean collision = isCollidating(position.getX(), position.getY(), person);
+				boolean collision = isCollidating(position.getXValue(), position.getYValue(), person);
 				if(collision) return false;
 			}
 		return true;
@@ -71,18 +71,17 @@ public abstract class Person extends Circle implements Positionable{
 	 * @param position
 	 */
 	private void setPosition(Position position) {
-		this.oldPositions.add(new Position(this.currentPosition.getX(),
-				this.currentPosition.getY()));
-		this.currentPosition.setX(roundWithDecimalFormat(position.getX()));
-		this.currentPosition.setY(roundWithDecimalFormat(position.getY()));
+		this.oldPositions.add(new Position(this.currentPosition.getXValue(),
+				this.currentPosition.getYValue()));
+		this.currentPosition.setX(roundWithDecimalFormat(position.getXValue()));
+		this.currentPosition.setY(roundWithDecimalFormat(position.getYValue()));
 		if(isInNextPathArea() && !isInGoalArea()) path.remove(0);
-		if(!this.currentPerimeter.isInRange(this.getPosition())) PerimeterManager.getInstance().movePersonRegistration(this);
-		this.relocate(position.getX(), position.getY());
+		if(!this.currentPerimeter.isInRange(this.getCurrentPosition())) PerimeterManager.getInstance().movePersonRegistration(this);
 	}
 
 	public boolean isCollidating(double x, double y, Person otherPerson){
-		return (Math.abs(x - otherPerson.getPosition().getX()) < this.getRadius() + otherPerson.getRadius() &&
-				Math.abs(y - otherPerson.getPosition().getY()) < this.getRadius() + otherPerson.getRadius() &&
+		return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < this.getRadius() + otherPerson.getRadius() &&
+				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < this.getRadius() + otherPerson.getRadius() &&
 				!otherPerson.isInGoalArea());
 	}
 
@@ -108,7 +107,7 @@ public abstract class Person extends Circle implements Positionable{
 		this.oldPositions = oldPositions;
 	}
 
-	public Position getPosition() {
+	public Position getCurrentPosition() {
 		return currentPosition;
 	}
 

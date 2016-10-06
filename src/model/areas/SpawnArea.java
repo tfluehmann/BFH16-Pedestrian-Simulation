@@ -11,7 +11,7 @@ import java.util.List;
 public class SpawnArea extends Area {
 	public SpawnArea(double width, double height, Position position) {
 		this.setFill(Color.RED);
-		this.relocate(position.getX(), position.getY());
+		this.relocate(position.getXValue(), position.getYValue());
 		this.getPoints().addAll(new Double[] { 0.0, 0.0, width, 0.0, width, height, 0.0, height });
 	}
 

@@ -31,8 +31,8 @@ public class Perimeter {
 
 
     public boolean isInRange(Position position){
-        return (((this.position.getX() < position.getX()) || (position.getX() < this.position.getX()+width) ) &&
-                ((this.position.getY() < position.getY()) || (position.getY() < this.position.getY() + heigth)));
+        return (((this.position.getXValue() < position.getXValue()) || (position.getXValue() < this.position.getXValue()+width) ) &&
+                ((this.position.getYValue() < position.getYValue()) || (position.getYValue() < this.position.getYValue() + heigth)));
 
     }
 

@@ -18,14 +18,14 @@ public class GoalArea extends Area {
 		this.position = position;
 		this.height = height;
 		this.width = width;
-		this.relocate(position.getX(), position.getY());
+		this.relocate(position.getXValue(), position.getYValue());
 		this.setFill(Color.GREEN);
 		this.getPoints().addAll(new Double[] { 0.0, 0.0, width, 0.0, width, height, 0.0, height });
 	}
 
 	@Override
 	public List<Position> getEdges() {
-		edges.add(new Position(this.position.getX() + this.width / 2, this.position.getY() + this.height / 2));
+		edges.add(new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2));
 		return edges;
 	}
 
