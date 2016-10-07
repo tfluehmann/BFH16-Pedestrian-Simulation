@@ -12,7 +12,7 @@ import java.util.List;
  * Created by suter1 on 06.10.2016.
  */
 public class Obstacle extends Area {
-    public static final double EDGE_EXTENDER = 5.0;
+    public static final double EDGE_EXTENDER = 15.0;
     private Position position;
     private ArrayList<Position> edges;
     private ArrayList<Position> extendedEdges = new ArrayList<>();
@@ -58,7 +58,6 @@ public class Obstacle extends Area {
             /**
              * check if position in room
              */
-            System.out.println(a);
             if (a.getXValue() > 0 && a.getXValue() < Room.ROOM_WIDTH && a.getYValue() > 0 && a.getYValue() < Room.ROOM_HEIGHT)
                 this.extendedEdges.add(a);
             if (b.getXValue() > 0 && b.getXValue() < Room.ROOM_WIDTH && b.getYValue() > 0 && b.getYValue() < Room.ROOM_HEIGHT)
