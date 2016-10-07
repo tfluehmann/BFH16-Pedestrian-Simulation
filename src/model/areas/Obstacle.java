@@ -12,8 +12,8 @@ import java.util.List;
  * Created by suter1 on 06.10.2016.
  */
 public class Obstacle extends Area {
-    public static final double EDGE_EXTENDER = 15.0;
-    private Position position;
+	public static final double EDGE_EXTENDER = 5.0;
+	private Position position;
     private ArrayList<Position> edges;
     private ArrayList<Position> extendedEdges = new ArrayList<>();
 

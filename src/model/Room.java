@@ -56,7 +56,6 @@ public class Room extends Pane {
             edges.addAll(o.getEdges());
 
 		for (Position p : o1.getExtendetEdges()) {
-			System.out.println("position: " + p);
 			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 		}
 
