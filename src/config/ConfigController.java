@@ -2,6 +2,7 @@ package config;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
@@ -43,10 +44,18 @@ public class ConfigController implements Initializable {
 	@FXML
 	private TextField weightHandycap;
 
+	@FXML
+	private Button buttonOK;
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("CONFIG Controller");
+
+		buttonOK.setOnAction((event) -> {
+			System.out.println("started simulation");
+			buttonOK.getScene().getWindow().hide();
+		});
 	}
 
 	private TextField doubleToTextfield(Double value) {
