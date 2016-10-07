@@ -46,4 +46,12 @@ public class Position implements Cloneable {
     public boolean isInRange(Position position, int range) {
         return (this.getXValue() - position.getXValue() < range && this.getYValue() - position.getYValue()  < range);
     }
+
+    public Position add(Position a) {
+        return new Position(this.getXValue() + a.getXValue(), this.getYValue() + a.getYValue());
+    }
+
+    public Position multiply(double edgeExtender) {
+        return new Position(this.getXValue() * edgeExtender, this.getYValue() * edgeExtender);
+    }
 }

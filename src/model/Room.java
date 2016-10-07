@@ -5,6 +5,8 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import manager.PerimeterManager;
 import model.areas.Area;
 import model.areas.GoalArea;
@@ -13,6 +15,7 @@ import model.areas.SpawnArea;
 import model.persons.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -55,6 +58,11 @@ public class Room extends Pane {
         for(Area o : obstacles)
             edges.addAll(o.getEdges());
 
+		for (Position p : o1.getExtendetEdges()) {
+			System.out.println("position: " + p);
+			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
+		}
+
 		/**
 		 * Generating different aged persons randomly
 		 * Created by suter1 on 05.10.2016
@@ -96,6 +104,12 @@ public class Room extends Pane {
 				while (!isSimulationFinished()) {
 					handlePersonsInRange();
 					Platform.runLater(() -> {
+						/**
+						 * shuffle before every run because there might be
+						 * unsolvable issues if it is always the same order
+						 */
+						long seed = System.nanoTime();
+						Collections.shuffle(persons, new Random(seed));
 						for(Person p : persons){
 							p.doStep();
 						}

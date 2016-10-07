@@ -1,6 +1,7 @@
 package model.areas;
 
 import javafx.scene.paint.Color;
+import model.GVector;
 import model.Position;
 import model.Room;
 
@@ -26,6 +27,8 @@ public class Obstacle extends Area {
         for (int i = 0; i < points.length; i += 2) {
             this.edges.add(new Position(points[i], points[i + 1]));
         }
+        setExtendedEdges();
+
         this.position = new Position(points[0], points[1]);
         this.setFill(Color.BLACK);
         this.getPoints().addAll(points);
@@ -41,8 +44,6 @@ public class Obstacle extends Area {
      */
     public void setExtendedEdges() {
         Position a, b;
-        double aX, aY, bX, bY;
-
         for (int i = 0; i < this.edges.size(); i++) {
             if (i + 1 >= this.edges.size()) {
                 b = this.edges.get(0);
@@ -50,30 +51,18 @@ public class Obstacle extends Area {
                 b = this.edges.get(i + 1);
             }
             a = this.edges.get(i);
-
-            Position c = new Position(b.getXValue() - a.getXValue(), b.getYValue() - a.getYValue());
-            double lengthC = Math.sqrt(Math.pow(c.getXValue(), 2) + Math.pow(c.getYValue(), 2));
-            Position unitVector = new Position(c.getXValue() / lengthC, c.getYValue() / lengthC);
-
-            if (a.getXValue() > b.getXValue()) {
-                aX = a.getXValue() + EDGE_EXTENDER * unitVector.getXValue();
-                bX = b.getXValue() - EDGE_EXTENDER * unitVector.getXValue();
-            } else {
-                aX = a.getXValue() - EDGE_EXTENDER * unitVector.getXValue();
-                bX = b.getXValue() + EDGE_EXTENDER * unitVector.getXValue();
-            }
-            if (a.getYValue() > b.getYValue()) {
-                aY = a.getYValue() + EDGE_EXTENDER * unitVector.getYValue();
-                bY = b.getYValue() - EDGE_EXTENDER * unitVector.getYValue();
-            } else {
-                aY = a.getYValue() - EDGE_EXTENDER * unitVector.getYValue();
-                bY = b.getYValue() + EDGE_EXTENDER * unitVector.getYValue();
-            }
-
-            if (aX > 0 && aX < Room.ROOM_WIDTH && aY > 0 && aY < Room.ROOM_HEIGHT)
-                this.extendedEdges.add(new Position(aX, aY));
-            if (bX > 0 && bX < Room.ROOM_WIDTH && bY > 0 && bY < Room.ROOM_HEIGHT)
-                this.extendedEdges.add(new Position(bX, bY));
+            GVector c = new GVector(a.getXValue(), a.getYValue(), b.getXValue(), b.getYValue());
+            GVector unitVector = c.norm();
+            a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
+            b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
+            /**
+             * check if position in room
+             */
+            System.out.println(a);
+            if (a.getXValue() > 0 && a.getXValue() < Room.ROOM_WIDTH && a.getYValue() > 0 && a.getYValue() < Room.ROOM_HEIGHT)
+                this.extendedEdges.add(a);
+            if (b.getXValue() > 0 && b.getXValue() < Room.ROOM_WIDTH && b.getYValue() > 0 && b.getYValue() < Room.ROOM_HEIGHT)
+                this.extendedEdges.add(b);
         }
     }
 
