@@ -24,22 +24,19 @@ import java.util.Random;
  */
 public class Room extends Pane {
 
+	public static final int ROOM_HEIGHT = 400;
+	public static final int ROOM_WIDTH = 400;
+	public static final int GOAL_HEIGHT = 20;
+	public static final int GOAL_WIDTH = 50;
+	public static final int SPAWN_HEIGHT = 150;
+	public static final int SPAWN_WIDTH = 150;
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
-
 	private PerimeterManager perimeterManager = PerimeterManager.getInstance();
 	private ArrayList<Area> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
-	public static final int ROOM_HEIGHT = 400;
-	public static final int ROOM_WIDTH = 400;
-
-	public static final int GOAL_HEIGHT = 20;
-	public static final int GOAL_WIDTH = 50;
-
-	public static final int SPAWN_HEIGHT = 150;
-	public static final int SPAWN_WIDTH = 150;
 	public Room() throws InterruptedException {
 		super();
 		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
