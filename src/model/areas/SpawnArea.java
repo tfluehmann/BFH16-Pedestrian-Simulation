@@ -15,8 +15,7 @@ public class SpawnArea extends Area {
 		this.getPoints().addAll(new Double[] { 0.0, 0.0, width, 0.0, width, height, 0.0, height });
 	}
 
-    @Override
-    public List<Position> getEdges() {
-        return null;
+	public List<Position> getCorners() {
+		return null;
     }
 }

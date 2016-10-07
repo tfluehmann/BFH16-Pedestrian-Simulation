@@ -58,7 +58,6 @@ public abstract class Person extends Circle implements Positionable {
 
     /**
 	 * calculate the next position by reducing the speed if needed
-	 * TODO next step, move the vector parallel and try this point
      * @return
      */
 	private Position calculateNextPossiblePosition() {
@@ -67,7 +66,8 @@ public abstract class Person extends Circle implements Positionable {
 			Position nextTarget = this.path.get(0);
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
-			Position newPosition = vToNextTarget.getLambdaPosition((speed / tries++) / vToNextTarget.length());
+			double lambda = (speed / tries++) / vToNextTarget.length();
+			Position newPosition = vToNextTarget.getLambdaPosition(lambda);
 			if(isNewPositionAllowed(newPosition)){
 				return newPosition;
 			}else if(tries == 2){
@@ -79,9 +79,9 @@ public abstract class Person extends Circle implements Positionable {
 				if(isNewPositionAllowed(leftPos)) return leftPos;
 				if(isNewPositionAllowed(rightPos)) return rightPos;
 			} else if (tries == 5) {
-				/**
-				 * go back one step --> -x -y vector
-				 */
+				//TODO probably implement a better solution
+				Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda);
+				if (isNewPositionAllowed(stepBack)) return stepBack;
 			}
 		}
 		return null;

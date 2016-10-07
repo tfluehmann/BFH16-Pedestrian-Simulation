@@ -14,43 +14,42 @@ import java.util.List;
 public class Obstacle extends Area {
     public static final double EDGE_EXTENDER = 15.0;
     private Position position;
-    private ArrayList<Position> edges;
-    private ArrayList<Position> extendedEdges = new ArrayList<>();
+    private ArrayList<Position> corners;
+    private ArrayList<Position> vertices = new ArrayList<>();
 
     /**
      * Created by suter1 on 06.10.2016.
      */
     public Obstacle(Double... points) {
-        this.edges = new ArrayList<>();
-        this.extendedEdges = new ArrayList<>();
+        this.corners = new ArrayList<>();
+        this.vertices = new ArrayList<>();
 
         for (int i = 0; i < points.length; i += 2) {
-            this.edges.add(new Position(points[i], points[i + 1]));
+            this.corners.add(new Position(points[i], points[i + 1]));
         }
-        setExtendedEdges();
+        calculateVertices();
 
         this.position = new Position(points[0], points[1]);
         this.setFill(Color.BLACK);
         this.getPoints().addAll(points);
     }
 
-    @Override
-    public List<Position> getEdges() {
-        return this.edges;
+    public List<Position> getCorners() {
+        return this.corners;
     }
 
     /**
      * Created by suter1 on 06.10.2016.
      */
-    public void setExtendedEdges() {
+    public void calculateVertices() {
         Position a, b;
-        for (int i = 0; i < this.edges.size(); i++) {
-            if (i + 1 >= this.edges.size()) {
-                b = this.edges.get(0);
+        for (int i = 0; i < this.corners.size(); i++) {
+            if (i + 1 >= this.corners.size()) {
+                b = this.corners.get(0);
             } else {
-                b = this.edges.get(i + 1);
+                b = this.corners.get(i + 1);
             }
-            a = this.edges.get(i);
+            a = this.corners.get(i);
             GVector c = new GVector(a.getXValue(), a.getYValue(), b.getXValue(), b.getYValue());
             GVector unitVector = c.norm();
             a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
@@ -59,13 +58,13 @@ public class Obstacle extends Area {
              * check if position in room
              */
             if (a.getXValue() > 0 && a.getXValue() < Room.ROOM_WIDTH && a.getYValue() > 0 && a.getYValue() < Room.ROOM_HEIGHT)
-                this.extendedEdges.add(a);
+                this.vertices.add(a);
             if (b.getXValue() > 0 && b.getXValue() < Room.ROOM_WIDTH && b.getYValue() > 0 && b.getYValue() < Room.ROOM_HEIGHT)
-                this.extendedEdges.add(b);
+                this.vertices.add(b);
         }
     }
 
-    public List<Position> getExtendetEdges() {
-        return this.extendedEdges;
+    public List<Position> getVertices() {
+        return this.vertices;
     }
 }

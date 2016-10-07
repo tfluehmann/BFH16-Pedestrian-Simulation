@@ -1,9 +1,9 @@
 package model.areas;
 
-import java.util.List;
-
 import javafx.scene.paint.Color;
 import model.Position;
+
+import java.util.List;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -23,8 +23,7 @@ public class GoalArea extends Area {
 		this.getPoints().addAll(new Double[] { 0.0, 0.0, width, 0.0, width, height, 0.0, height });
 	}
 
-	@Override
-	public List<Position> getEdges() {
+	public List<Position> getCorners() {
 		edges.add(new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2));
 		return edges;
 	}

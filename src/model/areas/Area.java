@@ -1,6 +1,6 @@
 package model.areas;
 
-import javafx.scene.shape.*;
+import javafx.scene.shape.Polygon;
 import model.Position;
 import model.Positionable;
 
@@ -13,7 +13,8 @@ import java.util.List;
 public abstract class  Area extends Polygon implements Positionable{
     private Position position;
     protected List<Position> edges =  new ArrayList<>();
-    public abstract List<Position> getEdges();
+
+    public abstract List<Position> getCorners();
 
 
     @Override

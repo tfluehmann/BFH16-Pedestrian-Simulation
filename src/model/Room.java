@@ -44,18 +44,16 @@ public class Room extends Pane {
 		perimeterManager.initializeAll();
 		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
 		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(350.0, 380.0));
-
 		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
+		//obstacles.add(o1);
+		this.getChildren().addAll(o1, sa, ga);
+		//this.getChildren().addAll(obstacles);
 
-		this.getChildren().add(o1);
+		List<Position> edges = ga.getCorners();
+		for(Area o : obstacles)
+			edges.addAll(o.getCorners());
 
-		this.getChildren().add(sa);
-		this.getChildren().add(ga);
-		List<Position> edges = ga.getEdges();
-        for(Area o : obstacles)
-            edges.addAll(o.getEdges());
-
-		for (Position p : o1.getExtendetEdges()) {
+		for (Position p : o1.getVertices()) {
 			System.out.println("position: " + p);
 			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 		}
@@ -66,7 +64,7 @@ public class Room extends Pane {
 		 */
 		Random rnd = new Random();
 		int type;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 300; i++) {
 			Person p;
 			type = rnd.nextInt(3);
 			switch (type) {
