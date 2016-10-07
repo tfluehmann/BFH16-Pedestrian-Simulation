@@ -54,8 +54,8 @@ public class Room extends Pane {
 		for(Area o : obstacles)
 			edges.addAll(o.getCorners());
 
-		for (Position p : o1.getExtendetEdges()) {
-			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
+        for (Position p : o1.getCorners()) {
+            this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 		}
 
 		/**
