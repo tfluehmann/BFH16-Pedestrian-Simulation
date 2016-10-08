@@ -16,4 +16,8 @@ public class OldPerson extends Person{
     public OldPerson(double maxHeight, double maxWidth, List<Position> path){
         super(maxHeight, maxWidth, path,  ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED));
     }
+
+    public OldPerson(double maxHeight, double maxWidth) {
+        super(maxHeight, maxWidth, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED));
+    }
 }

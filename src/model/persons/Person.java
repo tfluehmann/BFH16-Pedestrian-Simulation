@@ -2,6 +2,7 @@ package model.persons;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import manager.PathManager;
 import manager.PerimeterManager;
 import model.GVector;
 import model.Perimeter;
@@ -26,6 +27,7 @@ public abstract class Person extends Circle implements Positionable {
     // protected Character character;
 
 	protected Perimeter currentPerimeter;
+	protected PathManager pathManager = PathManager.getInstance();
 
     public Person() {
         super(PERSON_RADIUS, Color.BLUE);
@@ -36,16 +38,20 @@ public abstract class Person extends Circle implements Positionable {
      * Created by suter1 on 05.10.2016
      */
     public Person(double maxHeight, double maxWidth, List<Position> path, double speed) {
-        super(PERSON_RADIUS, Color.BLUE);
-        this.speed = speed;
-        Random r = new Random();
-        double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
-        double randomHeight = 0 + (maxHeight - PERSON_RADIUS) * r.nextDouble();
-        this.setCurrentPosition(new Position(randomWidth, randomHeight));
-        this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
-        this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
-        this.path.addAll(path);
+		this(maxHeight, maxWidth, speed);
+		this.path.addAll(path);
     }
+
+	public Person(double maxHeight, double maxWidth, double speed) {
+		super(PERSON_RADIUS, Color.BLUE);
+		this.speed = speed;
+		Random r = new Random();
+		double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
+		double randomHeight = 0 + (maxHeight - PERSON_RADIUS) * r.nextDouble();
+		this.setCurrentPosition(new Position(randomWidth, randomHeight));
+		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
+		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
+	}
 
 	/**
 	 * Calculates the vector and the next position depending on the step size
