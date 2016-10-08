@@ -96,7 +96,6 @@ public class PathManager {
                     && !isSettled(edge.getEndPosition())) {
                 neighbors.add(edge.getEndPosition());
             }
-
         return neighbors;
     }
 
@@ -138,6 +137,7 @@ public class PathManager {
         LinkedList<Position> path = new LinkedList<>();
         Position step = target;
         // check if a path exists
+        System.out.println("predecessors: " + predecessors.size() + " step to target " + step);
         if (predecessors.get(step) == null) {
             return null;
         }

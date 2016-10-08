@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import manager.PathManager;
 import manager.PerimeterManager;
 import model.areas.Area;
 import model.areas.GoalArea;
@@ -31,86 +32,92 @@ public class Room extends Pane {
 	public static final int SPAWN_WIDTH = 150;
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
-	private PerimeterManager perimeterManager = PerimeterManager.getInstance();
-	private ArrayList<Area> obstacles = new ArrayList();
+    private PerimeterManager perimeterManager = PerimeterManager.getInstance();
+    private PathManager pathManager = PathManager.getInstance();
+    private ArrayList<Area> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
-
 	public Room() throws InterruptedException {
-		super();
-		ConfigModel config = ConfigModel.getInstance();
-		this.setPrefSize(config.getRoomWidth(), config.getRoomHeight());
-		perimeterManager.setRoom(this);
-		perimeterManager.initializeAll();
+        super();
+        ConfigModel config = ConfigModel.getInstance();
+        this.setPrefSize(config.getRoomWidth(), config.getRoomHeight());
+        perimeterManager.setRoom(this);
+        perimeterManager.initializeAll();
 
-		double x, y;
-		if (config.getRoomWidth() < config.ROOM_WIDTH_ORIGIN)
-			x = config.getRoomWidth();
-		else
-			x = 0.0;
-		if (config.getRoomHeight() < config.ROOM_HEIGHT_ORIGIN)
-			y = config.getRoomHeight();
-		else
-			y = 0.0;
+        double x, y;
+        if (config.getRoomWidth() < config.ROOM_WIDTH_ORIGIN)
+            x = config.getRoomWidth();
+        else
+            x = 0.0;
+        if (config.getRoomHeight() < config.ROOM_HEIGHT_ORIGIN)
+            y = config.getRoomHeight();
+        else
+            y = 0.0;
 
-		Obstacle border = new Obstacle(x, y,
-				config.ROOM_WIDTH_ORIGIN, y,
-				config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
-				x, config.ROOM_HEIGHT_ORIGIN);
+        Obstacle border = new Obstacle(x, y,
+                config.ROOM_WIDTH_ORIGIN, y,
+                config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
+                x, config.ROOM_HEIGHT_ORIGIN);
 
-		System.out.println("Room-correction: " + border.toString());
+        System.out.println("Room-correction: " + border.toString());
 
-		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
-		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
+        SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
+        GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
 
-		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
-		//obstacles.add(o1);
-		this.getChildren().addAll(border, o1, sa, ga);
+        Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
+        //obstacles.add(o1);
+        this.getChildren().addAll(border, o1, sa, ga);
 //		this.getChildren().addAll(sa, ga);
 
-		List<Position> edges = ga.getCorners();
-		for (Area o : obstacles)
-			edges.addAll(o.getCorners());
+        for (Area o : obstacles) {
+            pathManager.getVertices().addAll(o.getCorners());
+        }
 
-		for (Position p : o1.getCorners()) {
-			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
-		}
-
-		/**
-		 * Generating different aged persons randomly
-		 * Created by suter1 on 05.10.2016
-		 */
-		Random rnd = new Random();
-		int type;
-		for (int i = 0; i < config.getTotalPersons(); i++) {
-			Person p;
-			type = rnd.nextInt(3);
-			switch (type) {
-				case 0:
-					p = new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
-					break;
-				case 1:
-					p = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
-					break;
-				case 2:
-					p = new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
-					break;
-				case 3:
-					p = new HandycappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
-					break;
-				default:
-					p = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
-					break;
-			}
-			perimeterManager.registerPerson(p);
-			persons.add(p);
-		}
-		this.getChildren().addAll(persons);
-	}
+        pathManager.getVertices().add(ga.getCurrentPosition());
+        pathManager.findValidEdgesAndSetWeigth();
+        for (Position p : o1.getCorners())
+            this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
 
-	public void start(Label time) {
+        /**
+         * Generating different aged persons randomly
+         * Created by suter1 on 05.10.2016
+         */
+        Random rnd = new Random();
+        int type;
+        for (int i = 0; i < config.getTotalPersons(); i++) {
+            Person newPerson;
+            type = rnd.nextInt(3);
+            switch (type) {
+                case 0:
+                    newPerson = new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH);
+                    break;
+                case 1:
+                    newPerson = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH);
+                    break;
+                case 2:
+                    newPerson = new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH);
+                    break;
+                case 3:
+                    newPerson = new HandicappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH);
+                    break;
+                default:
+                    newPerson = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH);
+                    break;
+            }
+            pathManager.findShortestPath(newPerson.getCurrentPosition());
+            List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
+            System.out.println("found path for person +" + positions.size());
+            newPerson.getPath().addAll(positions);
+            perimeterManager.registerPerson(newPerson);
+            persons.add(newPerson);
+        }
+        this.getChildren().addAll(persons);
+
+    }
+
+    public void start(Label time) {
 
 		Task task = new Task<Void>() {
 			@Override
@@ -125,10 +132,8 @@ public class Room extends Pane {
 						 */
 						long seed = System.nanoTime();
 						Collections.shuffle(persons, new Random(seed));
-						for (Person p : persons) {
-							p.doStep();
-						}
-					});
+                        persons.forEach(Person::doStep);
+                    });
 					updateMessage(++i + " seconds");
 					Thread.sleep(30);
 				}
@@ -143,11 +148,10 @@ public class Room extends Pane {
 		th.start();
 	}
 
-
 	private void handlePersonsInRange() {
 		ArrayList<Person> newPersons = new ArrayList<>();
-		for (Person p : persons)
-			if (p.isInGoalArea())
+        for (Person p : persons)
+            if (p.isInGoalArea())
 				passivePersons.add(p);
 			else
 				newPersons.add(p);
@@ -155,11 +159,10 @@ public class Room extends Pane {
 		this.persons = newPersons;
 	}
 
-
 	private boolean isSimulationFinished() {
-		for (Person p : persons) {
-			if (!p.isInGoalArea())
-				return false;
+        for (Person p : persons) {
+            if (!p.isInGoalArea())
+                return false;
 		}
 		return true;
 	}

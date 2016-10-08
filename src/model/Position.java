@@ -54,4 +54,8 @@ public class Position implements Cloneable {
     public Position multiply(double edgeExtender) {
         return new Position(this.getXValue() * edgeExtender, this.getYValue() * edgeExtender);
     }
+
+    public boolean equals(Position p) {
+        return (this.getXValue() == p.getXValue() && p.getYValue() == this.getYValue());
+    }
 }

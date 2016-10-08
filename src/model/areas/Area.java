@@ -20,7 +20,6 @@ public abstract class  Area extends Polygon implements Positionable{
     @Override
     public Position getCurrentPosition() {
         return position;
-
     }
 
     @Override

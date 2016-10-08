@@ -59,6 +59,7 @@ public abstract class Person extends Circle implements Positionable {
 	 */
 	public void doStep() {
 		Position p = calculateNextPossiblePosition();
+		System.out.println("next p: " + p);
 		if(p != null) setPosition(p);
 	}
 
@@ -161,17 +162,9 @@ public abstract class Person extends Circle implements Positionable {
         return path;
     }
 
-    public void setPath(ArrayList<Position> path) {
-        this.path = path;
-    }
-
     public int getAge() {
         return age;
     }
-
-	public void setAge(int age) {
-		this.age = age;
-	}
 
 	public double getSpeed() {
 		return speed;
