@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="config.ConfigController" maxHeight="-Infinity"
-            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0"
-            xmlns="http://javafx.com/javafx/8">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101"
+            fx:controller="config.ConfigController">
     <children>
         <VBox prefHeight="500.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -31,7 +32,7 @@
                 </MenuBar>
                 <AnchorPane prefHeight="450.0" prefWidth="400.0">
                     <children>
-                        <TabPane prefHeight="450.0" prefWidth="400.0" styleClass="TabPaneStyle"
+                        <TabPane prefHeight="400.0" prefWidth="400.0" styleClass="TabPaneStyle"
                                  tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
                                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <tabs>
@@ -56,8 +57,8 @@
                                         <AnchorPane prefHeight="330.0" prefWidth="400.0">
                                             <children>
                                                 <Label layoutX="14.0" layoutY="18.0" text="Total persons"/>
-                                                <TextField alignment="CENTER" layoutX="155.0" layoutY="14.0"
-                                                           prefHeight="25.0" prefWidth="40.0" text="50"/>
+                                                <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0"
+                                                           layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="50"/>
                                                 <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="81.0"
                                                         minorTickCount="1" showTickMarks="true" snapToTicks="true"
                                                         value="30.0"/>
@@ -106,6 +107,12 @@
                         </TabPane>
                     </children>
                 </AnchorPane>
+                <Button fx:id="buttonOK" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0"
+                        text="OK" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="350.0" right="5.0"/>
+                    </VBox.margin>
+                </Button>
             </children>
         </VBox>
     </children>

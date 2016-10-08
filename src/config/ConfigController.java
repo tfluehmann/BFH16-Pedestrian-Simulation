@@ -2,6 +2,7 @@ package config;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
@@ -18,6 +19,9 @@ public class ConfigController implements Initializable {
 
 	@FXML
 	private TextField roomHeight;
+
+	@FXML
+	private TextField totalPersons;
 
 	@FXML
 	private Slider sliderYoung;
@@ -43,107 +47,152 @@ public class ConfigController implements Initializable {
 	@FXML
 	private TextField weightHandycap;
 
+	@FXML
+	private Button buttonOK;
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		ConfigModel cfg = ConfigModel.getInstance();
 		System.out.println("CONFIG Controller");
+
+		buttonOK.setOnAction((event) -> {
+			System.out.println("started simulation");
+			cfg.setRoomWidthMeter(getRoomWidth());
+			cfg.setRoomHeightMeter(getRoomHeight());
+			cfg.setTotalPersons(getTotalPersons());
+			cfg.setWeightedYoungPersons(getWeightYoung());
+			cfg.setWeigthedMidagePersons(getWeightMidage());
+			cfg.setWeightedOldPersons(getWeightOld());
+			cfg.setWeightedHandycappedPersons(getWeightHandycap());
+
+			cfg.calculateRoomSize();
+
+			System.out.println("Width meter: " + cfg.getRoomWidthMeter() + ", Height meter: " + cfg.getRoomHeightMeter());
+			System.out.println("Room width: " + cfg.getRoomWidth() + ", Room heigt: " + cfg.getRoomHeight());
+			System.out.println("Pixel to meter ratio: " + cfg.getPixelPerMeter());
+			buttonOK.getScene().getWindow().hide();
+		});
 	}
+
 
 	private TextField doubleToTextfield(Double value) {
 		return new TextField("" + value);
 	}
 
-	private TextField intToTextfield(Integer value) {
-		return new TextField("" + value);
-	}
 
-	private Double textFieldToDouble(TextField text) {
+	private double textFieldToDouble(TextField text) {
 		return new Double(text.getText());
 	}
 
-	private Integer textFieldToInteger(TextField text) {
-		return new Integer(text.getText());
+
+	public double getTotalPersons() {
+		return textFieldToDouble(this.totalPersons);
 	}
 
-	public TextField getRoomWidth() {
-		return this.roomWidth;
+
+	public void setTotalPersons(double totalPersons) {
+		this.totalPersons = doubleToTextfield(totalPersons);
 	}
 
-	public void setRoomWidth(TextField roomWidth) {
-		this.roomWidth = roomWidth;
+
+	public double getRoomWidth() {
+		return textFieldToDouble(this.roomWidth);
 	}
 
-	public TextField getRoomHeight() {
-		return this.roomHeight;
+
+	public void setRoomWidth(Double roomWidth) {
+		this.roomWidth = doubleToTextfield(roomWidth);
 	}
 
-	public void setRoomHeight(TextField roomHeight) {
-		this.roomHeight = roomHeight;
+
+	public double getRoomHeight() {
+		return textFieldToDouble(this.roomHeight);
 	}
 
-	public Slider getSliderYoung() {
-		return this.sliderYoung;
+
+	public void setRoomHeight(double roomHeight) {
+		this.roomHeight = doubleToTextfield(roomHeight);
 	}
 
-	public void setSliderYoung(Slider sliderYoung) {
-		this.sliderYoung = sliderYoung;
+
+	public double getSliderYoungValue() {
+		return this.sliderYoung.getValue();
 	}
 
-	public Slider getSliderMidage() {
-		return this.sliderMidage;
+
+	public void setSliderYoungValue(double sliderYoung) {
+		this.sliderYoung.setValue(sliderYoung);
 	}
 
-	public void setSliderMidage(Slider sliderMidage) {
-		this.sliderMidage = sliderMidage;
+
+	public double getSliderMidageValue() {
+		return this.sliderMidage.getValue();
 	}
 
-	public Slider getSliderOld() {
-		return this.sliderOld;
+
+	public void setSliderMidageValue(double sliderMidage) {
+		this.sliderMidage.setValue(sliderMidage);
 	}
 
-	public void setSliderOld(Slider sliderOld) {
-		this.sliderOld = sliderOld;
+
+	public double getSliderOldValue() {
+		return this.sliderOld.getValue();
 	}
 
-	public Slider getSliderHandycap() {
-		return this.sliderHandycap;
+
+	public void setSliderOldValue(double sliderOld) {
+		this.sliderOld.setValue(sliderOld);
 	}
 
-	public void setSliderHandycap(Slider sliderHandycap) {
-		this.sliderHandycap = sliderHandycap;
+
+	public double getSliderHandycapValue() {
+		return this.sliderHandycap.getValue();
 	}
 
-	public TextField getWeightYoung() {
-		return this.weightYoung;
+
+	public void setSliderHandycapValue(double sliderHandycap) {
+		this.sliderHandycap.setValue(sliderHandycap);
 	}
 
-	public void setWeightYoung(TextField weightYoung) {
-		this.weightYoung = weightYoung;
+
+	public double getWeightYoung() {
+		return textFieldToDouble(this.weightYoung);
 	}
 
-	public TextField getWeightMidage() {
-		return this.weightMidage;
+
+	public void setWeightYoung(double weightYoung) {
+		this.weightYoung = doubleToTextfield(weightYoung);
 	}
 
-	public void setWeightMidage(TextField weightMidage) {
-		this.weightMidage = weightMidage;
+
+	public double getWeightMidage() {
+		return textFieldToDouble(this.weightMidage);
 	}
 
-	public TextField getWeightOld() {
-		return this.weightOld;
+
+	public void setWeightMidage(double weightMidage) {
+		this.weightMidage = doubleToTextfield(weightMidage);
 	}
 
-	public void setWeightOld(TextField weightOld) {
-		this.weightOld = weightOld;
+
+	public double getWeightOld() {
+		return textFieldToDouble(this.weightOld);
 	}
 
-	public TextField getWeightHandycap() {
-		return this.weightHandycap;
+
+	public void setWeightOld(double weightOld) {
+		this.weightOld = doubleToTextfield(weightOld);
 	}
 
-	public void setWeightHandycap(TextField weightHandycap) {
-		this.weightHandycap = weightHandycap;
+
+	public double getWeightHandycap() {
+		return textFieldToDouble(this.weightHandycap);
 	}
 
+
+	public void setWeightHandycap(double weightHandycap) {
+		this.weightHandycap = doubleToTextfield(weightHandycap);
+	}
 
 }

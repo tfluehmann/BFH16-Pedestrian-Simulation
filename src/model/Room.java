@@ -1,6 +1,7 @@
 package model;
 
 
+import config.ConfigModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
@@ -24,8 +25,6 @@ import java.util.Random;
  */
 public class Room extends Pane {
 
-	public static final int ROOM_HEIGHT = 400;
-	public static final int ROOM_WIDTH = 400;
 	public static final int GOAL_HEIGHT = 20;
 	public static final int GOAL_WIDTH = 50;
 	public static final int SPAWN_HEIGHT = 150;
@@ -37,25 +36,45 @@ public class Room extends Pane {
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
+
 	public Room() throws InterruptedException {
 		super();
-		this.setPrefSize(ROOM_WIDTH, ROOM_HEIGHT);
+		ConfigModel config = ConfigModel.getInstance();
+		this.setPrefSize(config.getRoomWidth(), config.getRoomHeight());
 		perimeterManager.setRoom(this);
 		perimeterManager.initializeAll();
+
+		double x, y;
+		if (config.getRoomWidth() < config.ROOM_WIDTH_ORIGIN)
+			x = config.getRoomWidth();
+		else
+			x = 0.0;
+		if (config.getRoomHeight() < config.ROOM_HEIGHT_ORIGIN)
+			y = config.getRoomHeight();
+		else
+			y = 0.0;
+
+		Obstacle border = new Obstacle(x, y,
+				config.ROOM_WIDTH_ORIGIN, y,
+				config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
+				x, config.ROOM_HEIGHT_ORIGIN);
+
+		System.out.println("Room-correction: " + border.toString());
+
 		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
-		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(350.0, 380.0));
+		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
 
 		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
 		//obstacles.add(o1);
-		this.getChildren().addAll(o1, sa, ga);
-		//this.getChildren().addAll(obstacles);
+		this.getChildren().addAll(border, o1, sa, ga);
+//		this.getChildren().addAll(sa, ga);
 
 		List<Position> edges = ga.getCorners();
-		for(Area o : obstacles)
+		for (Area o : obstacles)
 			edges.addAll(o.getCorners());
 
-        for (Position p : o1.getCorners()) {
-            this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
+		for (Position p : o1.getCorners()) {
+			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 		}
 
 		/**
@@ -64,7 +83,7 @@ public class Room extends Pane {
 		 */
 		Random rnd = new Random();
 		int type;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < config.getTotalPersons(); i++) {
 			Person p;
 			type = rnd.nextInt(3);
 			switch (type) {
@@ -90,7 +109,8 @@ public class Room extends Pane {
 		this.getChildren().addAll(persons);
 	}
 
-	public void start(Label time){
+
+	public void start(Label time) {
 
 		Task task = new Task<Void>() {
 			@Override
@@ -105,7 +125,7 @@ public class Room extends Pane {
 						 */
 						long seed = System.nanoTime();
 						Collections.shuffle(persons, new Random(seed));
-						for(Person p : persons){
+						for (Person p : persons) {
 							p.doStep();
 						}
 					});
@@ -123,9 +143,10 @@ public class Room extends Pane {
 		th.start();
 	}
 
+
 	private void handlePersonsInRange() {
 		ArrayList<Person> newPersons = new ArrayList<>();
-		for(Person p : persons)
+		for (Person p : persons)
 			if (p.isInGoalArea())
 				passivePersons.add(p);
 			else
@@ -134,9 +155,10 @@ public class Room extends Pane {
 		this.persons = newPersons;
 	}
 
+
 	private boolean isSimulationFinished() {
-		for(Person p : persons){
-			if(!p.isInGoalArea())
+		for (Person p : persons) {
+			if (!p.isInGoalArea())
 				return false;
 		}
 		return true;

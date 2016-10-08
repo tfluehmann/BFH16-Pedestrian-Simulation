@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-
-<?import java.net.URL?>
-<AnchorPane fx:controller="controller.BaseViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BaseViewController" maxHeight="730.0"
+            maxWidth="1690.0" minHeight="730.0"
+            minWidth="1690.0" prefHeight="730.0" prefWidth="1690.0" xmlns="http://javafx.com/javafx/8.0.101">
    <children>
-      <SplitPane dividerPositions="0.4494949494949495, 0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-          <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="100.0" />
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+       <BorderPane prefHeight="730.0" prefWidth="1690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <left>
+               <VBox prefHeight="720.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+           </left>
+           <center>
+               <AnchorPane maxHeight="720.0" maxWidth="1280.0" prefHeight="720.0" prefWidth="1280.0"
+                           style="-fx-background-color: LIGHTGREY;"
+                           BorderPane.alignment="CENTER">
+                   <BorderPane.margin>
+                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                   </BorderPane.margin>
+                   <children>
+                       <fx:include fx:id="simulationRoom" source="Room.fxml"/>
+                   </children>
+               </AnchorPane>
+           </center>
+           <right>
+               <VBox prefHeight="720.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <fx:include source="Room.fxml" fx:id="simulationRoom" />
+                   <Label fx:id="time" text="0">
+                       <padding>
+                           <Insets bottom="20.0"/>
+                       </padding>
+                   </Label>
+                   <Button fx:id="startButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Start">
+                       <VBox.margin>
+                           <Insets bottom="10.0"/>
+                       </VBox.margin>
+                   </Button>
+                   <Button fx:id="pauseButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Stop">
+                       <VBox.margin>
+                           <Insets bottom="10.0"/>
+                       </VBox.margin>
+                   </Button>
+                   <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Reset"/>
                </children>
-            </AnchorPane>
-          <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="100.0">
-              <VBox>
-                  <Label fx:id="time" text="0" />
-                  <Button fx:id="startButton"  text="Start" />
-                  <Button fx:id="pauseButton"  text="Stop" />
-                  <Button fx:id="resetButton"  text="Reset" />
-              </VBox>
-          </AnchorPane>
-
-        </items>
-      </SplitPane>
+               </VBox>
+           </right>
+       </BorderPane>
    </children>
-    <stylesheets>
-        <URL value="@default.css" />
-    </stylesheets>
 </AnchorPane>
