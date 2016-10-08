@@ -56,6 +56,23 @@ public class GVector {
     }
 
     /**
+     * checks if the current and another vector are crossed
+     * (currentStartX - otherStartX) / (otherEndX - currentEndX) = tx
+     * Same same for y gives the
+     *
+     * @param vector
+     *
+     * @return boolean checking java's infinite value
+     * http://docs.oracle.com/javase/7/docs/api/java/lang/Double.html
+     */
+    public boolean isCrossedWith(GVector vector) {
+        double tx = (this.getStartPointX() - vector.getStartPointX()) / (vector.getEndPointX() - this.getEndPointX());
+        double ty = (this.getStartPointY() - vector.getStartPointY()) / (vector.getEndPointY() - this.getEndPointY());
+        return Double.isInfinite(tx) || Double.isInfinite(ty);
+
+    }
+
+    /**
      * @return parallel moved new vector object
      * x
      * /
