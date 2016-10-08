@@ -1,4 +1,3 @@
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,31 +12,32 @@ public class Simulation extends Application {
 
 	private AnchorPane rootLayout;
 	private Scene scene, configScene;
-	private Stage baseViewStage, configStage;
+	private Stage configStage;
+
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader();
-
+			// creating view for the initial configuration
 			FXMLLoader configLoader = new FXMLLoader();
 			configLoader.setLocation(Simulation.class.getResource("view/Config.fxml"));
 			configScene = new Scene(configLoader.load());
-
-			loader.setLocation(Simulation.class.getResource("view/BaseView.fxml"));
-			rootLayout = loader.load();
-			scene = new Scene(rootLayout);
-
 			configStage = new Stage();
 			configStage.setScene(configScene);
 			configStage.initModality(Modality.APPLICATION_MODAL);
 			configStage.setTitle("Configuration");
 			configStage.showAndWait();
 
+			// Creating view for the simulation
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Simulation.class.getResource("view/BaseView.fxml"));
+			rootLayout = loader.load();
+			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Test");
 			primaryStage.show();

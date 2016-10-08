@@ -1,9 +1,9 @@
 package model.areas;
 
+import config.ConfigModel;
 import javafx.scene.paint.Color;
 import model.GVector;
 import model.Position;
-import model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,8 @@ public class Obstacle extends Area {
      * Created by suter1 on 06.10.2016.
      */
     public void calculateVertices() {
-        Position a, b;
+	    ConfigModel config = ConfigModel.getInstance();
+	    Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
             if (i + 1 >= this.corners.size()) {
                 b = this.corners.get(0);
@@ -57,10 +58,10 @@ public class Obstacle extends Area {
             /**
              * check if position in room
              */
-            if (a.getXValue() > 0 && a.getXValue() < Room.ROOM_WIDTH && a.getYValue() > 0 && a.getYValue() < Room.ROOM_HEIGHT)
-                this.vertices.add(a);
-            if (b.getXValue() > 0 && b.getXValue() < Room.ROOM_WIDTH && b.getYValue() > 0 && b.getYValue() < Room.ROOM_HEIGHT)
-                this.vertices.add(b);
+	        if (a.getXValue() > 0 && a.getXValue() < config.getRoomWidth() && a.getYValue() > 0 && a.getYValue() < config.getRoomHeight())
+		        this.vertices.add(a);
+	        if (b.getXValue() > 0 && b.getXValue() < config.getRoomWidth() && b.getYValue() > 0 && b.getYValue() < config.getRoomHeight())
+		        this.vertices.add(b);
         }
     }
 

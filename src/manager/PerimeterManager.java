@@ -1,5 +1,6 @@
 package manager;
 
+import config.ConfigModel;
 import model.Perimeter;
 import model.Position;
 import model.Room;
@@ -12,21 +13,31 @@ import java.util.List;
  * Created by tgdflto1 on 05/10/16.
  */
 public class PerimeterManager {
+    private static PerimeterManager instance;
     private Room room;
     private Perimeter[][] perimeters;
-    private static PerimeterManager instance;
     private int numberOfPerimetersY;
     private int  numberOfPerimetersX;
+
+
+    private PerimeterManager() {
+    }
+
+
     public static PerimeterManager getInstance(){
         if(instance == null)
             instance = new PerimeterManager();
         return instance;
     }
-    private PerimeterManager(){    }
+
 
     public void initializeAll() {
-        numberOfPerimetersY = Room.ROOM_HEIGHT / Perimeter.PERIMETER_HEIGHT;
-        numberOfPerimetersX = Room.ROOM_WIDTH / Perimeter.PERIMETER_WIDHT;
+        ConfigModel config = ConfigModel.getInstance();
+        Double height = config.getRoomHeight();
+        Double width = config.getRoomWidth();
+
+        numberOfPerimetersY = height.intValue() / Perimeter.PERIMETER_HEIGHT;
+        numberOfPerimetersX = width.intValue() / Perimeter.PERIMETER_WIDHT;
         perimeters = new Perimeter[numberOfPerimetersX][numberOfPerimetersY];
         for(int i = 0; i < numberOfPerimetersX; i++)
             for(int j = 0; j < numberOfPerimetersY; j++){
