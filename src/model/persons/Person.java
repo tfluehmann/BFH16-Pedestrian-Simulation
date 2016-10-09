@@ -2,6 +2,7 @@ package model.persons;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import manager.PathManager;
 import manager.PerimeterManager;
 import model.GVector;
 import model.Perimeter;
@@ -26,6 +27,7 @@ public abstract class Person extends Circle implements Positionable {
 	// protected Character character;
 
 	protected Perimeter currentPerimeter;
+	protected PathManager pathManager = PathManager.getInstance();
 
 
 	public Person() {
