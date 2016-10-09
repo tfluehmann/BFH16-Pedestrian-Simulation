@@ -13,7 +13,8 @@ public class HandycappedPerson extends Person {
     public static final double MIN_SPEED = 0.46;
     public static final double MAX_SPEED = 0.77;
 
-    public HandycappedPerson(double maxHeigth, double maxWidth, List<Position> path) {
-        super(maxHeigth, maxWidth, path, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED));
+
+    public HandycappedPerson(double maxHeigth, double maxWidth, List<Position> path, Position spawnPosition) {
+        super(maxHeigth, maxWidth, path, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED), spawnPosition);
     }
 }

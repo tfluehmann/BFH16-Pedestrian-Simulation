@@ -14,19 +14,22 @@ public class GoalArea extends Area {
 
 	private Position position;
 
+
 	public GoalArea(double width, double height, Position position) {
 		this.position = position;
 		this.height = height;
 		this.width = width;
-		this.relocate(position.getXValue(), position.getYValue());
+		this.getPoints().addAll(new Double[]{this.position.getXValue(), this.position.getYValue(),
+				this.position.getXValue() + this.width, this.position.getYValue(),
+				this.position.getXValue() + this.width, this.position.getYValue() + this.height,
+				this.position.getXValue(), this.position.getYValue() + this.height});
 		this.setFill(Color.GREEN);
-		this.getPoints().addAll(new Double[] { 0.0, 0.0, width, 0.0, width, height, 0.0, height });
 	}
+
 
 	public List<Position> getCorners() {
 		edges.add(new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2));
 		return edges;
 	}
-
 
 }

@@ -13,7 +13,8 @@ public class YoungPerson extends Person {
     public static final double MIN_SPEED = 0.58;
     public static final double MAX_SPEED = 1.62;
 
-    public YoungPerson(double maxHeigth, double maxWidth, List<Position> path) {
-        super(maxHeigth, maxWidth, path, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED));
+
+    public YoungPerson(double maxHeigth, double maxWidth, List<Position> path, Position spawnPosition) {
+        super(maxHeigth, maxWidth, path, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED), spawnPosition);
     }
 }

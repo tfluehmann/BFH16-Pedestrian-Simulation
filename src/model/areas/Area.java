@@ -11,20 +11,21 @@ import java.util.List;
  * Created by fluth1 on 30/09/16.
  */
 public abstract class  Area extends Polygon implements Positionable{
-    private Position position;
-    protected List<Position> edges =  new ArrayList<>();
-
-    public abstract List<Position> getCorners();
+	protected List<Position> edges = new ArrayList<>();
+	private Position position;
 
 
-    @Override
-    public Position getCurrentPosition() {
-        return position;
+	public abstract List<Position> getCorners();
 
-    }
 
-    @Override
-    public boolean intersects(double x, double y) {
-        return this.contains(x, y);
-    }
+	@Override
+	public Position getCurrentPosition() {
+		return position;
+	}
+
+
+	@Override
+	public boolean intersects(double x, double y) {
+		return this.contains(x, y);
+	}
 }

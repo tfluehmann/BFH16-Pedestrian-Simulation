@@ -6,8 +6,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import manager.PerimeterManager;
 import model.areas.Area;
 import model.areas.GoalArea;
@@ -54,28 +52,30 @@ public class Room extends Pane {
 		else
 			y = 0.0;
 
-		Obstacle border = new Obstacle(x, y,
-				config.ROOM_WIDTH_ORIGIN, y,
-				config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
-				x, config.ROOM_HEIGHT_ORIGIN);
+		if (config.getRoomHeight() != config.ROOM_HEIGHT_ORIGIN && config.getRoomWidth() != config.ROOM_WIDTH_ORIGIN) {
+			Obstacle border = new Obstacle(x, y,
+					config.ROOM_WIDTH_ORIGIN, y,
+					config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
+					x, config.ROOM_HEIGHT_ORIGIN);
+			this.getChildren().add(border);
+		}
 
-		System.out.println("Room-correction: " + border.toString());
+		SpawnArea sa = new SpawnArea(config.getSpawnWidth(), config.getSpawnHeight(), config.getSpawnPosition());
+		GoalArea ga = new GoalArea(config.getGoalWidth(), config.getGoalHeight(), config.getGoalPosition());
 
-		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
-		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
+		System.out.println("SpawnArea - Width: " + config.getSpawnWidth() + ", height: " + config.getSpawnHeight() + ", position: " + config.getSpawnPosition());
+		System.out.println("GoalArea - Width: " + config.getGoalWidth() + ", height: " + config.getGoalHeight() + ", position: " + config.getGoalPosition());
 
-		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
-		//obstacles.add(o1);
-		this.getChildren().addAll(border, o1, sa, ga);
-//		this.getChildren().addAll(sa, ga);
+//		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
+		this.getChildren().addAll(sa, ga);
 
 		List<Position> edges = ga.getCorners();
 		for (Area o : obstacles)
 			edges.addAll(o.getCorners());
 
-		for (Position p : o1.getCorners()) {
-			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
-		}
+//		for (Position p : o1.getCorners()) {
+//			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
+//		}
 
 		/**
 		 * Generating different aged persons randomly
@@ -88,19 +88,19 @@ public class Room extends Pane {
 			type = rnd.nextInt(3);
 			switch (type) {
 				case 0:
-					p = new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
+					p = new YoungPerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
 					break;
 				case 1:
-					p = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
+					p = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
 					break;
 				case 2:
-					p = new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
+					p = new OldPerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
 					break;
 				case 3:
-					p = new HandycappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
+					p = new HandycappedPerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
 					break;
 				default:
-					p = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH, edges);
+					p = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
 					break;
 			}
 			perimeterManager.registerPerson(p);
