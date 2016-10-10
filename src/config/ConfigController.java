@@ -73,7 +73,6 @@ public class ConfigController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ConfigModel cfg = ConfigModel.getInstance();
-		System.out.println("CONFIG Controller");
 
 		this.spawnAreaPosition.getItems().addAll("TOP_LEFT", "TOP_CENTER", "TOP_RIGHT");
 		this.goalAreaPosition.getItems().addAll("BOTTOM_LEFT", "BOTTOM_CENTER", "BOTTOM_RIGHT");

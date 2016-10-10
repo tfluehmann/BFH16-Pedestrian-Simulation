@@ -17,6 +17,7 @@ public class ConfigModel {
 	private double roomWidthMeter;
 	private double roomHeightMeter;
 	private double totalPersons;
+	private double personRadius = 0.4;
 	private double weightedYoungPersons;
 	private double weigthedMidagePersons;
 	private double weightedOldPersons;
@@ -40,6 +41,11 @@ public class ConfigModel {
 			instance = new ConfigModel();
 		}
 		return instance;
+	}
+
+
+	public double getPersonRadius() {
+		return this.personRadius * getPixelPerMeter();
 	}
 
 

@@ -1,5 +1,6 @@
 package model.persons;
 
+import config.ConfigModel;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import manager.PathManager;
@@ -18,7 +19,7 @@ import java.util.Random;
  * Created by fluth1 on 30/09/16.
  */
 public abstract class Person extends Circle implements Positionable {
-	public final static int PERSON_RADIUS = 2;
+
 	protected ArrayList<Position> oldPositions = new ArrayList<>();
 	protected Position currentPosition;
 	protected List<Position> path = new ArrayList<>();
@@ -31,7 +32,7 @@ public abstract class Person extends Circle implements Positionable {
 
 
 	public Person() {
-		super(PERSON_RADIUS, Color.BLUE);
+		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 	}
 
 
@@ -40,12 +41,12 @@ public abstract class Person extends Circle implements Positionable {
 	 * Created by suter1 on 05.10.2016
 	 */
 	public Person(double maxHeight, double maxWidth, List<Position> path, double speed, Position spawnArea) {
-		super(PERSON_RADIUS, Color.BLUE);
+		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 		this.speed = speed;
 		Random r = new Random();
-		double randomWidth = (maxWidth - 2 * PERSON_RADIUS) * r.nextDouble();
-		double randomHeight = (maxHeight - 2 * PERSON_RADIUS) * r.nextDouble();
-		this.setCurrentPosition(new Position(randomWidth + spawnArea.getXValue() + PERSON_RADIUS, randomHeight + spawnArea.getYValue() + PERSON_RADIUS));
+		double randomWidth = (maxWidth - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
+		double randomHeight = (maxHeight - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
+		this.setCurrentPosition(new Position(randomWidth + spawnArea.getXValue() + ConfigModel.getInstance().getPersonRadius(), randomHeight + spawnArea.getYValue() + ConfigModel.getInstance().getPersonRadius()));
 		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
 		this.path.addAll(path);
@@ -142,13 +143,13 @@ public abstract class Person extends Circle implements Positionable {
 
 	public boolean isInNextPathArea() {
 		Position nextPosition = path.get(0);
-		return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+		return nextPosition.isInRange(this.currentPosition, (int) ConfigModel.getInstance().getPersonRadius() * 2);
 	}
 
 
 	public boolean isInGoalArea() {
 		Position targetPosition = path.get(path.size() - 1);
-		return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
+		return targetPosition.isInRange(this.currentPosition, (int) ConfigModel.getInstance().getPersonRadius() * 2);
 	}
 
 

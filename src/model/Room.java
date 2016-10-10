@@ -52,7 +52,7 @@ public class Room extends Pane {
 		else
 			y = 0.0;
 
-		if (config.getRoomHeight() != config.ROOM_HEIGHT_ORIGIN && config.getRoomWidth() != config.ROOM_WIDTH_ORIGIN) {
+		if (config.getRoomHeight() != config.ROOM_HEIGHT_ORIGIN || config.getRoomWidth() != config.ROOM_WIDTH_ORIGIN) {
 			Obstacle border = new Obstacle(x, y,
 					config.ROOM_WIDTH_ORIGIN, y,
 					config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
@@ -62,9 +62,6 @@ public class Room extends Pane {
 
 		SpawnArea sa = new SpawnArea(config.getSpawnWidth(), config.getSpawnHeight(), config.getSpawnPosition());
 		GoalArea ga = new GoalArea(config.getGoalWidth(), config.getGoalHeight(), config.getGoalPosition());
-
-		System.out.println("SpawnArea - Width: " + config.getSpawnWidth() + ", height: " + config.getSpawnHeight() + ", position: " + config.getSpawnPosition());
-		System.out.println("GoalArea - Width: " + config.getGoalWidth() + ", height: " + config.getGoalHeight() + ", position: " + config.getGoalPosition());
 
 //		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
 		this.getChildren().addAll(sa, ga);
