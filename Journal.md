@@ -11,3 +11,5 @@ Datum | Zeitaufwand | Wer | Was
 06.10.2016 | 3 h | suter1 | Obstacle-Klasse erstellt inkl. Erweiterungspunkte für späteren Dijkstra-Wegsuche
 07.10.2016 | 4 h | fluth1, suter1 | Initiale Config erstellt, Obstacles extended edges ohne Fallunterscheidungen implementiert, Klasse GVector eingeführt, refactoring bisheriger Code
 07.10.2016 | 4 h | fluth1 | Dijkstra implementiert, findet die Pfade am Anfang noch nicht -> neuer Branch erstellt
+08.10.2016 | 4 h | suter1 | Config erweitert mit verschiedenen Auswahlfelder.
+09.10.2016 | 4 h | suter1 | Config bearbeitet, damit Personen, Goal und Spawn area abhängig der Config-Daten generiert werden.
