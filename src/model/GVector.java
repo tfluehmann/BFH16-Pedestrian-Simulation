@@ -1,6 +1,5 @@
 package model;
 
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
@@ -25,8 +24,6 @@ public class GVector extends Line {
     }
 
     public GVector(double startX, double startY, double endX, double endY) {
-        this.setFill(Color.GREEN);
-        this.setStrokeWidth(1.0);
         this.startPointX = startX;
         this.startPointY = startY;
         this.endPointX = endX;
@@ -77,8 +74,13 @@ public class GVector extends Line {
      * but in this case the lines are parallel and therefore only intersect in the obvious cases;
      * @param vector
      *
-     * @return boolean checking java's infinite value
+     * @return boolean
+     *
+     * checking java's infinite value
      * http://docs.oracle.com/javase/7/docs/api/java/lang/Double.html
+     *
+     * converted C code from here:
+     * http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
      */
     public boolean isCrossedWith(GVector vector) {
         double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
@@ -89,10 +91,7 @@ public class GVector extends Line {
         s32_y = vector.getEndPointY() - vector.getStartPointY();
 
         denom = s10_x * s32_y - s32_x * s10_y;
-        System.out.println(": (" + s10_x + " * " + s32_y + ") - (" + s32_x + " * " + s10_y + ")");
-        System.out.println("denom: " + denom);
-        if (denom == 0)
-            return false; //Collinear
+        if (denom == 0) return false; //Collinear
 
         boolean denomPositive = denom > 0;
         s02_x = this.getStartPointX() - vector.getStartPointX();
@@ -109,80 +108,10 @@ public class GVector extends Line {
             return false; // No collision
         // Collision detected
         t = t_numer / denom;
-        System.out.println("crossing at x " + this.startPointX + (t * s10_x));
-        System.out.println("crossing at y " + this.startPointY + (t * s10_y));
-
+        //System.out.println("crossing at x " + this.startPointX + (t * s10_x));
+        //System.out.println("crossing at y " + this.startPointY + (t * s10_y));
         return true;
     }
-
-
-    /**
-     *
-     *  From Here on https://martin-thoma.com/how-to-check-if-two-line-segments-intersect/
-     *
-     * Calculate the cross product of two points.
-     * @param a first point
-     * @param b second point
-     * @return the value of the cross product
-     */
-    public static double crossProduct(Position a, Position b) {
-        return a.getXValue() * b.getYValue() - b.getXValue() * a.getYValue();
-    }
-
-    /**
-     * Checks if a Point is on a line
-     *
-     * @param b point
-     *
-     * @return <code>true</code> if point is on line, otherwise
-     * <code>false</code>
-     */
-    public boolean isPointOnLine(Position b) {
-        // Move the image, so that a.first is on (0|0)
-        Position aTmp = new Position(this.getEndPointX() - this.getStartPointX(), this.getEndPointY() - this.getStartPointY());
-        Position bTmp = new Position(b.getXValue() - this.getStartPointX(), b.getYValue() - this.getStartPointY());
-        double r = crossProduct(aTmp, bTmp);
-        return Math.abs(r) < EPSILON;
-    }
-
-    /**
-     * Checks if a point is right of a line. If the point is on the
-     * line, it is not right of the line.
-     *
-     * @param b the point
-     *
-     * @return <code>true</code> if the point is right of the line,
-     * <code>false</code> otherwise
-     */
-    public boolean isPointRightOfLine(Position b) {
-        // Move the image, so that a.first is on (0|0)
-        Position aTmp = new Position(this.getEndPointX() - this.getStartPointX(), this.getEndPointY() - this.getStartPointX());
-        Position bTmp = new Position(b.getXValue() - this.getStartPointX(), b.getYValue() - this.getStartPointY());
-        return crossProduct(aTmp, bTmp) < 0;
-    }
-
-    /**
-     * until here
-     * <p>
-     * <p>
-     * <p>
-     * Check if line segment first touches or crosses the line that is
-     * defined by line segment second.
-     *
-     * @param b line segment
-     *
-     * @return <code>true</code> if line segment first touches or
-     * crosses line second,
-     * <code>false</code> otherwise.
-     */
-    public boolean lineSegmentTouchesOrCrossesLine(GVector b) {
-        System.out.println("checking: " + this + " with: " + b);
-        return isPointOnLine(b.getStartPosition())
-                || isPointOnLine(b.getEndPosition())
-                || isPointRightOfLine(b.getStartPosition()) ^ // this is XOR
-                isPointRightOfLine(b.getEndPosition());
-    }
-
 
     private boolean isOnVector(Position position) {
         double lambdaX = (position.getXValue() - this.startPointX) / this.endPointX;
