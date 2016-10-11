@@ -12,7 +12,7 @@ import java.util.List;
  * Created by suter1 on 06.10.2016.
  */
 public class Obstacle extends Area {
-    public static final double EDGE_EXTENDER = 15.0;
+    public static final double EDGE_EXTENDER = 20.0;
     private Position position;
     private ArrayList<Position> corners;
     private ArrayList<Position> vertices = new ArrayList<>();
@@ -20,7 +20,8 @@ public class Obstacle extends Area {
     /**
      * Created by suter1 on 06.10.2016.
      */
-    public Obstacle(Double... points) {
+    public Obstacle(double... points) {
+        super(points);
         this.corners = new ArrayList<>();
         this.vertices = new ArrayList<>();
 
@@ -31,7 +32,6 @@ public class Obstacle extends Area {
 
         this.position = new Position(points[0], points[1]);
         this.setFill(Color.BLACK);
-        this.getPoints().addAll(points);
     }
 
     public List<Position> getCorners() {
@@ -41,8 +41,8 @@ public class Obstacle extends Area {
     /**
      * Created by suter1 on 06.10.2016.
      */
-    public void calculateVertices() {
-	    ConfigModel config = ConfigModel.getInstance();
+    private void calculateVertices() {
+        ConfigModel config = ConfigModel.getInstance();
 	    Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
             if (i + 1 >= this.corners.size()) {
@@ -55,14 +55,21 @@ public class Obstacle extends Area {
             GVector unitVector = c.norm();
             a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
             b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
-            /**
-             * check if position in room
-             */
-	        if (a.getXValue() > 0 && a.getXValue() < config.getRoomWidth() && a.getYValue() > 0 && a.getYValue() < config.getRoomHeight())
-		        this.vertices.add(a);
-	        if (b.getXValue() > 0 && b.getXValue() < config.getRoomWidth() && b.getYValue() > 0 && b.getYValue() < config.getRoomHeight())
-		        this.vertices.add(b);
+
+            if (includes(a)) this.vertices.add(a);
+            if (includes(b)) this.vertices.add(b);
         }
+    }
+
+    /**
+     * check if position in room
+     */
+    private boolean includes(Position position) {
+        ConfigModel config = ConfigModel.getInstance();
+        return (position.getXValue() > 0 &&
+                position.getXValue() < config.getRoomWidth() &&
+                position.getYValue() > 0 &&
+                position.getYValue() < config.getRoomHeight());
     }
 
     public List<Position> getVertices() {

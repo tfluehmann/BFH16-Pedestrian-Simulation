@@ -6,6 +6,9 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import manager.PathManager;
 import manager.PerimeterManager;
 import model.areas.Area;
 import model.areas.GoalArea;
@@ -30,10 +33,10 @@ public class Room extends Pane {
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
 	private PerimeterManager perimeterManager = PerimeterManager.getInstance();
+	private PathManager pathManager = PathManager.getInstance();
 	private ArrayList<Area> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
-
 
 	public Room() throws InterruptedException {
 		super();
@@ -52,27 +55,25 @@ public class Room extends Pane {
 		else
 			y = 0.0;
 
-		if (config.getRoomHeight() != config.ROOM_HEIGHT_ORIGIN || config.getRoomWidth() != config.ROOM_WIDTH_ORIGIN) {
-			Obstacle border = new Obstacle(x, y,
-					config.ROOM_WIDTH_ORIGIN, y,
-					config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
-					x, config.ROOM_HEIGHT_ORIGIN);
-			this.getChildren().add(border);
-		}
+		Obstacle border = new Obstacle(x, y,
+				config.ROOM_WIDTH_ORIGIN, y,
+				config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
+				x, config.ROOM_HEIGHT_ORIGIN);
 
-		SpawnArea sa = new SpawnArea(config.getSpawnWidth(), config.getSpawnHeight(), config.getSpawnPosition());
-		GoalArea ga = new GoalArea(config.getGoalWidth(), config.getGoalHeight(), config.getGoalPosition());
+		System.out.println("Room-correction: " + border.toString());
 
-//		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
-		this.getChildren().addAll(sa, ga);
+		SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
+		GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
 
-		List<Position> edges = ga.getCorners();
-		for (Area o : obstacles)
-			edges.addAll(o.getCorners());
+		Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
+		this.getChildren().addAll(border, o1, sa, ga);
 
-//		for (Position p : o1.getCorners()) {
-//			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
-//		}
+		pathManager.getVertices().addAll(o1.getVertices());
+
+		pathManager.getVertices().add(ga.getCurrentPosition());
+		pathManager.getObstacleEdges().addAll(o1.getEdges());
+		for (Position p : o1.getVertices())
+			this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
 		/**
 		 * Generating different aged persons randomly
@@ -81,34 +82,46 @@ public class Room extends Pane {
 		Random rnd = new Random();
 		int type;
 		for (int i = 0; i < config.getTotalPersons(); i++) {
-			Person p;
+			Person newPerson;
 			type = rnd.nextInt(3);
 			switch (type) {
 				case 0:
-					p = new YoungPerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
+					newPerson = new YoungPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
 					break;
 				case 1:
-					p = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
+					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
 					break;
 				case 2:
-					p = new OldPerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
+					newPerson = new OldPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
 					break;
 				case 3:
-					p = new HandycappedPerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
+					newPerson = new HandicappedPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
 					break;
 				default:
-					p = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), edges, config.getSpawnPosition());
+					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
 					break;
 			}
-			perimeterManager.registerPerson(p);
-			persons.add(p);
+			pathManager.getVertices().add(newPerson.getCurrentPosition());
+			perimeterManager.registerPerson(newPerson);
+			persons.add(newPerson);
 		}
+
+		pathManager.findValidEdgesAndSetWeight();
+
+		for (Person pers : persons) {
+			pathManager.findShortestPath(pers.getCurrentPosition());
+			List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
+			//    pers.getPath().addAll(positions);
+		}
+
+		this.getChildren().addAll(pathManager.getEdges());
+		this.getChildren().addAll(pathManager.getObstacleEdges());
 		this.getChildren().addAll(persons);
+
+
 	}
 
-
 	public void start(Label time) {
-
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -122,9 +135,7 @@ public class Room extends Pane {
 						 */
 						long seed = System.nanoTime();
 						Collections.shuffle(persons, new Random(seed));
-						for (Person p : persons) {
-							p.doStep();
-						}
+						persons.forEach(Person::doStep);
 					});
 					updateMessage(++i + " seconds");
 					Thread.sleep(30);
@@ -140,7 +151,6 @@ public class Room extends Pane {
 		th.start();
 	}
 
-
 	private void handlePersonsInRange() {
 		ArrayList<Person> newPersons = new ArrayList<>();
 		for (Person p : persons)
@@ -151,7 +161,6 @@ public class Room extends Pane {
 
 		this.persons = newPersons;
 	}
-
 
 	private boolean isSimulationFinished() {
 		for (Person p : persons) {

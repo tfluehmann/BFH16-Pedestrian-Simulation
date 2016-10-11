@@ -94,7 +94,7 @@
                                             <children>
                                                 <Label layoutX="14.0" layoutY="18.0" text="Total persons"/>
                                                 <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0"
-                                                           layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="50"/>
+                                                           layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="1"/>
                                                 <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="81.0"
                                                         minorTickCount="1" showTickMarks="true" snapToTicks="true"
                                                         value="30.0"/>

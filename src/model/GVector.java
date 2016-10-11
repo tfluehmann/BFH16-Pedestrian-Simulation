@@ -1,10 +1,14 @@
 package model;
 
+import javafx.scene.shape.Line;
+
 /**
  * Geometrical Vector Representation for our needs
  * Created by tgdflto1 on 07/10/16.
  */
-public class GVector {
+public class GVector extends Line {
+    public static final double EPSILON = 0.00001;
+
     private double startPointX;
     private double startPointY;
     private Position startPosition;
@@ -28,6 +32,10 @@ public class GVector {
         this.y = (endPointY - startPointY);
         this.startPosition = new Position(startX, startY);
         this.endPosition = new Position(endX, endY);
+        this.startXProperty().bind(this.startPosition.getXProperty());
+        this.startYProperty().bind(this.startPosition.getYProperty());
+        this.endXProperty().bind(this.endPosition.getXProperty());
+        this.endYProperty().bind(this.endPosition.getYProperty());
     }
 
     public GVector(Position startPosition, Position endPosition) {
@@ -56,25 +64,65 @@ public class GVector {
     }
 
     /**
-     * checks if the current and another vector are crossed
-     * (currentStartX - otherStartX) / (otherEndX - currentEndX) = tx
-     * Same same for y gives the
-     *
+     * checks if the current and another vector are crossed using the line formula
+     * E = B-A = ( Bx-Ax, By-Ay ) //this
+     * F = D-C = ( Dx-Cx, Dy-Cy ) // vector
+     * P = ( -Ey, Ex )
+     * h = ( (A-C) * P ) / ( F * P )
+     * This h number is the key. If h is between 0 and 1, the lines intersect, otherwise they don't.
+     * If F*P is zero, of course you cannot make the calculation,
+     * but in this case the lines are parallel and therefore only intersect in the obvious cases;
      * @param vector
      *
-     * @return boolean checking java's infinite value
+     * @return boolean
+     *
+     * checking java's infinite value
      * http://docs.oracle.com/javase/7/docs/api/java/lang/Double.html
+     *
+     * converted C code from here:
+     * http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
      */
     public boolean isCrossedWith(GVector vector) {
-        double tx = (this.getStartPointX() - vector.getStartPointX()) / (vector.getEndPointX() - this.getEndPointX());
-        double ty = (this.getStartPointY() - vector.getStartPointY()) / (vector.getEndPointY() - this.getEndPointY());
-        return Double.isInfinite(tx) || Double.isInfinite(ty);
+        double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
+        double epsilon = 0.0001;
+        s10_x = this.getEndPointX() - this.getStartPointX();
+        s10_y = this.getEndPointY() - this.getStartPointY();
+        s32_x = vector.getEndPointX() - vector.getStartPointX();
+        s32_y = vector.getEndPointY() - vector.getStartPointY();
 
+        denom = s10_x * s32_y - s32_x * s10_y;
+        if (denom == 0) return false; //Collinear
+
+        boolean denomPositive = denom > 0;
+        s02_x = this.getStartPointX() - vector.getStartPointX();
+        s02_y = this.getStartPointY() - vector.getStartPointY();
+        s_numer = s10_x * s02_y - s10_y * s02_x;
+        if ((s_numer < epsilon) == denomPositive)
+            return false; // No collision
+
+        t_numer = s32_x * s02_y - s32_y * s02_x;
+        if ((t_numer < epsilon) == denomPositive)
+            return false; // No collision
+
+        if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive))
+            return false; // No collision
+        // Collision detected
+        t = t_numer / denom;
+        //System.out.println("crossing at x " + this.startPointX + (t * s10_x));
+        //System.out.println("crossing at y " + this.startPointY + (t * s10_y));
+        return true;
+    }
+
+    private boolean isOnVector(Position position) {
+        double lambdaX = (position.getXValue() - this.startPointX) / this.endPointX;
+        double lambdaY = (position.getYValue() - this.startPointY) / this.endPointY;
+        System.out.println("lx = " + lambdaX + " ly= " + lambdaY);
+        return (lambdaX >= 0.0 && lambdaX <= 1.0 && lambdaY >= 0.0 && lambdaY <= 1.0);
     }
 
     /**
      * @return parallel moved new vector object
-     * x
+     *  x
      * /
      * .---->x
      * <p>

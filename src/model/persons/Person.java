@@ -40,7 +40,7 @@ public abstract class Person extends Circle implements Positionable {
 	 * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
 	 * Created by suter1 on 05.10.2016
 	 */
-	public Person(double maxHeight, double maxWidth, List<Position> path, double speed, Position spawnArea) {
+	public Person(double maxHeight, double maxWidth, double speed, Position spawnArea) {
 		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 		this.speed = speed;
 		Random r = new Random();
@@ -49,7 +49,6 @@ public abstract class Person extends Circle implements Positionable {
 		this.setCurrentPosition(new Position(randomWidth + spawnArea.getXValue() + ConfigModel.getInstance().getPersonRadius(), randomHeight + spawnArea.getYValue() + ConfigModel.getInstance().getPersonRadius()));
 		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
-		this.path.addAll(path);
 	}
 
 
@@ -175,11 +174,6 @@ public abstract class Person extends Circle implements Positionable {
 
 	public List<Position> getPath() {
 		return path;
-	}
-
-
-	public void setPath(ArrayList<Position> path) {
-		this.path = path;
 	}
 
 
