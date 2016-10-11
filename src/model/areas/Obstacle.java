@@ -43,7 +43,7 @@ public class Obstacle extends Area {
      */
     private void calculateVertices() {
         ConfigModel config = ConfigModel.getInstance();
-	    Position a, b;
+        Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
             if (i + 1 >= this.corners.size()) {
                 b = this.corners.get(0);
