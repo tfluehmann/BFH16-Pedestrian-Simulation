@@ -66,19 +66,14 @@ public class Room extends Pane {
         GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
 
         Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
-        //obstacles.add(o1);
         this.getChildren().addAll(border, o1, sa, ga);
-//		this.getChildren().addAll(sa, ga);
 
-        for (Area o : obstacles) {
-            pathManager.getVertices().addAll(o.getCorners());
-        }
+        pathManager.getVertices().addAll(o1.getVertices());
 
         pathManager.getVertices().add(ga.getCurrentPosition());
-        pathManager.findValidEdgesAndSetWeigth();
-        for (Position p : o1.getCorners())
+        pathManager.getObstacleEdges().addAll(o1.getEdges());
+        for (Position p : o1.getVertices())
             this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
-
 
         /**
          * Generating different aged persons randomly
@@ -106,19 +101,31 @@ public class Room extends Pane {
                     newPerson = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH);
                     break;
             }
-            pathManager.findShortestPath(newPerson.getCurrentPosition());
-            List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
-            System.out.println("found path for person +" + positions.size());
-            newPerson.getPath().addAll(positions);
+            pathManager.getVertices().add(newPerson.getCurrentPosition());
             perimeterManager.registerPerson(newPerson);
             persons.add(newPerson);
         }
+
+        pathManager.findValidEdgesAndSetWeight();
+
+        for (Person pers : persons) {
+            pathManager.findShortestPath(pers.getCurrentPosition());
+            List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
+            //    pers.getPath().addAll(positions);
+        }
+
+        this.getChildren().addAll(pathManager.getEdges());
+        this.getChildren().addAll(pathManager.getObstacleEdges());
         this.getChildren().addAll(persons);
+//        for(Node n : this.getChildren()){
+//            n.setOnMouseClicked((e)->{
+//                System.out.println(n);
+//            });
+//        }
 
     }
 
     public void start(Label time) {
-
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws Exception {
