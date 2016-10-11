@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class PathManager {
     private List<Position> vertices = new ArrayList<>();
-    private List<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
+    private Collection<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
     private List<GVector> edges = new ArrayList<>();
 
     private Set<Position> settledNodes;
@@ -27,22 +27,35 @@ public class PathManager {
     private PathManager() {
     }
 
-    public void findValidEdgesAndSetWeigth() {
+    /**
+     * Fucking magic just took us 10h of Fluch und Hass
+     */
+    public void findValidEdgesAndSetWeight() {
         for (int i = 0; i < vertices.size(); i++) {
             Position p = vertices.get(i);
             for (int j = i + 1; j < vertices.size(); j++) {
+//                System.out.println("vertices size: "+ vertices.size() + " j is "+ j + " vertex: " + vertices.get(j));
                 GVector v = new GVector(p, vertices.get(j));
-                boolean isCrossing = false;
-                for (GVector obstacleVector : obstacleEdges)
-                    if (obstacleVector.isCrossedWith(v)) {
-                        isCrossing = true;
-                        break;
-                    }
+                boolean isCrossing = checkAgainstObstacles(v);
                 if (!isCrossing) {
+                    v.setStyle("-fx-stroke: yellow;");
+                    System.out.println("not crossing " + v);
                     edges.add(v);
                 }
             }
         }
+    }
+
+    private boolean checkAgainstObstacles(GVector v) {
+        boolean isCrossing = false;
+        for (GVector obstacleVector : obstacleEdges)
+            if (obstacleVector.isCrossedWith(v)) {
+                isCrossing = true;
+                v.setStyle("-fx-stroke: blue;");
+                System.out.println("crossing");
+                break;
+            }
+        return isCrossing;
     }
 
     /**
@@ -53,6 +66,7 @@ public class PathManager {
      * @return
      */
     public void findShortestPath(Position startPosition) {
+        System.out.println("edge nodes " + edges.size());
         settledNodes = new HashSet<>();
         unSettledNodes = new HashSet<>();
         distance = new HashMap<>();
@@ -60,6 +74,7 @@ public class PathManager {
         distance.put(startPosition, 0.0);
         unSettledNodes.add(startPosition);
         while (unSettledNodes.size() > 0) {
+            //set all to double.max
             Position node = getMinimum(unSettledNodes);
             settledNodes.add(node);
             unSettledNodes.remove(node);
@@ -69,6 +84,7 @@ public class PathManager {
 
     private void findMinimalDistances(Position node) {
         List<Position> adjacentNodes = getNeighbors(node);
+        System.out.println("neighbor nodes: " + adjacentNodes.size());
         for (Position target : adjacentNodes)
             if (getShortestDistance(target) > getShortestDistance(node)
                     + getDistance(node, target)) {
@@ -81,12 +97,14 @@ public class PathManager {
 
     private double getDistance(Position node, Position target) {
         for (GVector edge : edges) {
-            if (edge.getStartPosition().equals(node)
-                    && edge.getEndPosition().equals(target)) {
+            if ((edge.getStartPosition().equals(node)
+                    && edge.getEndPosition().equals(target)) ||
+                    (edge.getEndPosition().equals(node) &&
+                            edge.getStartPosition().equals(target))) {
                 return edge.length();
             }
         }
-        throw new RuntimeException("Should not happen");
+        throw new RuntimeException("Should not happen, getDistance and getNeighbors probably have different algorithms");
     }
 
     private List<Position> getNeighbors(Position node) {
@@ -95,6 +113,9 @@ public class PathManager {
             if (edge.getStartPosition().equals(node)
                     && !isSettled(edge.getEndPosition())) {
                 neighbors.add(edge.getEndPosition());
+            } else if (edge.getEndPosition().equals(node)
+                    && !isSettled(edge.getStartPosition())) {
+                neighbors.add(edge.getStartPosition());
             }
         return neighbors;
     }
@@ -137,8 +158,9 @@ public class PathManager {
         LinkedList<Position> path = new LinkedList<>();
         Position step = target;
         // check if a path exists
-        System.out.println("predecessors: " + predecessors.size() + " step to target " + step);
+        System.out.println("predecessors: " + predecessors.get(step));
         if (predecessors.get(step) == null) {
+            System.out.println("target not found: " + target);
             return null;
         }
         path.add(step);
@@ -161,10 +183,13 @@ public class PathManager {
         return vertices;
     }
 
-    public List<GVector> getObstacleEdges() {
+    public Collection<GVector> getObstacleEdges() {
+        for (GVector v : obstacleEdges)
+            v.setStyle("-fx-stroke: red;");
         return obstacleEdges;
     }
 
-
-//    List<Integer> edges = new EdgeList
+    public List<GVector> getEdges() {
+        return edges;
+    }
 }
