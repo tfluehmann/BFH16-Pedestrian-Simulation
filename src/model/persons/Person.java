@@ -34,23 +34,14 @@ public abstract class Person extends Circle implements Positionable {
 	}
 
 
-    /**
-     * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
-     * Created by suter1 on 05.10.2016
-     */
-    public Person(double maxHeight, double maxWidth, List<Position> path, double speed) {
-		this(maxHeight, maxWidth, speed);
-		this.path.addAll(path);
-    }
-
-	public Person(double maxHeight, double maxWidth, double speed) {
+    public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
         super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 		this.speed = speed;
 		Random r = new Random();
 		double randomWidth = (maxWidth - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
 		double randomHeight = (maxHeight - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
-		this.setCurrentPosition(new Position(randomWidth + spawnArea.getXValue() + ConfigModel.getInstance().getPersonRadius(), randomHeight + spawnArea.getYValue() + ConfigModel.getInstance().getPersonRadius()));
-		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
+        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + ConfigModel.getInstance().getPersonRadius(), randomHeight + spawnPosition.getYValue() + ConfigModel.getInstance().getPersonRadius()));
+        this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
 	}
 
