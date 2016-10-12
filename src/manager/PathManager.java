@@ -87,7 +87,7 @@ public class PathManager {
         List<Position> adjacentNodes = getNeighbors(node);
         System.out.println("neighbor nodes: " + adjacentNodes.size());
         for (Position target : adjacentNodes) {
-            System.out.println("do magic"); //TODO
+            System.out.println("do magic");
             double shortestTOTarget = getShortestDistance(target);
 
             if (shortestTOTarget > getShortestDistance(node) + getDistance(node, target)) {
