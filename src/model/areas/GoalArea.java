@@ -3,7 +3,6 @@ package model.areas;
 import javafx.scene.paint.Color;
 import model.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,17 +13,22 @@ public class GoalArea extends Area {
 	private double width;
 
 	public GoalArea(double width, double height, Position position) {
-		super(0.0, 0.0, width, 0.0, width, height, 0.0, height);
+		super(position.getXValue(), position.getYValue(),
+				position.getXValue() + width, position.getYValue(),
+				position.getXValue() + width, position.getYValue() + height,
+				position.getXValue(), position.getYValue() + height);
 		this.position = position;
 		this.height = height;
 		this.width = width;
 		this.setFill(Color.GREEN);
 	}
 
-
 	public List<Position> getCorners() {
-		List<Position> l = new ArrayList<>();
-		l.add(new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2));
-		return l;
+		return null;
+	}
+
+
+	public Position getGoalPoint() {
+		return new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2);
 	}
 }

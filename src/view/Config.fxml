@@ -73,11 +73,11 @@
                                                 <Label layoutX="10.0" layoutY="323.0" text="Height"/>
                                                 <TextField fx:id="goalHeight" alignment="CENTER" layoutX="128.0"
                                                            layoutY="319.0" prefHeight="25.0" prefWidth="40.0"
-                                                           text="10"/>
+                                                           text="1"/>
                                                 <Label layoutX="185.0" layoutY="283.0" text="meters"/>
                                                 <TextField fx:id="goalWidth" alignment="CENTER" layoutX="128.0"
                                                            layoutY="279.0" prefHeight="25.0" prefWidth="40.0"
-                                                           text="16"/>
+                                                           text="2.4"/>
                                                 <Label layoutX="10.0" layoutY="283.0" text="Width"/>
                                                 <ComboBox fx:id="goalAreaPosition" layoutX="128.0" layoutY="241.0"
                                                           prefWidth="150.0" promptText="Select Position"/>
@@ -94,7 +94,7 @@
                                             <children>
                                                 <Label layoutX="14.0" layoutY="18.0" text="Total persons"/>
                                                 <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0"
-                                                           layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="1"/>
+                                                           layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="50"/>
                                                 <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="81.0"
                                                         minorTickCount="1" showTickMarks="true" snapToTicks="true"
                                                         value="30.0"/>

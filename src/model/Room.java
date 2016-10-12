@@ -1,6 +1,5 @@
 package model;
 
-
 import config.ConfigModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -26,10 +25,6 @@ import java.util.Random;
  */
 public class Room extends Pane {
 
-	public static final int GOAL_HEIGHT = 20;
-	public static final int GOAL_WIDTH = 50;
-	public static final int SPAWN_HEIGHT = 150;
-	public static final int SPAWN_WIDTH = 150;
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
     private PerimeterManager perimeterManager = PerimeterManager.getInstance();
@@ -55,23 +50,24 @@ public class Room extends Pane {
         else
             y = 0.0;
 
-        Obstacle border = new Obstacle(x, y,
-                config.ROOM_WIDTH_ORIGIN, y,
-                config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
-                x, config.ROOM_HEIGHT_ORIGIN);
+		if (config.getRoomHeight() != config.ROOM_HEIGHT_ORIGIN || config.getRoomWidth() != config.ROOM_WIDTH_ORIGIN) {
+			Obstacle border = new Obstacle(x, y,
+					config.ROOM_WIDTH_ORIGIN, y,
+					config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
+					x, config.ROOM_HEIGHT_ORIGIN);
+			this.getChildren().add(border);
+		}
 
-        System.out.println("Room-correction: " + border.toString());
-
-        SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
-        GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
+		SpawnArea sa = new SpawnArea(config.getSpawnWidth(), config.getSpawnHeight(), config.getSpawnPosition());
+		GoalArea ga = new GoalArea(config.getGoalWidth(), config.getGoalHeight(), config.getGoalPosition());
 
         Obstacle o1 = new Obstacle(100.0, 200.0, 400.0, 200.0, 150.0, 220.0, 100.0, 250.0);
-        this.getChildren().addAll(border, o1, sa, ga);
+		this.getChildren().addAll(o1, sa, ga);
 
         pathManager.getVertices().addAll(o1.getVertices());
 
-        pathManager.getVertices().add(ga.getCurrentPosition());
-        pathManager.getObstacleEdges().addAll(o1.getEdges());
+		pathManager.getVertices().add(ga.getGoalPoint());
+		pathManager.getObstacleEdges().addAll(o1.getEdges());
         for (Position p : o1.getVertices())
             this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
@@ -110,15 +106,13 @@ public class Room extends Pane {
 
         for (Person pers : persons) {
             pathManager.findShortestPath(pers.getCurrentPosition());
-            List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
-            pers.getPath().addAll(positions);
+	        List<Position> positions = pathManager.getPath(ga.getGoalPoint());
+	        pers.getPath().addAll(positions);
         }
 
         this.getChildren().addAll(pathManager.getEdges());
         this.getChildren().addAll(pathManager.getObstacleEdges());
         this.getChildren().addAll(persons);
-
-
     }
 
     public void start(Label time) {
