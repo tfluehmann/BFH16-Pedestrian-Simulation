@@ -10,7 +10,6 @@ import model.Perimeter;
 import model.Position;
 import model.Positionable;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,13 +18,12 @@ import java.util.Random;
  * Created by fluth1 on 30/09/16.
  */
 public abstract class Person extends Circle implements Positionable {
-
-	protected ArrayList<Position> oldPositions = new ArrayList<>();
-	protected Position currentPosition;
-	protected List<Position> path = new ArrayList<>();
-	protected int age;
-	protected double speed;
-	// protected Character character;
+    protected ArrayList<Position> oldPositions = new ArrayList<>();
+    protected Position currentPosition;
+    protected List<Position> path = new ArrayList<>();
+    protected int age;
+    protected double speed;
+    // protected Character character;
 
 	protected Perimeter currentPerimeter;
 	protected PathManager pathManager = PathManager.getInstance();
@@ -36,12 +34,17 @@ public abstract class Person extends Circle implements Positionable {
 	}
 
 
-	/**
-	 * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
-	 * Created by suter1 on 05.10.2016
-	 */
-	public Person(double maxHeight, double maxWidth, List<Position> path, double speed, Position spawnArea) {
-		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
+    /**
+     * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
+     * Created by suter1 on 05.10.2016
+     */
+    public Person(double maxHeight, double maxWidth, List<Position> path, double speed) {
+		this(maxHeight, maxWidth, speed);
+		this.path.addAll(path);
+    }
+
+	public Person(double maxHeight, double maxWidth, double speed) {
+        super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 		this.speed = speed;
 		Random r = new Random();
 		double randomWidth = (maxWidth - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
@@ -49,13 +52,10 @@ public abstract class Person extends Circle implements Positionable {
 		this.setCurrentPosition(new Position(randomWidth + spawnArea.getXValue() + ConfigModel.getInstance().getPersonRadius(), randomHeight + spawnArea.getYValue() + ConfigModel.getInstance().getPersonRadius()));
 		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
-		this.path.addAll(path);
 	}
-
 
 	/**
 	 * Calculates the vector and the next position depending on the step size
-	 *
 	 * @return next Position
 	 */
 	public void doStep() {
@@ -63,30 +63,28 @@ public abstract class Person extends Circle implements Positionable {
 		if (p != null) setPosition(p);
 	}
 
-
-	/**
+    /**
 	 * calculate the next position by reducing the speed if needed
-	 *
-	 * @return
-	 */
+     * @return
+     */
 	private Position calculateNextPossiblePosition() {
 		int tries = 1;
-		while (tries < 5) {
+		while(tries < 5) {
 			Position nextTarget = this.path.get(0);
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
 			double lambda = (speed / tries++) / vToNextTarget.length();
 			Position newPosition = vToNextTarget.getLambdaPosition(lambda);
-			if (isNewPositionAllowed(newPosition)) {
+			if(isNewPositionAllowed(newPosition)){
 				return newPosition;
-			} else if (tries == 2) {
+			}else if(tries == 2){
 				/**
 				 * Try to walk into the left or right hand position
 				 */
 				Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
 				Position rightPos = vToNextTarget.moveParallelRight(newPosition).getEndPosition();
-				if (isNewPositionAllowed(leftPos)) return leftPos;
-				if (isNewPositionAllowed(rightPos)) return rightPos;
+				if(isNewPositionAllowed(leftPos)) return leftPos;
+				if(isNewPositionAllowed(rightPos)) return rightPos;
 			} else if (tries == 5) {
 				//TODO probably implement a better solution
 				Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda);
@@ -96,37 +94,32 @@ public abstract class Person extends Circle implements Positionable {
 		return null;
 	}
 
-
 	private boolean isNewPositionAllowed(Position position) {
-		if (position == null) return false;
+		if(position == null) return false;
 		List<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
-		for (Perimeter perimeter : neighPerimeters)
-			for (Person person : perimeter.getRegistredPersons()) {
-				if (person.equals(this)) continue;
+		for(Perimeter perimeter : neighPerimeters)
+			for(Person person : perimeter.getRegistredPersons()){
+				if(person.equals(this)) continue;
 				boolean collision = isColliding(position.getXValue(), position.getYValue(), person);
-				if (collision) return false;
+				if(collision) return false;
 			}
 		return true;
 	}
-
 
 	/**
 	 * Sets a new Position, puts the old position into the list.
 	 * moves the person
 	 * unregisters in the current perimeter and registers in the new one if needed
-	 *
 	 * @param position
 	 */
 	private void setPosition(Position position) {
 		this.oldPositions.add(new Position(this.currentPosition.getXValue(),
 				this.currentPosition.getYValue()));
-		this.currentPosition.setX(roundWithDecimalFormat(position.getXValue()));
-		this.currentPosition.setY(roundWithDecimalFormat(position.getYValue()));
-		if (isInNextPathArea() && !isInGoalArea()) path.remove(0);
-		if (!this.currentPerimeter.isInRange(this.getCurrentPosition()))
-			PerimeterManager.getInstance().movePersonRegistration(this);
+		this.currentPosition.setX((position.getXValue()));
+		this.currentPosition.setY((position.getYValue()));
+		if(isInNextPathArea() && !isInGoalArea()) path.remove(0);
+		if(!this.currentPerimeter.isInRange(this.getCurrentPosition())) PerimeterManager.getInstance().movePersonRegistration(this);
 	}
-
 
 	public boolean isColliding(double x, double y, Person otherPerson) {
 		return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < this.getRadius() + otherPerson.getRadius() &&
@@ -134,11 +127,10 @@ public abstract class Person extends Circle implements Positionable {
 				!otherPerson.isInGoalArea());
 	}
 
-
-	public double roundWithDecimalFormat(double val) {
-		DecimalFormat df = new DecimalFormat("#0.##");
-		return Double.parseDouble(df.format(val));
-	}
+//    public double roundWithDecimalFormat(double val) {
+//        DecimalFormat df = new DecimalFormat("#0.##");
+//        return Double.parseDouble(df.format(val));
+//    }
 
 
 	public boolean isInNextPathArea() {
@@ -153,39 +145,29 @@ public abstract class Person extends Circle implements Positionable {
 	}
 
 
-	public ArrayList<Position> getOldPositions() {
-		return oldPositions;
-	}
+    public ArrayList<Position> getOldPositions() {
+        return oldPositions;
+    }
 
-
-	public void setOldPositions(ArrayList<Position> oldPositions) {
-		this.oldPositions = oldPositions;
-	}
-
+    public void setOldPositions(ArrayList<Position> oldPositions) {
+        this.oldPositions = oldPositions;
+    }
 
 	public Position getCurrentPosition() {
 		return currentPosition;
 	}
 
-
 	public void setCurrentPosition(Position currentPosition) {
 		this.currentPosition = currentPosition;
 	}
 
+    public List<Position> getPath() {
+        return path;
+    }
 
-	public List<Position> getPath() {
-		return path;
-	}
-
-
-	public void setPath(ArrayList<Position> path) {
-		this.path = path;
-	}
-
-
-	public int getAge() {
-		return age;
-	}
+    public int getAge() {
+        return age;
+    }
 
 
 	public void setAge(int age) {
@@ -197,23 +179,19 @@ public abstract class Person extends Circle implements Positionable {
 		return speed;
 	}
 
-
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
-
 
 	public boolean intersects(double x, double y) {
 		return this.intersects(x, y);
 	}
 
+	public void setCurrentPerimeter(Perimeter currentPerimeter) {
+		this.currentPerimeter = currentPerimeter;
+	}
 
 	public Perimeter getCurrentPerimeter() {
 		return this.currentPerimeter;
-	}
-
-
-	public void setCurrentPerimeter(Perimeter currentPerimeter) {
-		this.currentPerimeter = currentPerimeter;
 	}
 }

@@ -2,7 +2,6 @@ package model.persons;
 
 import model.Position;
 
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -14,8 +13,8 @@ public class OldPerson extends Person{
     public static final double MAX_SPEED = 1.42;
 
 
-    public OldPerson(double maxHeight, double maxWidth, List<Position> path, Position spawnPosition) {
-        super(maxHeight, maxWidth, path, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED), spawnPosition);
+    public OldPerson(double maxHeight, double maxWidth, Position spawnPosition) {
+        super(maxHeight, maxWidth, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED), spawnPosition);
     }
 
 //    public OldPerson(double maxHeight, double maxWidth) {
