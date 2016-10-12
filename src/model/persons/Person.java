@@ -9,7 +9,6 @@ import model.Perimeter;
 import model.Position;
 import model.Positionable;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -115,8 +114,8 @@ public abstract class Person extends Circle implements Positionable {
 	private void setPosition(Position position) {
 		this.oldPositions.add(new Position(this.currentPosition.getXValue(),
 				this.currentPosition.getYValue()));
-		this.currentPosition.setX(roundWithDecimalFormat(position.getXValue()));
-		this.currentPosition.setY(roundWithDecimalFormat(position.getYValue()));
+		this.currentPosition.setX((position.getXValue()));
+		this.currentPosition.setY((position.getYValue()));
 		if(isInNextPathArea() && !isInGoalArea()) path.remove(0);
 		if(!this.currentPerimeter.isInRange(this.getCurrentPosition())) PerimeterManager.getInstance().movePersonRegistration(this);
 	}
@@ -127,10 +126,10 @@ public abstract class Person extends Circle implements Positionable {
 				!otherPerson.isInGoalArea());
 	}
 
-    public double roundWithDecimalFormat(double val) {
-        DecimalFormat df = new DecimalFormat("#0.##");
-        return Double.parseDouble(df.format(val));
-    }
+//    public double roundWithDecimalFormat(double val) {
+//        DecimalFormat df = new DecimalFormat("#0.##");
+//        return Double.parseDouble(df.format(val));
+//    }
 
     public boolean isInNextPathArea() {
         Position nextPosition = path.get(0);

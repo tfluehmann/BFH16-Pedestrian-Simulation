@@ -24,7 +24,6 @@ public class ConfigModel {
 	private ConfigModel() {
 	}
 
-
 	public static ConfigModel getInstance() {
 		if (instance == null) {
 			instance = new ConfigModel();
@@ -32,64 +31,51 @@ public class ConfigModel {
 		return instance;
 	}
 
-
 	public void calculateRoomSize() {
 		setPixelPerMeter(Math.min((ROOM_HEIGHT_ORIGIN / getRoomHeightMeter()), (ROOM_WIDTH_ORIGIN / getRoomWidthMeter())));
-
 		setRoomHeight(getRoomHeightMeter() * getPixelPerMeter());
 		setRoomWidth(getRoomWidthMeter() * getPixelPerMeter());
 	}
-
 
 	public double getRoomWidth() {
 		return this.roomWidth;
 	}
 
-
 	public void setRoomWidth(double roomWidth) {
 		this.roomWidth = roomWidth;
 	}
-
 
 	public double getRoomHeight() {
 		return this.roomHeight;
 	}
 
-
 	public void setRoomHeight(double roomHeight) {
 		this.roomHeight = roomHeight;
 	}
-
 
 	public double getTotalPersons() {
 		return this.totalPersons;
 	}
 
-
 	public void setTotalPersons(double totalPersons) {
 		this.totalPersons = totalPersons;
 	}
-
 
 	public double getWeightedYoungPersons() {
 		return this.weightedYoungPersons;
 	}
 
-
 	public void setWeightedYoungPersons(double weightedYoungPersons) {
 		this.weightedYoungPersons = weightedYoungPersons;
 	}
-
 
 	public double getWeigthedMidagePersons() {
 		return this.weigthedMidagePersons;
 	}
 
-
 	public void setWeigthedMidagePersons(double weigthedMidagePersons) {
 		this.weigthedMidagePersons = weigthedMidagePersons;
 	}
-
 
 	public double getWeightedOldPersons() {
 		return this.weightedOldPersons;
@@ -100,41 +86,33 @@ public class ConfigModel {
 		this.weightedOldPersons = weightedOldPersons;
 	}
 
-
 	public double getWeightedHandycappedPersons() {
 		return this.weightedHandycappedPersons;
 	}
-
 
 	public void setWeightedHandycappedPersons(double weightedHandycappedPersons) {
 		this.weightedHandycappedPersons = weightedHandycappedPersons;
 	}
 
-
 	public double getPixelPerMeter() {
 		return this.pixelPerMeter;
 	}
-
 
 	public void setPixelPerMeter(double pixelPerMeter) {
 		this.pixelPerMeter = pixelPerMeter;
 	}
 
-
 	public double getRoomWidthMeter() {
 		return this.roomWidthMeter;
 	}
-
 
 	public void setRoomWidthMeter(double roomWidthMeder) {
 		this.roomWidthMeter = roomWidthMeder;
 	}
 
-
 	public double getRoomHeightMeter() {
 		return this.roomHeightMeter;
 	}
-
 
 	public void setRoomHeightMeter(double roomHeightMeter) {
 		this.roomHeightMeter = roomHeightMeter;

@@ -65,7 +65,7 @@ public class Room extends Pane {
         SpawnArea sa = new SpawnArea(SPAWN_WIDTH, SPAWN_HEIGHT, new Position(0.0, 0.0));
         GoalArea ga = new GoalArea(GOAL_WIDTH, GOAL_HEIGHT, new Position(config.getRoomWidth() - GOAL_WIDTH, config.getRoomHeight() - GOAL_HEIGHT));
 
-        Obstacle o1 = new Obstacle(100.0, 200.0, 150.0, 200.0, 150.0, 220.0, 100.0, 250.0);
+        Obstacle o1 = new Obstacle(100.0, 200.0, 400.0, 200.0, 150.0, 220.0, 100.0, 250.0);
         this.getChildren().addAll(border, o1, sa, ga);
 
         pathManager.getVertices().addAll(o1.getVertices());
@@ -106,22 +106,19 @@ public class Room extends Pane {
             persons.add(newPerson);
         }
 
-        pathManager.findValidEdgesAndSetWeight();
+        pathManager.findValidEdges();
 
         for (Person pers : persons) {
             pathManager.findShortestPath(pers.getCurrentPosition());
             List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
-            //    pers.getPath().addAll(positions);
+            System.out.println("correct way found: " + positions.size());
+            pers.getPath().addAll(positions);
         }
 
         this.getChildren().addAll(pathManager.getEdges());
         this.getChildren().addAll(pathManager.getObstacleEdges());
         this.getChildren().addAll(persons);
-//        for(Node n : this.getChildren()){
-//            n.setOnMouseClicked((e)->{
-//                System.out.println(n);
-//            });
-//        }
+
 
     }
 
@@ -149,7 +146,6 @@ public class Room extends Pane {
 			}
 		};
 		time.textProperty().bind(task.messageProperty());
-
 		Thread th = new Thread(task);
 		th.setDaemon(true);
 		th.start();
@@ -162,7 +158,6 @@ public class Room extends Pane {
 				passivePersons.add(p);
 			else
 				newPersons.add(p);
-
 		this.persons = newPersons;
 	}
 

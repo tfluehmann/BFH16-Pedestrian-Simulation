@@ -55,7 +55,13 @@ public class Position implements Cloneable {
         return new Position(this.getXValue() * edgeExtender, this.getYValue() * edgeExtender);
     }
 
-    public boolean equals(Position p) {
-        return (this.getXValue() == p.getXValue() && p.getYValue() == this.getYValue());
+    public boolean equals(Object pos) {
+        double epsilon = 0.0001;
+        Position position = (Position) pos;
+        if (position == null) return false;
+        double xComparision = Math.abs(this.getXValue() - position.getXValue());
+        double yComparision = Math.abs(this.getYValue() - position.getYValue());
+        //  System.out.println("comparision x: "+xComparision + " y: "+yComparision);
+        return xComparision < epsilon && yComparision < epsilon;
     }
 }

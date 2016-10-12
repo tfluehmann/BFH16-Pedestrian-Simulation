@@ -63,6 +63,10 @@ public class GVector extends Line {
         return new GVector(this.getStartPointX(), this.getStartPointY(), this.getEndPointX() * (-1), this.getEndPointY() * (-1));
     }
 
+    public GVector otherEdge() {
+        return new GVector(this.getEndPosition(), this.getStartPosition());
+    }
+
     /**
      * checks if the current and another vector are crossed using the line formula
      * E = B-A = ( Bx-Ax, By-Ay ) //this
