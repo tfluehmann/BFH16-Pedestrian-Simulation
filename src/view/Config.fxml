@@ -40,14 +40,50 @@
                                     <content>
                                         <AnchorPane prefHeight="450.0" prefWidth="400.0">
                                             <children>
-                                                <Label text="Room Width" AnchorPane.leftAnchor="5.0"
-                                                       AnchorPane.topAnchor="20.0"/>
-                                                <TextField fx:id="roomWidth" layoutX="126.0" layoutY="16.0"
-                                                           promptText="Room width in meters" text="40"/>
-                                                <Label layoutX="14.0" layoutY="59.0" text="Room Height"
-                                                       AnchorPane.leftAnchor="5.0"/>
-                                                <TextField fx:id="roomHeight" layoutX="126.0" layoutY="55.0"
-                                                           promptText="Room height in meters" text="40"/>
+                                                <Label layoutX="11.0" layoutY="20.0" text="Room Width"
+                                                       AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="20.0"/>
+                                                <TextField fx:id="roomWidth" alignment="CENTER" layoutX="126.0"
+                                                           layoutY="16.0" prefHeight="25.0" prefWidth="40.0"
+                                                           promptText="Room width in meters" text="128"/>
+                                                <Label layoutX="11.0" layoutY="59.0" text="Room Height"
+                                                       AnchorPane.leftAnchor="11.0"/>
+                                                <TextField fx:id="roomHeight" alignment="CENTER" layoutX="126.0"
+                                                           layoutY="55.0" prefHeight="25.0" prefWidth="40.0"
+                                                           promptText="Room height in meters" text="72"/>
+                                                <Label layoutX="13.0" layoutY="108.0" text="Spawn area"/>
+                                                <ComboBox fx:id="spawnAreaPosition" layoutX="126.0" layoutY="105.0"
+                                                          prefWidth="150.0" promptText="Select Position"/>
+                                                <Label layoutX="13.0" layoutY="146.0" text="Width"/>
+                                                <TextField fx:id="spawnWidth" alignment="CENTER" layoutX="126.0"
+                                                           layoutY="143.0" prefHeight="25.0" prefWidth="40.0"
+                                                           text="16"/>
+                                                <Label layoutX="174.0" layoutY="20.0" text="meters"/>
+                                                <Label layoutX="174.0" layoutY="59.0" text="meters"/>
+                                                <Label layoutX="183.0" layoutY="147.0" text="meters"/>
+                                                <TextField fx:id="spawnHeight" alignment="CENTER" layoutX="126.0"
+                                                           layoutY="183.0" prefHeight="25.0" prefWidth="40.0"
+                                                           text="10"/>
+                                                <Label layoutX="13.0" layoutY="186.0" text="Height"/>
+                                                <Label layoutX="183.0" layoutY="187.0" text="meters"/>
+                                                <Separator layoutX="11.0" layoutY="90.0" prefHeight="0.0"
+                                                           prefWidth="376.0"/>
+                                                <Separator layoutX="13.0" layoutY="226.0" prefHeight="0.0"
+                                                           prefWidth="376.0"/>
+                                                <Label layoutX="185.0" layoutY="323.0" text="meters"/>
+                                                <Label layoutX="10.0" layoutY="323.0" text="Height"/>
+                                                <TextField fx:id="goalHeight" alignment="CENTER" layoutX="128.0"
+                                                           layoutY="319.0" prefHeight="25.0" prefWidth="40.0"
+                                                           text="10"/>
+                                                <Label layoutX="185.0" layoutY="283.0" text="meters"/>
+                                                <TextField fx:id="goalWidth" alignment="CENTER" layoutX="128.0"
+                                                           layoutY="279.0" prefHeight="25.0" prefWidth="40.0"
+                                                           text="16"/>
+                                                <Label layoutX="10.0" layoutY="283.0" text="Width"/>
+                                                <ComboBox fx:id="goalAreaPosition" layoutX="128.0" layoutY="241.0"
+                                                          prefWidth="150.0" promptText="Select Position"/>
+                                                <Label layoutX="10.0" layoutY="245.0" text="Goal area"/>
+                                                <Separator layoutX="11.0" layoutY="357.0" prefHeight="0.0"
+                                                           prefWidth="376.0"/>
                                             </children>
                                         </AnchorPane>
                                     </content>
@@ -107,8 +143,8 @@
                         </TabPane>
                     </children>
                 </AnchorPane>
-                <Button fx:id="buttonOK" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0"
-                        text="OK" textAlignment="CENTER">
+                <Button fx:id="buttonOK" alignment="CENTER" defaultButton="true" mnemonicParsing="false"
+                        prefHeight="25.0" prefWidth="50.0" text="OK" textAlignment="CENTER">
                     <VBox.margin>
                         <Insets bottom="5.0" left="350.0" right="5.0"/>
                     </VBox.margin>

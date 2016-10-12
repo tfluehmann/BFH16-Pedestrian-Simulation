@@ -3,6 +3,7 @@ package config;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
@@ -19,6 +20,24 @@ public class ConfigController implements Initializable {
 
 	@FXML
 	private TextField roomHeight;
+
+	@FXML
+	private ComboBox spawnAreaPosition;
+
+	@FXML
+	private TextField spawnWidth;
+
+	@FXML
+	private TextField spawnHeight;
+
+	@FXML
+	private ComboBox goalAreaPosition;
+
+	@FXML
+	private TextField goalWidth;
+
+	@FXML
+	private TextField goalHeight;
 
 	@FXML
 	private TextField totalPersons;
@@ -54,10 +73,14 @@ public class ConfigController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ConfigModel cfg = ConfigModel.getInstance();
-		System.out.println("CONFIG Controller");
+
+		this.spawnAreaPosition.getItems().addAll("TOP_LEFT", "TOP_CENTER", "TOP_RIGHT");
+		this.goalAreaPosition.getItems().addAll("BOTTOM_LEFT", "BOTTOM_CENTER", "BOTTOM_RIGHT");
 
 		buttonOK.setOnAction((event) -> {
-			System.out.println("started simulation");
+			/**
+			 * Save data form the config window for usage in simulation.
+			 */
 			cfg.setRoomWidthMeter(getRoomWidth());
 			cfg.setRoomHeightMeter(getRoomHeight());
 			cfg.setTotalPersons(getTotalPersons());
@@ -66,11 +89,24 @@ public class ConfigController implements Initializable {
 			cfg.setWeightedOldPersons(getWeightOld());
 			cfg.setWeightedHandycappedPersons(getWeightHandycap());
 
+			/**
+			 * Merge meter from the config to pixel for the view.
+			 */
 			cfg.calculateRoomSize();
 
-			System.out.println("Width meter: " + cfg.getRoomWidthMeter() + ", Height meter: " + cfg.getRoomHeightMeter());
-			System.out.println("Room width: " + cfg.getRoomWidth() + ", Room heigt: " + cfg.getRoomHeight());
-			System.out.println("Pixel to meter ratio: " + cfg.getPixelPerMeter());
+			/**
+			 * Set positions and sizes of goal and spawn areas.
+			 */
+			cfg.setSpawnHeight(getSpawnHeight());
+			cfg.setSpawnWidth(getSpawnWidth());
+			cfg.setSpawnPosition(getSpawnAreaPosition());
+			cfg.setGoalHeight(getGoalHeight());
+			cfg.setGoalWidth(getGoalWidth());
+			cfg.setGoalPosition(getGoalAreaPosition());
+
+			/**
+			 * Close the config window to start the simulation.
+			 */
 			buttonOK.getScene().getWindow().hide();
 		});
 	}
@@ -195,4 +231,53 @@ public class ConfigController implements Initializable {
 		this.weightHandycap = doubleToTextfield(weightHandycap);
 	}
 
+
+	public String getSpawnAreaPosition() {
+		return (String) this.spawnAreaPosition.getValue();
+	}
+
+
+	public double getSpawnWidth() {
+		return textFieldToDouble(this.spawnWidth);
+	}
+
+
+	public void setSpawnWidth(double spawnWidth) {
+		this.spawnWidth = doubleToTextfield(spawnWidth);
+	}
+
+
+	public double getSpawnHeight() {
+		return textFieldToDouble(this.spawnHeight);
+	}
+
+
+	public void setSpawnHeight(double spawnHeight) {
+		this.spawnHeight = doubleToTextfield(spawnHeight);
+	}
+
+
+	public String getGoalAreaPosition() {
+		return (String) this.goalAreaPosition.getValue();
+	}
+
+
+	public double getGoalWidth() {
+		return textFieldToDouble(this.goalWidth);
+	}
+
+
+	public void setGoalWidth(double goalWidth) {
+		this.goalWidth = doubleToTextfield(goalWidth);
+	}
+
+
+	public double getGoalHeight() {
+		return textFieldToDouble(this.goalHeight);
+	}
+
+
+	public void setGoalHeight(double goalHeight) {
+		this.goalHeight = doubleToTextfield(goalHeight);
+	}
 }

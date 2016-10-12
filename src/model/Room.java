@@ -75,43 +75,42 @@ public class Room extends Pane {
         for (Position p : o1.getVertices())
             this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
-        /**
-         * Generating different aged persons randomly
-         * Created by suter1 on 05.10.2016
-         */
-        Random rnd = new Random();
-        int type;
-        for (int i = 0; i < config.getTotalPersons(); i++) {
-            Person newPerson;
-            type = rnd.nextInt(3);
-            switch (type) {
-                case 0:
-                    newPerson = new YoungPerson(SPAWN_HEIGHT, SPAWN_WIDTH);
-                    break;
-                case 1:
-                    newPerson = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH);
-                    break;
-                case 2:
-                    newPerson = new OldPerson(SPAWN_HEIGHT, SPAWN_WIDTH);
-                    break;
-                case 3:
-                    newPerson = new HandicappedPerson(SPAWN_HEIGHT, SPAWN_WIDTH);
-                    break;
-                default:
-                    newPerson = new MidAgePerson(SPAWN_HEIGHT, SPAWN_WIDTH);
-                    break;
-            }
-            pathManager.getVertices().add(newPerson.getCurrentPosition());
-            perimeterManager.registerPerson(newPerson);
-            persons.add(newPerson);
-        }
+		/**
+		 * Generating different aged persons randomly
+		 * Created by suter1 on 05.10.2016
+		 */
+		Random rnd = new Random();
+		int type;
+		for (int i = 0; i < config.getTotalPersons(); i++) {
+			Person newPerson;
+			type = rnd.nextInt(3);
+			switch (type) {
+				case 0:
+					newPerson = new YoungPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					break;
+				case 1:
+					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					break;
+				case 2:
+					newPerson = new OldPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					break;
+				case 3:
+					newPerson = new HandicappedPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					break;
+				default:
+					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					break;
+			}
+			pathManager.getVertices().add(newPerson.getCurrentPosition());
+			perimeterManager.registerPerson(newPerson);
+			persons.add(newPerson);
+		}
 
         pathManager.findValidEdges();
 
         for (Person pers : persons) {
             pathManager.findShortestPath(pers.getCurrentPosition());
             List<Position> positions = pathManager.getPath(ga.getCurrentPosition());
-            System.out.println("correct way found: " + positions.size());
             pers.getPath().addAll(positions);
         }
 
@@ -146,6 +145,7 @@ public class Room extends Pane {
 			}
 		};
 		time.textProperty().bind(task.messageProperty());
+
 		Thread th = new Thread(task);
 		th.setDaemon(true);
 		th.start();
@@ -158,6 +158,7 @@ public class Room extends Pane {
 				passivePersons.add(p);
 			else
 				newPersons.add(p);
+
 		this.persons = newPersons;
 	}
 

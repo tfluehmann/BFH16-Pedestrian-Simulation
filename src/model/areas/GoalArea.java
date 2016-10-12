@@ -18,10 +18,9 @@ public class GoalArea extends Area {
 		this.position = position;
 		this.height = height;
 		this.width = width;
-		this.relocate(position.getXValue(), position.getYValue());
 		this.setFill(Color.GREEN);
-
 	}
+
 
 	public List<Position> getCorners() {
 		List<Position> l = new ArrayList<>();

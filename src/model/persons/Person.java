@@ -1,5 +1,6 @@
 package model.persons;
 
+import config.ConfigModel;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import manager.PathManager;
@@ -17,7 +18,6 @@ import java.util.Random;
  * Created by fluth1 on 30/09/16.
  */
 public abstract class Person extends Circle implements Positionable {
-    public final static int PERSON_RADIUS = 2;
     protected ArrayList<Position> oldPositions = new ArrayList<>();
     protected Position currentPosition;
     protected List<Position> path = new ArrayList<>();
@@ -28,9 +28,11 @@ public abstract class Person extends Circle implements Positionable {
 	protected Perimeter currentPerimeter;
 	protected PathManager pathManager = PathManager.getInstance();
 
-    public Person() {
-        super(PERSON_RADIUS, Color.BLUE);
-    }
+
+	public Person() {
+		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
+	}
+
 
     /**
      * Moved spawn-code of fluth1 from MidAgePerson to the parent class.
@@ -42,12 +44,12 @@ public abstract class Person extends Circle implements Positionable {
     }
 
 	public Person(double maxHeight, double maxWidth, double speed) {
-		super(PERSON_RADIUS, Color.BLUE);
+        super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 		this.speed = speed;
 		Random r = new Random();
-		double randomWidth = 0 + (maxWidth - PERSON_RADIUS) * r.nextDouble();
-		double randomHeight = 0 + (maxHeight - PERSON_RADIUS) * r.nextDouble();
-		this.setCurrentPosition(new Position(randomWidth, randomHeight));
+		double randomWidth = (maxWidth - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
+		double randomHeight = (maxHeight - 2 * ConfigModel.getInstance().getPersonRadius()) * r.nextDouble();
+		this.setCurrentPosition(new Position(randomWidth + spawnArea.getXValue() + ConfigModel.getInstance().getPersonRadius(), randomHeight + spawnArea.getYValue() + ConfigModel.getInstance().getPersonRadius()));
 		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
 	}
@@ -58,8 +60,7 @@ public abstract class Person extends Circle implements Positionable {
 	 */
 	public void doStep() {
 		Position p = calculateNextPossiblePosition();
-		System.out.println("next p: " + p);
-		if(p != null) setPosition(p);
+		if (p != null) setPosition(p);
 	}
 
     /**
@@ -131,15 +132,18 @@ public abstract class Person extends Circle implements Positionable {
 //        return Double.parseDouble(df.format(val));
 //    }
 
-    public boolean isInNextPathArea() {
-        Position nextPosition = path.get(0);
-        return nextPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
-    }
 
-    public boolean isInGoalArea() {
-        Position targetPosition = path.get(path.size() - 1);
-        return targetPosition.isInRange(this.currentPosition, PERSON_RADIUS * 2);
-    }
+	public boolean isInNextPathArea() {
+		Position nextPosition = path.get(0);
+		return nextPosition.isInRange(this.currentPosition, (int) ConfigModel.getInstance().getPersonRadius() * 2);
+	}
+
+
+	public boolean isInGoalArea() {
+		Position targetPosition = path.get(path.size() - 1);
+		return targetPosition.isInRange(this.currentPosition, (int) ConfigModel.getInstance().getPersonRadius() * 2);
+	}
+
 
     public ArrayList<Position> getOldPositions() {
         return oldPositions;
@@ -164,6 +168,12 @@ public abstract class Person extends Circle implements Positionable {
     public int getAge() {
         return age;
     }
+
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 
 	public double getSpeed() {
 		return speed;
