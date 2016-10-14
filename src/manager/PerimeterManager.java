@@ -17,6 +17,8 @@ public class PerimeterManager {
     private Vector<Vector<Perimeter>> perimeters;
     private long numberOfPerimetersY;
     private long numberOfPerimetersX;
+    ConfigModel config = ConfigModel.getInstance();
+    private double perimeterSize = config.getPersonRadius() * 10;
 
     private PerimeterManager() {
     }
@@ -29,11 +31,9 @@ public class PerimeterManager {
 
 
     public void initializeAll() {
-        ConfigModel config = ConfigModel.getInstance();
         Double height = config.getRoomHeight();
         Double width = config.getRoomWidth();
 
-        double perimeterSize = config.getPersonRadius() * 10;
 	    this.numberOfPerimetersY = Math.round(height.intValue() / perimeterSize);
 	    this.numberOfPerimetersX = Math.round(width.intValue() / perimeterSize);
 	    this.perimeters = new Vector<>();
@@ -48,36 +48,47 @@ public class PerimeterManager {
     }
 
     public void registerPerson(Person person){
-	    for (int i = 0; i < this.numberOfPerimetersX; i++)
-		    for (int j = 0; j < this.numberOfPerimetersY; j++)
-			    if (this.perimeters.get(i).get(j).isInRange(person.getCurrentPosition()))
-				    this.perimeters.get(i).get(j).register(person);
-	    if (person.getCurrentPerimeter() == null)
+        Perimeter perimeter = getCurrentPerimeter(person.getCurrentPosition());
+        if (perimeter == null) setInitialPerimeter();
+        for (Perimeter neigh : perimeter.getNeighbors()) {
+            if (neigh.isInRange(person.getCurrentPosition()))
+                neigh.register(person);
+        }
+
+        if (person.getCurrentPosition() == null)
             throw new RuntimeException("No Perimeter for Person found " + person.getCurrentPosition());
     }
 
-    public Vector<Perimeter> getNeighbors(Perimeter perimeter) {
+    private void setInitialPerimeter() {
+
+    }
+
+    public Vector<Perimeter> getNeighbors(Position position) {
+        Perimeter perimeter = getCurrentPerimeter(position);
         int i = perimeter.getHorizontalArrayPosition() - 1;
         int j = perimeter.getVerticalArrayPosition() - 1;
         Vector<Perimeter> neighbors = new Vector<>();
 	    for (int a = i; a <= i + 2; a++)
 		    for (int b = j; b <= j + 2; b++)
-			    if (i > 0 && i < this.perimeters.size())
-				    if (j > 0 && j < this.perimeters.get(i).size())
-					    neighbors.add(this.perimeters.get(i).get(j));
+                if (i >= 0 && i < this.perimeters.size() && j >= 0 && j < this.perimeters.get(i).size())
+                    neighbors.add(this.perimeters.get(i).get(j));
 	    return neighbors;
     }
 
-    public void unregisterPerson(Person person){
-        Perimeter p = person.getCurrentPerimeter();
-        if (p != null && p.getRegisteredPersons().contains(person)) p.getRegisteredPersons().remove(person);
-        person.setCurrentPerimeter(null);
+    public void unregisterPerson(Person person, Perimeter perimeter) {
+        if (perimeter.getRegisteredPersons().contains(person)) perimeter.getRegisteredPersons().remove(person);
     }
 
     public void movePersonRegistration(Person person) {
-//        System.out.println("reregister");
-	    this.unregisterPerson(person);
-	    this.registerPerson(person);
+        Perimeter currentPerimeter = getCurrentPerimeter(person.getCurrentPosition());
+        this.registerPerson(person);
+        this.unregisterPerson(person, currentPerimeter);
+    }
+
+    public Perimeter getCurrentPerimeter(Position position) {
+        int perimeterI = ((int) Math.floor(position.getXValue())) % (int) numberOfPerimetersX;
+        int perimeterJ = ((int) Math.floor(position.getXValue())) % (int) numberOfPerimetersY;
+        return perimeters.get(perimeterI).get(perimeterJ);
     }
 
     public List<Perimeter> getAllNodes() {

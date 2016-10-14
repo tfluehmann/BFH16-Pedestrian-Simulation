@@ -14,10 +14,7 @@ import model.areas.Obstacle;
 import model.areas.SpawnArea;
 import model.persons.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -25,11 +22,12 @@ import java.util.Random;
 public class Room extends Pane {
 
 
-	private final List<Person> passivePersons = new ArrayList<>();
+	private final Vector<Person> passivePersons = new Vector<>();
 	private final PerimeterManager perimeterManager = PerimeterManager.getInstance();
 	private final ArrayList<Obstacle> obstacles = new ArrayList();
 	private final ConfigModel config = ConfigModel.getInstance();
-	private List<Person> persons = new ArrayList<>();
+	private Vector<Person> persons = new Vector<>();
+	private Thread simulation;
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
@@ -69,7 +67,13 @@ public class Room extends Pane {
 		for (int i = 0; i < this.config.getTotalPersons(); i++)
 			this.spawnPerson(ga.getGoalPoint());
 
-		//this.getChildren().addAll(perimeterManager.getAllNodes());
+//		for(Person p : persons){
+//			System.out.println("Perimeter from person :"+p.getCurrentPerimeter());
+//			System.out.println("Position from person :"+p.getCurrentPosition());
+//			System.out.println("perimeter includes person "+ p.getCurrentPerimeter().isInRange(p.getCurrentPosition()));
+//		}
+
+		this.getChildren().addAll(perimeterManager.getAllNodes());
 		getChildren().addAll(this.persons);
 	}
 
@@ -126,14 +130,18 @@ public class Room extends Pane {
 			public Void call() throws Exception {
 				int i = 0;
                 while (!isSimulationFinished()) {
-                    handlePersonsInRange();
-                    Platform.runLater(() -> {
-						long seed = System.nanoTime();
-                        Collections.shuffle(persons, new Random(seed));
-                        persons.forEach(Person::doStep);
-                    });
+					Map<Person, Position> newPositions = new HashMap<>();
+					handlePersonsInRange();
+					for (Person p : persons) {
+						newPositions.put(p, p.calculateStep());
+					}
+					Platform.runLater(() -> {
+						newPositions.forEach((k, v) -> {
+							if (v != null) k.setPosition(v);
+						});
+					});
 					this.updateMessage(++i + " seconds");
-					Thread.sleep(30);
+					Thread.sleep(20);
 				}
 				System.out.println("finished simulation");
 				return null;
@@ -141,13 +149,12 @@ public class Room extends Pane {
 		};
 		time.textProperty().bind(task.messageProperty());
 
-		Thread th = new Thread(task);
-		th.setDaemon(true);
-		th.start();
+		simulation = new Thread(task);
+		simulation.start();
 	}
 
 	private void handlePersonsInRange() {
-		ArrayList<Person> newPersons = new ArrayList<>();
+		Vector<Person> newPersons = new Vector<>();
 		for (Person p : this.persons)
 			if (p.isInGoalArea())
 	            this.passivePersons.add(p);

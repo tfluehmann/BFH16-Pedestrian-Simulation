@@ -24,7 +24,6 @@ public abstract class Person extends Circle {
 	protected PathManager pathManager = new PathManager();
 	protected ConfigModel config = ConfigModel.getInstance();
 	// protected Character character;
-	protected Perimeter currentPerimeter;
 
 
 	public Person() {
@@ -47,9 +46,8 @@ public abstract class Person extends Circle {
 	 * Calculates the vector and the next position depending on the step size
 	 * @return next Position
 	 */
-	public void doStep() {
-		Position p = this.calculateNextPossiblePosition();
-		if (p != null) this.setPosition(p);
+	public Position calculateStep() {
+		return this.calculateNextPossiblePosition();
 	}
 
     /**
@@ -60,6 +58,7 @@ public abstract class Person extends Circle {
 		int tries = 1;
 //		System.out.println("getting " + this.getPath().);
 		Position nextTarget = this.pathManager.getPath().getFirst();
+		//System.out.println("next target. "+nextTarget);
 		while (tries < 5) {
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
@@ -86,14 +85,17 @@ public abstract class Person extends Circle {
 
 	private boolean isNewPositionAllowed(Position position) {
 		if(position == null) return false;
-		if (this.currentPerimeter == null) PerimeterManager.getInstance().registerPerson(this);
-		Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
-		for (Perimeter perimeter : neighPerimeters)
+		Vector<Perimeter> neighPerimeters = PerimeterManager.getInstance().getNeighbors(this.currentPosition);
+
+		for (Perimeter perimeter : neighPerimeters) {
+//			System.out.println("neihbor perimeter has " + perimeter.getRegisteredPersons().size() + " persons");
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
 				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
+//				System.out.println("collission: " + collision);
 				if (collision) return false;
 			}
+		}
 		return true;
 	}
 
@@ -103,14 +105,13 @@ public abstract class Person extends Circle {
 	 * unregisters in the current perimeter and registers in the new one if needed
 	 * @param position
 	 */
-	private void setPosition(Position position) {
+	public void setPosition(Position position) {
 		this.oldPositions.add(new Position(this.currentPosition.getXValue(),
 				this.currentPosition.getYValue()));
 		this.currentPosition.setX(position.getXValue());
 		this.currentPosition.setY(position.getYValue());
 		if (this.isInNextPathArea() && !this.isInGoalArea()) this.pathManager.getPath().removeFirst();
-		if (!this.currentPerimeter.isInRange(this.getCurrentPosition()))
-			PerimeterManager.getInstance().movePersonRegistration(this);
+		PerimeterManager.getInstance().movePersonRegistration(this);
 	}
 
 	public boolean isColliding(double x, double y, Person otherPerson) {
@@ -155,14 +156,6 @@ public abstract class Person extends Circle {
 
 	public void setSpeed(double speed) {
 		this.speed = speed;
-	}
-
-	public Perimeter getCurrentPerimeter() {
-		return this.currentPerimeter;
-	}
-
-	public void setCurrentPerimeter(Perimeter currentPerimeter) {
-		this.currentPerimeter = currentPerimeter;
 	}
 
 	public PathManager getPathManager() {

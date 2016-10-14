@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import manager.PerimeterManager;
 import model.persons.Person;
 
@@ -9,7 +11,7 @@ import java.util.Vector;
 /**
  * Created by fluth1 on 30/09/16.
  */
-public class Perimeter {
+public class Perimeter extends Rectangle {
 
     private final Position position;
     private final double height;
@@ -26,28 +28,32 @@ public class Perimeter {
         this.width = width;
         this.verticalArrayPosition = verticalArrayPosition;
         this.horizontalArrayPosition = horizontalArrayPosition;
-//        this.heightProperty().set(this.heigth);
-//        this.widthProperty().set(this.width);
-//        this.relocate(this.position.getXValue(), this.position.getYValue());
-//        this.setStyle("-fx-stroke: aqua;");
+        this.heightProperty().set(this.height);
+        this.widthProperty().set(this.width);
+        this.xProperty().bind(this.position.getXProperty());
+        this.yProperty().bind(this.position.getYProperty());
+        this.setStyle("-fx-stroke: aqua; -fx-background-color: transparent;");
+        this.setFill(Color.TRANSPARENT);
+
     }
 
-
-
     public boolean isInRange(Position position){
-        return (this.position.getXValue() <= position.getXValue() || position.getXValue() <= this.position.getXValue() + this.width) &&
-                (this.position.getYValue() <= position.getYValue() || position.getYValue() <= this.position.getYValue() + this.height);
+        return (this.position.getXValue() <= position.getXValue() &&
+                position.getXValue() <= this.position.getXValue() + this.width &&
+                this.position.getYValue() <= position.getYValue() &&
+                position.getYValue() <= this.position.getYValue() + this.height);
 
     }
 
     public void register(Person person) {
         this.registeredPersons.add(person);
-        person.setCurrentPerimeter(this);
     }
 
     public Vector<Perimeter> getNeighbors() {
         PerimeterManager pm  = PerimeterManager.getInstance();
-        return pm.getNeighbors(this);
+        Vector<Perimeter> neigh = pm.getNeighbors(this.position);
+//        System.out.println("neighbor perimeters "+neigh.size());
+        return neigh;
     }
 
     public int getVerticalArrayPosition() {

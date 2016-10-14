@@ -127,13 +127,10 @@ public class PathManager {
     private Position getMinimum(Set<Position> vertexes) {
         Position minimum = null;
         for (Position vertex : vertexes) {
-            if (minimum == null) {
+            if (minimum == null)
                 minimum = vertex;
-            } else {
-                if (this.getShortestDistance(vertex) < this.getShortestDistance(minimum)) {
+            else if (this.getShortestDistance(vertex) < this.getShortestDistance(minimum))
                     minimum = vertex;
-                }
-            }
         }
         return minimum;
     }
@@ -173,6 +170,7 @@ public class PathManager {
         }
         // Put it into the correct order
         Collections.reverse(path);
+        System.out.println("calculated Path: " + path);
     }
 
     private Position getKey(Position pos) {

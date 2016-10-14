@@ -30,9 +30,10 @@ public class BaseViewController implements Initializable{
     private Button resetButton;
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
         startButton.setOnAction((event) -> {
             simulationRoom.start(time);
+            startButton.setDisable(true);
+
         });
         // initialize your logic here: all @FXML variables will have been injected
 
