@@ -58,8 +58,8 @@ public class Obstacle extends Area {
             a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
             b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
 
-            if (this.includes(a) && !this.intersects(a.getXValue(), a.getYValue())) this.vertices.add(a);
-            if (this.includes(b) && !this.intersects(b.getXValue(), b.getYValue())) this.vertices.add(b);
+            if (this.includes(a) && !this.contains(a.getXValue(), a.getYValue())) this.vertices.add(a);
+            if (this.includes(b) && !this.contains(b.getXValue(), b.getYValue())) this.vertices.add(b);
         }
     }
 
