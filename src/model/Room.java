@@ -24,53 +24,55 @@ import java.util.Random;
  */
 public class Room extends Pane {
 
+
+	private final List<Person> passivePersons = new ArrayList<>();
+	private final PerimeterManager perimeterManager = PerimeterManager.getInstance();
+	private final ArrayList<Obstacle> obstacles = new ArrayList();
+	private final ConfigModel config = ConfigModel.getInstance();
 	private List<Person> persons = new ArrayList<>();
-	private List<Person> passivePersons = new ArrayList<>();
-    private PerimeterManager perimeterManager = PerimeterManager.getInstance();
-	private ArrayList<Obstacle> obstacles = new ArrayList();
+	private final ArrayList<Obstacle> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
-	public Room() throws InterruptedException {
-        super();
-        ConfigModel config = ConfigModel.getInstance();
-        this.setPrefSize(config.getRoomWidth(), config.getRoomHeight());
-        perimeterManager.setRoom(this);
-        perimeterManager.initializeAll();
+
+	public Room() {
+		setPrefSize(this.config.getRoomWidth(), this.config.getRoomHeight());
+		this.perimeterManager.setRoom(this);
+		this.perimeterManager.initializeAll();
 
         double x, y;
-        if (config.getRoomWidth() < config.ROOM_WIDTH_ORIGIN)
-            x = config.getRoomWidth();
-        else
+		if (this.config.getRoomWidth() < ConfigModel.ROOM_WIDTH_ORIGIN)
+			x = this.config.getRoomWidth();
+		else
             x = 0.0;
-        if (config.getRoomHeight() < config.ROOM_HEIGHT_ORIGIN)
-            y = config.getRoomHeight();
-        else
+		if (this.config.getRoomHeight() < ConfigModel.ROOM_HEIGHT_ORIGIN)
+			y = this.config.getRoomHeight();
+		else
             y = 0.0;
 
-		if (config.getRoomHeight() != config.ROOM_HEIGHT_ORIGIN || config.getRoomWidth() != config.ROOM_WIDTH_ORIGIN) {
+		if (this.config.getRoomHeight() != ConfigModel.ROOM_HEIGHT_ORIGIN || this.config.getRoomWidth() != ConfigModel.ROOM_WIDTH_ORIGIN) {
 			Obstacle border = new Obstacle(x, y,
-					config.ROOM_WIDTH_ORIGIN, y,
-					config.ROOM_WIDTH_ORIGIN, config.ROOM_HEIGHT_ORIGIN,
-					x, config.ROOM_HEIGHT_ORIGIN);
-			this.getChildren().add(border);
+					ConfigModel.ROOM_WIDTH_ORIGIN, y,
+					ConfigModel.ROOM_WIDTH_ORIGIN, ConfigModel.ROOM_HEIGHT_ORIGIN,
+					x, ConfigModel.ROOM_HEIGHT_ORIGIN);
+			getChildren().add(border);
 		}
 
-		SpawnArea sa = new SpawnArea(config.getSpawnWidth(), config.getSpawnHeight(), config.getSpawnPosition());
-		GoalArea ga = new GoalArea(config.getGoalWidth(), config.getGoalHeight(), config.getGoalPosition());
+		SpawnArea sa = new SpawnArea(this.config.getSpawnWidth(), this.config.getSpawnHeight(), this.config.getSpawnPosition());
+		GoalArea ga = new GoalArea(this.config.getGoalWidth(), this.config.getGoalHeight(), this.config.getGoalPosition());
 
-        Obstacle o1 = new Obstacle(100.0, 200.0, 400.0, 200.0, 150.0, 220.0, 100.0, 250.0);
-		this.getChildren().addAll(o1, sa, ga);
+		Obstacle o1 = new Obstacle(100.0, 100.0, 450.0, 300.0, 500.0, 450.0, 100.0, 200.0);
+		getChildren().addAll(o1, sa, ga);
 
-		obstacles.add(o1);
+		this.obstacles.add(o1);
 		for (Position p : o1.getVertices())
-            this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
+			getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
-		for (int i = 0; i < config.getTotalPersons(); i++)
-			spawnPerson(ga.getGoalPoint());
+		for (int i = 0; i < this.config.getTotalPersons(); i++)
+			this.spawnPerson(ga.getGoalPoint());
 
 		//this.getChildren().addAll(perimeterManager.getAllNodes());
-		this.getChildren().addAll(persons);
+		getChildren().addAll(this.persons);
 	}
 
 	private void spawnPerson(Position goal) {
@@ -79,43 +81,43 @@ public class Room extends Pane {
 		 * Created by suter1 on 05.10.2016
 		 */
 		Random rnd = new Random();
-		ConfigModel config = ConfigModel.getInstance();
 		int type;
 			Person newPerson;
 			type = rnd.nextInt(3);
 			switch (type) {
 				case 0:
-					newPerson = new YoungPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					newPerson = new YoungPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 					break;
 				case 1:
-					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 					break;
 				case 2:
-					newPerson = new OldPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					newPerson = new OldPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 					break;
 				case 3:
-					newPerson = new HandicappedPerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					newPerson = new HandicappedPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 					break;
 				default:
-					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
+					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 					break;
 			}
 
-		for (Obstacle o : obstacles) {
+		for (Obstacle o : this.obstacles) {
 			newPerson.getPathManager().getVertices().addAll(o.getVertices());
 			newPerson.getPathManager().getObstacleEdges().addAll(o.getEdges());
 		}
 
 		newPerson.getPathManager().getVertices().add(goal);
 		newPerson.getPathManager().getVertices().add(newPerson.getCurrentPosition());
-			perimeterManager.registerPerson(newPerson);
+		this.perimeterManager.registerPerson(newPerson);
 		newPerson.getPathManager().findValidEdges();
 
 		newPerson.getPathManager().findShortestPath(newPerson.getCurrentPosition());
 		List<Position> positions = newPerson.getPathManager().getPath(goal);
 		newPerson.getPath().addAll(positions);
-		this.getChildren().addAll(newPerson.getPathManager().getEdges());
-			persons.add(newPerson);
+		System.out.println(newPerson.getPath());
+		getChildren().addAll(newPerson.getPathManager().getEdges());
+		this.persons.add(newPerson);
 
 
 	}
@@ -125,18 +127,18 @@ public class Room extends Pane {
 			@Override
 			public Void call() throws Exception {
 				int i = 0;
-				while (!isSimulationFinished()) {
-					handlePersonsInRange();
+				while (!Room.this.isSimulationFinished()) {
+					Room.this.handlePersonsInRange();
 					Platform.runLater(() -> {
 						/**
 						 * shuffle before every run because there might be
 						 * unsolvable issues if it is always the same order
 						 */
 						long seed = System.nanoTime();
-						Collections.shuffle(persons, new Random(seed));
-						persons.forEach(Person::doStep);
+						Collections.shuffle(Room.this.persons, new Random(seed));
+						Room.this.persons.forEach(Person::doStep);
 					});
-					updateMessage(++i + " seconds");
+					this.updateMessage(++i + " seconds");
 					Thread.sleep(30);
 				}
 				System.out.println("finished simulation");
@@ -152,18 +154,18 @@ public class Room extends Pane {
 
 	private void handlePersonsInRange() {
 		ArrayList<Person> newPersons = new ArrayList<>();
-        for (Person p : persons)
-            if (p.isInGoalArea())
-				passivePersons.add(p);
+		for (Person p : this.persons)
+			if (p.isInGoalArea())
+	            this.passivePersons.add(p);
 			else
 				newPersons.add(p);
 
-		this.persons = newPersons;
+		persons = newPersons;
 	}
 
 	private boolean isSimulationFinished() {
-        for (Person p : persons) {
-            if (!p.isInGoalArea())
+		for (Person p : this.persons) {
+			if (!p.isInGoalArea())
                 return false;
 		}
 		return true;

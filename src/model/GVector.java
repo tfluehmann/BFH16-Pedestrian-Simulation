@@ -8,12 +8,11 @@ import javafx.scene.shape.Line;
  */
 public class GVector extends Line {
     public static final double EPSILON = 0.00001;
-
+    private final double x;
+    private final double y;
     private double startPointX;
     private double startPointY;
     private Position startPosition;
-    private double x;
-    private double y;
     private Position endPosition;
     private double endPointX;
     private double endPointY;
@@ -24,18 +23,18 @@ public class GVector extends Line {
     }
 
     public GVector(double startX, double startY, double endX, double endY) {
-        this.startPointX = startX;
-        this.startPointY = startY;
-        this.endPointX = endX;
-        this.endPointY = endY;
-        this.x = (endPointX - startPointX);
-        this.y = (endPointY - startPointY);
-        this.startPosition = new Position(startX, startY);
-        this.endPosition = new Position(endX, endY);
-        this.startXProperty().bind(this.startPosition.getXProperty());
-        this.startYProperty().bind(this.startPosition.getYProperty());
-        this.endXProperty().bind(this.endPosition.getXProperty());
-        this.endYProperty().bind(this.endPosition.getYProperty());
+        startPointX = startX;
+        startPointY = startY;
+        endPointX = endX;
+        endPointY = endY;
+        x = this.endPointX - this.startPointX;
+        y = this.endPointY - this.startPointY;
+        startPosition = new Position(startX, startY);
+        endPosition = new Position(endX, endY);
+        startXProperty().bind(startPosition.getXProperty());
+        startYProperty().bind(startPosition.getYProperty());
+        endXProperty().bind(endPosition.getXProperty());
+        endYProperty().bind(endPosition.getYProperty());
     }
 
     public GVector(Position startPosition, Position endPosition) {
@@ -47,7 +46,7 @@ public class GVector extends Line {
      * @return length
      */
     public double length() {
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
 
     /**
@@ -56,15 +55,15 @@ public class GVector extends Line {
      * @return
      */
     public GVector norm() {
-        return new GVector(this.getStartPointX(), this.getStartPointY(), 1 / length() * x, 1 / length() * y);
+        return new GVector(getStartPointX(), getStartPointY(), 1 / this.length() * this.x, 1 / this.length() * this.y);
     }
 
     public GVector invert() {
-        return new GVector(this.getStartPointX(), this.getStartPointY(), this.getEndPointX() * (-1), this.getEndPointY() * (-1));
+        return new GVector(getStartPointX(), getStartPointY(), getEndPointX() * -1, getEndPointY() * -1);
     }
 
     public GVector otherEdge() {
-        return new GVector(this.getEndPosition(), this.getStartPosition());
+        return new GVector(getEndPosition(), getStartPosition());
     }
 
     /**
@@ -89,8 +88,8 @@ public class GVector extends Line {
     public boolean isCrossedWith(GVector vector) {
         double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
         double epsilon = 0.0001;
-        s10_x = this.getEndPointX() - this.getStartPointX();
-        s10_y = this.getEndPointY() - this.getStartPointY();
+        s10_x = getEndPointX() - getStartPointX();
+        s10_y = getEndPointY() - getStartPointY();
         s32_x = vector.getEndPointX() - vector.getStartPointX();
         s32_y = vector.getEndPointY() - vector.getStartPointY();
 
@@ -98,17 +97,17 @@ public class GVector extends Line {
         if (denom == 0) return false; //Collinear
 
         boolean denomPositive = denom > 0;
-        s02_x = this.getStartPointX() - vector.getStartPointX();
-        s02_y = this.getStartPointY() - vector.getStartPointY();
+        s02_x = getStartPointX() - vector.getStartPointX();
+        s02_y = getStartPointY() - vector.getStartPointY();
         s_numer = s10_x * s02_y - s10_y * s02_x;
-        if ((s_numer < epsilon) == denomPositive)
+        if (s_numer < epsilon == denomPositive)
             return false; // No collision
 
         t_numer = s32_x * s02_y - s32_y * s02_x;
-        if ((t_numer < epsilon) == denomPositive)
+        if (t_numer < epsilon == denomPositive)
             return false; // No collision
 
-        if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive))
+        if (s_numer > denom == denomPositive || t_numer > denom == denomPositive)
             return false; // No collision
         // Collision detected
         t = t_numer / denom;
@@ -118,10 +117,10 @@ public class GVector extends Line {
     }
 
     private boolean isOnVector(Position position) {
-        double lambdaX = (position.getXValue() - this.startPointX) / this.endPointX;
-        double lambdaY = (position.getYValue() - this.startPointY) / this.endPointY;
-        System.out.println("lx = " + lambdaX + " ly= " + lambdaY);
-        return (lambdaX >= 0.0 && lambdaX <= 1.0 && lambdaY >= 0.0 && lambdaY <= 1.0);
+        double lambdaX = (position.getXValue() - startPointX) / endPointX;
+        double lambdaY = (position.getYValue() - startPointY) / endPointY;
+//        System.out.println("lx = " + lambdaX + " ly= " + lambdaY);
+        return lambdaX >= 0.0 && lambdaX <= 1.0 && lambdaY >= 0.0 && lambdaY <= 1.0;
     }
 
     /**
@@ -134,10 +133,10 @@ public class GVector extends Line {
      * start + norm(3, -5) * length and end + norm(3, -5) * length
      */
     public GVector moveParallelLeft(Position target) {
-        GVector parallelNormVector = new GVector(target.getYValue() - this.getStartPointY(),
-                (target.getXValue() - this.getStartPointX()) * (-1));
+        GVector parallelNormVector = new GVector(target.getYValue() - getStartPointY(),
+                (target.getXValue() - getStartPointX()) * -1);
         return new GVector(
-                new Position(startPointX, startPointY),
+                new Position(this.startPointX, this.startPointY),
                 new Position(target.getXValue() + parallelNormVector.norm().getX() * parallelNormVector.length(),
                         target.getYValue() + parallelNormVector.norm().getY() * parallelNormVector.length()));
     }
@@ -147,47 +146,47 @@ public class GVector extends Line {
      */
     public GVector moveParallelRight(Position target) {
         GVector parallelNormVector = new GVector((target.getYValue() -
-                this.getStartPointY()) * (-1),
-                (target.getXValue() - this.getStartPointX()));
+                getStartPointY()) * -1,
+                target.getXValue() - getStartPointX());
         return new GVector(
-                new Position(startPointX, startPointY),
+                new Position(this.startPointX, this.startPointY),
                 new Position(target.getXValue() + parallelNormVector.norm().getX() * parallelNormVector.length(),
                         target.getYValue() + parallelNormVector.norm().getY() * parallelNormVector.length()));
     }
 
     public Position getLambdaPosition(double lambda) {
-        return new Position(startPointX + x * lambda, startPointY + y * lambda);
+        return new Position(this.startPointX + this.x * lambda, this.startPointY + this.y * lambda);
     }
 
     public double getStartPointX() {
-        return startPointX;
+        return this.startPointX;
     }
 
     public double getStartPointY() {
-        return startPointY;
+        return this.startPointY;
     }
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     public double getEndPointX() {
-        return endPointX;
+        return this.endPointX;
     }
 
     public double getEndPointY() {
-        return endPointY;
+        return this.endPointY;
     }
 
     public Position getStartPosition() {
-        return startPosition;
+        return this.startPosition;
     }
 
     public Position getEndPosition() {
-        return endPosition;
+        return this.endPosition;
     }
 }

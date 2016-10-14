@@ -8,27 +8,27 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Position implements Cloneable {
 
-    private DoubleProperty x;
-    private DoubleProperty y;
+	private final DoubleProperty x;
+	private final DoubleProperty y;
 
     public Position(double x, double y){
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
     }
     public double getXValue() {
-        return x.get();
+	    return this.x.get();
     }
 
     public DoubleProperty getXProperty() {
-        return x;
+	    return this.x;
     }
 
     public double getYValue() {
-        return y.get();
+	    return this.y.get();
     }
 
     public DoubleProperty getYProperty() {
-        return y;
+	    return this.y;
     }
 
     public void setY(double y) {
@@ -40,28 +40,29 @@ public class Position implements Cloneable {
     }
 
     public String toString(){
-        return "X coordinate: "+ getXValue() + " Y coordinate: " + getYValue();
+	    return "X coordinate: " + this.getXValue() + " Y coordinate: " + this.getYValue();
     }
 
-    public boolean isInRange(Position position, int range) {
-        return (this.getXValue() - position.getXValue() < range && this.getYValue() - position.getYValue()  < range);
-    }
+
+	public boolean isInRange(Position position, double range) {
+		return getXValue() - position.getXValue() < range && getYValue() - position.getYValue() < range;
+	}
 
     public Position add(Position a) {
-        return new Position(this.getXValue() + a.getXValue(), this.getYValue() + a.getYValue());
+	    return new Position(getXValue() + a.getXValue(), getYValue() + a.getYValue());
     }
 
     public Position multiply(double edgeExtender) {
-        return new Position(this.getXValue() * edgeExtender, this.getYValue() * edgeExtender);
+	    return new Position(getXValue() * edgeExtender, getYValue() * edgeExtender);
     }
 
     public boolean equals(Object pos) {
         double epsilon = 0.0001;
         Position position = (Position) pos;
         if (position == null) return false;
-        double xComparision = Math.abs(this.getXValue() - position.getXValue());
-        double yComparision = Math.abs(this.getYValue() - position.getYValue());
-        //  System.out.println("comparision x: "+xComparision + " y: "+yComparision);
+	    double xComparision = Math.abs(getXValue() - position.getXValue());
+	    double yComparision = Math.abs(getYValue() - position.getYValue());
+	    //  System.out.println("comparision x: "+xComparision + " y: "+yComparision);
         return xComparision < epsilon && yComparision < epsilon;
     }
 }

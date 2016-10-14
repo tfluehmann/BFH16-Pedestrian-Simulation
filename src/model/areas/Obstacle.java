@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class Obstacle extends Area {
     public static final double EDGE_EXTENDER = 20.0;
-    private Position position;
-    private ArrayList<Position> corners;
+    private final Position position;
+    private final ArrayList<Position> corners;
     private ArrayList<Position> vertices = new ArrayList<>();
 
     /**
@@ -22,18 +22,21 @@ public class Obstacle extends Area {
      */
     public Obstacle(double... points) {
         super(points);
-        this.corners = new ArrayList<>();
-        this.vertices = new ArrayList<>();
+        corners = new ArrayList<>();
+        vertices = new ArrayList<>();
 
         for (int i = 0; i < points.length; i += 2) {
-            this.corners.add(new Position(points[i], points[i + 1]));
+            corners.add(new Position(points[i], points[i + 1]));
         }
-        calculateVertices();
+        this.calculateVertices();
 
-        this.position = new Position(points[0], points[1]);
-        this.setFill(Color.BLACK);
+        position = new Position(points[0], points[1]);
+        setFill(Color.BLACK);
     }
 
+
+    @Override
+    @Override
     public List<Position> getCorners() {
         return this.corners;
     }
@@ -53,11 +56,11 @@ public class Obstacle extends Area {
             a = this.corners.get(i);
             GVector c = new GVector(a.getXValue(), a.getYValue(), b.getXValue(), b.getYValue());
             GVector unitVector = c.norm();
-            a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
-            b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
+            a = unitVector.invert().getEndPosition().multiply(Obstacle.Obstacle.EDGE_EXTENDER).add(a);
+            b = unitVector.getEndPosition().multiply(Obstacle.Obstacle.EDGE_EXTENDER).add(b);
 
-            if (includes(a)) this.vertices.add(a);
-            if (includes(b)) this.vertices.add(b);
+            if (this.includes(a) && !this.intersects(a.getXValue(), a.getYValue())) this.vertices.add(a);
+            if (this.includes(b) && !this.intersects(b.getXValue(), b.getYValue())) this.vertices.add(b);
         }
     }
 
@@ -66,10 +69,10 @@ public class Obstacle extends Area {
      */
     private boolean includes(Position position) {
         ConfigModel config = ConfigModel.getInstance();
-        return (position.getXValue() > 0 &&
+        return position.getXValue() > 0 &&
                 position.getXValue() < config.getRoomWidth() &&
                 position.getYValue() > 0 &&
-                position.getYValue() < config.getRoomHeight());
+                position.getYValue() < config.getRoomHeight();
     }
 
     public List<Position> getVertices() {

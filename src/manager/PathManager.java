@@ -13,32 +13,30 @@ import java.util.*;
  * dijkstra --> clearly inspired and mostly copied from http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html#shortestpath_graph (08.10.16)
  */
 public class PathManager {
-    private List<Position> vertices = new ArrayList<>();
-    private Collection<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
-    private List<GVector> edges = new ArrayList<>();
-
+    private static PathManager instance;
+    private final List<Position> vertices = new ArrayList<>();
+    private final Collection<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
+    private final List<GVector> edges = new ArrayList<>();
     private Set<Position> settledNodes;
     private Set<Position> unSettledNodes;
     private Map<Position, Position> predecessors;
     private Map<Position, Double> distance;
-
-    private static PathManager instance;
 
 
     /**
      * Fucking magic just took us 10h of Fluch und Hass
      */
     public void findValidEdges() {
-        for (int i = 0; i < vertices.size(); i++) {
-            Position p = vertices.get(i);
-            for (int j = i + 1; j < vertices.size(); j++) {
+        for (int i = 0; i < this.vertices.size(); i++) {
+            Position p = this.vertices.get(i);
+            for (int j = i + 1; j < this.vertices.size(); j++) {
 //                System.out.println("vertices size: "+ vertices.size() + " j is "+ j + " vertex: " + vertices.get(j));
-                GVector v = new GVector(p, vertices.get(j));
-                boolean isCrossing = checkAgainstObstacles(v);
+                GVector v = new GVector(p, this.vertices.get(j));
+                boolean isCrossing = this.checkAgainstObstacles(v);
                 if (!isCrossing) {
                     v.setStyle("-fx-stroke: yellow;");
-                    System.out.println("" + v);
-                    edges.add(v);
+//                    System.out.println("" + v);
+                    this.edges.add(v);
                     // edges.add(v.otherEdge());
                 }
             }
@@ -47,7 +45,7 @@ public class PathManager {
 
     private boolean checkAgainstObstacles(GVector v) {
         boolean isCrossing = false;
-        for (GVector obstacleVector : obstacleEdges)
+        for (GVector obstacleVector : this.obstacleEdges)
             if (obstacleVector.isCrossedWith(v)) {
                 isCrossing = true;
                 v.setStyle("-fx-stroke: blue;");
@@ -65,59 +63,59 @@ public class PathManager {
      * @return
      */
     public void findShortestPath(Position startPosition) {
-        System.out.println("edge nodes " + edges.size());
-        settledNodes = new HashSet<>();
-        unSettledNodes = new HashSet<>();
-        distance = new HashMap<>();
-        predecessors = new HashMap<>();
-        distance.put(startPosition, 0.0);
-        unSettledNodes.add(startPosition);
-        while (unSettledNodes.size() > 0) {
+//        System.out.println("edge nodes " + edges.size());
+        this.settledNodes = new HashSet<>();
+        this.unSettledNodes = new HashSet<>();
+        this.distance = new HashMap<>();
+        this.predecessors = new HashMap<>();
+        this.distance.put(startPosition, 0.0);
+        this.unSettledNodes.add(startPosition);
+        while (this.unSettledNodes.size() > 0) {
             //set all to double.max
-            Position node = getMinimum(unSettledNodes);
-            settledNodes.add(node);
-            unSettledNodes.remove(node);
-            findMinimalDistances(node);
+            Position node = this.getMinimum(this.unSettledNodes);
+            this.settledNodes.add(node);
+            this.unSettledNodes.remove(node);
+            this.findMinimalDistances(node);
         }
     }
 
     private void findMinimalDistances(Position node) {
-        List<Position> adjacentNodes = getNeighbors(node);
-        System.out.println("neighbor nodes: " + adjacentNodes.size());
+        List<Position> adjacentNodes = this.getNeighbors(node);
+//        System.out.println("neighbor nodes: " + adjacentNodes.size());
         for (Position target : adjacentNodes) {
-            System.out.println("do magic");
-            double shortestTOTarget = getShortestDistance(target);
+//            System.out.println("do magic");
+            double shortestTOTarget = this.getShortestDistance(target);
 
-            if (shortestTOTarget > getShortestDistance(node) + getDistance(node, target)) {
-                distance.put(target, getShortestDistance(node) + getDistance(node, target));
-                System.out.println("from target: " + target + " to node: " + node + "  dist: " + distance.get(distance.size() - 1));
-                predecessors.put(target, node);
-                System.out.println("predecessors: " + predecessors.size());
-                unSettledNodes.add(target);
+            if (shortestTOTarget > this.getShortestDistance(node) + this.getDistance(node, target)) {
+                this.distance.put(target, this.getShortestDistance(node) + this.getDistance(node, target));
+//                System.out.println("from target: " + target + " to node: " + node + "  dist: " + distance.get(distance.size() - 1));
+                this.predecessors.put(target, node);
+//                System.out.println("predecessors: " + predecessors.size());
+                this.unSettledNodes.add(target);
             }
         }
     }
 
     private double getDistance(Position node, Position target) {
-        System.out.println("edges: " + edges.size());
-        for (GVector edge : edges) {
+//        System.out.println("edges: " + edges.size());
+        for (GVector edge : this.edges) {
             //  System.out.println("checking distance for "+node+" and "+target + " with edge: "+edge);
-            if ((edge.getStartPosition().equals(node) && edge.getEndPosition().equals(target)) ||
-                    (edge.getStartPosition().equals(target) && edge.getEndPosition().equals(node))) {
-                System.out.println("found matching edge: " + edge);
+            if (edge.getStartPosition().equals(node) && edge.getEndPosition().equals(target) ||
+                    edge.getStartPosition().equals(target) && edge.getEndPosition().equals(node)) {
+//                System.out.println("found matching edge: " + edge);
                 return edge.length();
             }
         }
-        System.out.println("did not find a matching edge");
+//        System.out.println("did not find a matching edge");
         throw new RuntimeException("Should not happen, getDistance and getNeighbors probably have different algorithms");
     }
 
     private List<Position> getNeighbors(Position node) {
         List<Position> neighbors = new ArrayList<>();
-        for (GVector edge : edges)
-            if ((edge.getStartPosition().equals(node) && !isSettled(edge.getEndPosition()))) {
+        for (GVector edge : this.edges)
+            if (edge.getStartPosition().equals(node) && !this.isSettled(edge.getEndPosition())) {
                 neighbors.add(edge.getEndPosition());
-            } else if (edge.getEndPosition().equals(node) && !isSettled(edge.getStartPosition())) {
+            } else if (edge.getEndPosition().equals(node) && !this.isSettled(edge.getStartPosition())) {
                 neighbors.add(edge.getStartPosition());
             }
         return neighbors;
@@ -129,7 +127,7 @@ public class PathManager {
             if (minimum == null) {
                 minimum = vertex;
             } else {
-                if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
+                if (this.getShortestDistance(vertex) < this.getShortestDistance(minimum)) {
                     minimum = vertex;
                 }
             }
@@ -138,11 +136,11 @@ public class PathManager {
     }
 
     private boolean isSettled(Position vertex) {
-        return settledNodes.contains(vertex);
+        return this.settledNodes.contains(vertex);
     }
 
     private double getShortestDistance(Position destination) {
-        Double d = distance.get(destination);
+        Double d = this.distance.get(destination);
         double returnValue;
         if (d == null) {
             returnValue = Double.MAX_VALUE;
@@ -165,16 +163,16 @@ public class PathManager {
         Position step = target;
 
         // check if a path exists
-        System.out.println("looking for: " + target);
-        System.out.println("got: " + getKey(target));
-        if (getKey(step) == null) {
-            System.out.println("target not found: " + target);
+//        System.out.println("looking for: " + target);
+//        System.out.println("got: " + getKey(target));
+        if (this.getKey(step) == null) {
+//            System.out.println("target not found: " + target);
             return null;
         }
         path.add(step);
         Position lastStep = null;
-        while (getKey(step) != null && !step.equals(lastStep)) {
-            System.out.println("last_step = " + lastStep + " this step: " + step);
+        while (this.getKey(step) != null && !step.equals(lastStep)) {
+//            System.out.println("last_step = " + lastStep + " this step: " + step);
             step = getKey(step);
             path.add(step);
             lastStep = step;
@@ -186,23 +184,23 @@ public class PathManager {
     }
 
     private Position getKey(Position pos) {
-        for (Position p : predecessors.keySet()) {
-            if (pos.equals(p)) return predecessors.get(p);
+        for (Position p : this.predecessors.keySet()) {
+            if (pos.equals(p)) return this.predecessors.get(p);
         }
         return null;
     }
 
     public List<Position> getVertices() {
-        return vertices;
+        return this.vertices;
     }
 
     public Collection<GVector> getObstacleEdges() {
-        for (GVector v : obstacleEdges)
+        for (GVector v : this.obstacleEdges)
             v.setStyle("-fx-stroke: red;");
-        return obstacleEdges;
+        return this.obstacleEdges;
     }
 
     public List<GVector> getEdges() {
-        return edges;
+        return this.edges;
     }
 }

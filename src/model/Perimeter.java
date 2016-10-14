@@ -12,17 +12,17 @@ import java.util.Vector;
 public class Perimeter {
     public static final int PERIMETER_WIDHT = 2;
     public static final int PERIMETER_HEIGHT = 2;
-    private Position position;
-    private double heigth;
-    private double width;
-    private int verticalArrayPosition;
-    private int horizontalArrayPosition;
-    private Vector<Person> registredPersons = new Vector<>();
+    private final Position position;
+    private final double height;
+    private final double width;
+    private final int verticalArrayPosition;
+    private final int horizontalArrayPosition;
+    private final Vector<Person> registredPersons = new Vector<>();
 
 
     public Perimeter(Position position, double height, double width, int verticalArrayPosition, int horizontalArrayPosition){
         this.position = position;
-        this.heigth = height;
+        this.height = height;
         this.width = width;
         this.verticalArrayPosition = verticalArrayPosition;
         this.horizontalArrayPosition = horizontalArrayPosition;
@@ -35,13 +35,13 @@ public class Perimeter {
 
 
     public boolean isInRange(Position position){
-        return (((this.position.getXValue() <= position.getXValue()) || (position.getXValue() <= this.position.getXValue() + width)) &&
-                ((this.position.getYValue() <= position.getYValue()) || (position.getYValue() <= this.position.getYValue() + heigth)));
+        return (this.position.getXValue() <= position.getXValue() || position.getXValue() <= this.position.getXValue() + this.width) &&
+                (this.position.getYValue() <= position.getYValue() || position.getYValue() <= this.position.getYValue() + this.height);
 
     }
 
     public void register(Person person) {
-        registredPersons.add(person);
+        this.registredPersons.add(person);
         person.setCurrentPerimeter(this);
     }
 
@@ -51,14 +51,14 @@ public class Perimeter {
     }
 
     public int getVerticalArrayPosition() {
-        return verticalArrayPosition;
+        return this.verticalArrayPosition;
     }
 
     public int getHorizontalArrayPosition() {
-        return horizontalArrayPosition;
+        return this.horizontalArrayPosition;
     }
 
     public List<Person> getRegistredPersons() {
-        return registredPersons;
+        return this.registredPersons;
     }
 }

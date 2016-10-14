@@ -26,9 +26,9 @@ public class PerimeterManager {
 
 
     public static PerimeterManager getInstance(){
-        if(instance == null)
-            instance = new PerimeterManager();
-        return instance;
+	    if (PerimeterManager.instance == null)
+		    PerimeterManager.instance = new PerimeterManager();
+	    return PerimeterManager.instance;
     }
 
 
@@ -38,25 +38,25 @@ public class PerimeterManager {
         Double width = config.getRoomWidth();
 
         double perimeterSize = config.getPersonRadius() * 10;
-        numberOfPerimetersY = Math.round(height.intValue() / perimeterSize);
-        numberOfPerimetersX = Math.round(width.intValue() / perimeterSize);
-        perimeters = new Vector<>();
-        for (int i = 0; i < numberOfPerimetersX; i++) {
-            Vector<Perimeter> currentList = new Vector<>();
-            for (int j = 0; j < numberOfPerimetersY; j++) {
-                currentList.add(new Perimeter(new Position(i * perimeterSize, j * perimeterSize),
+	    this.numberOfPerimetersY = Math.round(height.intValue() / perimeterSize);
+	    this.numberOfPerimetersX = Math.round(width.intValue() / perimeterSize);
+	    this.perimeters = new Vector<>();
+	    for (int i = 0; i < this.numberOfPerimetersX; i++) {
+		    Vector<Perimeter> currentList = new Vector<>();
+		    for (int j = 0; j < this.numberOfPerimetersY; j++) {
+			    currentList.add(new Perimeter(new Position(i * perimeterSize, j * perimeterSize),
                         perimeterSize, perimeterSize, i, j));
             }
-            perimeters.add(currentList);
-        }
+		    this.perimeters.add(currentList);
+	    }
     }
 
     public void registerPerson(Person person){
-        for(int i = 0; i < numberOfPerimetersX; i++)
-            for(int j = 0; j < numberOfPerimetersY; j++)
-                if (perimeters.get(i).get(j).isInRange(person.getCurrentPosition()))
-                    perimeters.get(i).get(j).register(person);
-        if (person.getCurrentPerimeter() == null)
+	    for (int i = 0; i < this.numberOfPerimetersX; i++)
+		    for (int j = 0; j < this.numberOfPerimetersY; j++)
+			    if (this.perimeters.get(i).get(j).isInRange(person.getCurrentPosition()))
+				    this.perimeters.get(i).get(j).register(person);
+	    if (person.getCurrentPerimeter() == null)
             throw new RuntimeException("No Perimeter for Person found " + person.getCurrentPosition());
     }
 
@@ -68,12 +68,12 @@ public class PerimeterManager {
         int i = perimeter.getHorizontalArrayPosition() - 1;
         int j = perimeter.getVerticalArrayPosition() - 1;
         Vector<Perimeter> neighbors = new Vector<>();
-        for(int a = i; a <= (i +2); a++)
-            for(int b = j; b <= (j + 2); b++)
-                if (i > 0 && i < perimeters.size())
-                    if (j > 0 && j < perimeters.get(i).size())
-                        neighbors.add(perimeters.get(i).get(j));
-        return neighbors;
+	    for (int a = i; a <= i + 2; a++)
+		    for (int b = j; b <= j + 2; b++)
+			    if (i > 0 && i < this.perimeters.size())
+				    if (j > 0 && j < this.perimeters.get(i).size())
+					    neighbors.add(this.perimeters.get(i).get(j));
+	    return neighbors;
     }
 
     public void unregisterPerson(Person person){
@@ -83,17 +83,17 @@ public class PerimeterManager {
     }
 
     public void movePersonRegistration(Person person) {
-        System.out.println("reregister");
-        unregisterPerson(person);
-        registerPerson(person);
+//        System.out.println("reregister");
+	    this.unregisterPerson(person);
+	    this.registerPerson(person);
     }
 
     public List<Perimeter> getAllNodes() {
         List<Perimeter> perimetersList = new ArrayList<>();
-        for (int i = 0; i < numberOfPerimetersX; i++) {
-            for (int j = 0; j < numberOfPerimetersY; j++)
-                perimetersList.add(perimeters.get(i).get(j));
-        }
+	    for (int i = 0; i < this.numberOfPerimetersX; i++) {
+		    for (int j = 0; j < this.numberOfPerimetersY; j++)
+			    perimetersList.add(this.perimeters.get(i).get(j));
+	    }
         return perimetersList;
     }
 }

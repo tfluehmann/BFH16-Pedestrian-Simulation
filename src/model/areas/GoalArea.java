@@ -9,8 +9,8 @@ import java.util.List;
  * Created by fluth1 on 30/09/16.
  */
 public class GoalArea extends Area {
-	private double height;
-	private double width;
+	private final double height;
+	private final double width;
 
 	public GoalArea(double width, double height, Position position) {
 		super(position.getXValue(), position.getYValue(),
@@ -23,6 +23,9 @@ public class GoalArea extends Area {
 		this.setFill(Color.GREEN);
 	}
 
+
+	@Override
+	@Override
 	public List<Position> getCorners() {
 		return null;
 	}
