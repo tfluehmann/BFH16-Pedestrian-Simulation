@@ -10,6 +10,7 @@ import java.util.Vector;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * Grid on the base shape helps to reduce calculation between persons
  */
 public class Perimeter extends Rectangle {
 
@@ -38,15 +39,15 @@ public class Perimeter extends Rectangle {
     }
 
     public boolean isInRange(Position position){
-        return (this.position.getXValue() <= position.getXValue() &&
-                position.getXValue() <= this.position.getXValue() + this.width &&
-                this.position.getYValue() <= position.getYValue() &&
-                position.getYValue() <= this.position.getYValue() + this.height);
+        return ((this.position.getXValue() <= position.getXValue()) &&
+                (position.getXValue() <= (this.position.getXValue() + this.width)) &&
+                (this.position.getYValue() <= position.getYValue()) &&
+                (position.getYValue() <= (this.position.getYValue() + this.height)));
 
     }
 
     public void register(Person person) {
-        this.registeredPersons.add(person);
+        if (!this.registeredPersons.contains(person)) this.registeredPersons.add(person);
     }
 
     public Vector<Perimeter> getNeighbors() {

@@ -5,8 +5,6 @@ import model.Perimeter;
 import model.Position;
 import model.persons.Person;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -49,18 +47,8 @@ public class PerimeterManager {
 
     public void registerPerson(Person person){
         Perimeter perimeter = getCurrentPerimeter(person.getCurrentPosition());
-        if (perimeter == null) setInitialPerimeter();
-        for (Perimeter neigh : perimeter.getNeighbors()) {
-            if (neigh.isInRange(person.getCurrentPosition()))
-                neigh.register(person);
-        }
-
-        if (person.getCurrentPosition() == null)
-            throw new RuntimeException("No Perimeter for Person found " + person.getCurrentPosition());
-    }
-
-    private void setInitialPerimeter() {
-
+        perimeter.register(person);
+        if (!perimeter.isInRange(person.getCurrentPosition())) throw new RuntimeException("fail does not conclude it");
     }
 
     public Vector<Perimeter> getNeighbors(Position position) {
@@ -79,22 +67,17 @@ public class PerimeterManager {
         if (perimeter.getRegisteredPersons().contains(person)) perimeter.getRegisteredPersons().remove(person);
     }
 
-    public void movePersonRegistration(Person person) {
-        Perimeter currentPerimeter = getCurrentPerimeter(person.getCurrentPosition());
-        this.registerPerson(person);
-        this.unregisterPerson(person, currentPerimeter);
-    }
-
     public Perimeter getCurrentPerimeter(Position position) {
-        int perimeterI = ((int) Math.floor(position.getXValue())) % (int) numberOfPerimetersX;
-        int perimeterJ = ((int) Math.floor(position.getXValue())) % (int) numberOfPerimetersY;
+        int perimeterI = (int) Math.floor(position.getXValue() / perimeterSize);
+        int perimeterJ = (int) Math.floor(position.getYValue() / perimeterSize);
         return perimeters.get(perimeterI).get(perimeterJ);
+
     }
 
-    public List<Perimeter> getAllNodes() {
-        List<Perimeter> perimetersList = new ArrayList<>();
-	    for (int i = 0; i < this.numberOfPerimetersX; i++) {
-		    for (int j = 0; j < this.numberOfPerimetersY; j++)
+    public Vector<Perimeter> getAllNodes() {
+        Vector<Perimeter> perimetersList = new Vector<>();
+        for (int i = 0; i < this.numberOfPerimetersX; i++) {
+            for (int j = 0; j < this.numberOfPerimetersY; j++)
 			    perimetersList.add(this.perimeters.get(i).get(j));
 	    }
         return perimetersList;

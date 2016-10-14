@@ -84,11 +84,11 @@ public abstract class Person extends Circle {
 	}
 
 	private boolean isNewPositionAllowed(Position position) {
-		if(position == null) return false;
-		Vector<Perimeter> neighPerimeters = PerimeterManager.getInstance().getNeighbors(this.currentPosition);
-
+		if (position == null || position.isEmpty()) return false;
+		Vector<Perimeter> neighPerimeters = PerimeterManager.getInstance().getNeighbors(position);
+		//	System.out.println("neighborperimeters: "+neighPerimeters.size());
 		for (Perimeter perimeter : neighPerimeters) {
-//			System.out.println("neihbor perimeter has " + perimeter.getRegisteredPersons().size() + " persons");
+			//System.out.println("neihbor perimeter has " + perimeter.getRegisteredPersons().size() + " persons");
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
 				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
@@ -106,12 +106,14 @@ public abstract class Person extends Circle {
 	 * @param position
 	 */
 	public void setPosition(Position position) {
+		PerimeterManager pm = PerimeterManager.getInstance();
+		pm.unregisterPerson(this, pm.getCurrentPerimeter(this.currentPosition));
 		this.oldPositions.add(new Position(this.currentPosition.getXValue(),
 				this.currentPosition.getYValue()));
 		this.currentPosition.setX(position.getXValue());
 		this.currentPosition.setY(position.getYValue());
 		if (this.isInNextPathArea() && !this.isInGoalArea()) this.pathManager.getPath().removeFirst();
-		PerimeterManager.getInstance().movePersonRegistration(this);
+		pm.registerPerson(this);
 	}
 
 	public boolean isColliding(double x, double y, Person otherPerson) {

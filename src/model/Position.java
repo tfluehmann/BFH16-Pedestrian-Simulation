@@ -65,4 +65,8 @@ public class Position implements Cloneable {
 	    //  System.out.println("comparision x: "+xComparision + " y: "+yComparision);
         return xComparision < epsilon && yComparision < epsilon;
     }
+
+    public boolean isEmpty() {
+        return !(Double.isFinite(this.getXValue()) || Double.isFinite(this.getYValue()));
+    }
 }
