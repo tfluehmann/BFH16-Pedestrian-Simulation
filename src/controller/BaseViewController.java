@@ -33,7 +33,14 @@ public class BaseViewController implements Initializable{
         startButton.setOnAction((event) -> {
             simulationRoom.start(time);
             startButton.setDisable(true);
+            pauseButton.setDisable(false);
 
+        });
+
+        pauseButton.setOnAction((event) -> {
+            simulationRoom.getSimulationThread().interrupt();
+            pauseButton.setDisable(true);
+            startButton.setDisable(false);
         });
         // initialize your logic here: all @FXML variables will have been injected
 

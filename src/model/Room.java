@@ -171,4 +171,8 @@ public class Room extends Pane {
 		}
 		return true;
 	}
+
+	public Thread getSimulationThread() {
+		return simulation;
+	}
 }
