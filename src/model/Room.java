@@ -126,17 +126,17 @@ public class Room extends Pane {
 			@Override
 			public Void call() throws Exception {
 				int i = 0;
-				while (!Room.this.isSimulationFinished()) {
-					Room.this.handlePersonsInRange();
-					Platform.runLater(() -> {
+                while (!isSimulationFinished()) {
+                    handlePersonsInRange();
+                    Platform.runLater(() -> {
 						/**
 						 * shuffle before every run because there might be
 						 * unsolvable issues if it is always the same order
 						 */
 						long seed = System.nanoTime();
-						Collections.shuffle(Room.this.persons, new Random(seed));
-						Room.this.persons.forEach(Person::doStep);
-					});
+                        Collections.shuffle(persons, new Random(seed));
+                        persons.forEach(Person::doStep);
+                    });
 					this.updateMessage(++i + " seconds");
 					Thread.sleep(30);
 				}

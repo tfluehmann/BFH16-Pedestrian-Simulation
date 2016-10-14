@@ -10,17 +10,17 @@ import java.util.Vector;
  * Created by fluth1 on 30/09/16.
  */
 public class Perimeter {
-    public static final int PERIMETER_WIDHT = 2;
-    public static final int PERIMETER_HEIGHT = 2;
+
     private final Position position;
     private final double height;
     private final double width;
     private final int verticalArrayPosition;
     private final int horizontalArrayPosition;
-    private final Vector<Person> registredPersons = new Vector<>();
+    private final Vector<Person> registredPersons;
 
 
     public Perimeter(Position position, double height, double width, int verticalArrayPosition, int horizontalArrayPosition){
+        this.registredPersons = new Vector<>();
         this.position = position;
         this.height = height;
         this.width = width;

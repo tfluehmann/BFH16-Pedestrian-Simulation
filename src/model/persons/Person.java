@@ -47,10 +47,8 @@ public abstract class Person extends Circle implements Positionable {
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
 	}
 
-
 	/**
 	 * Calculates the vector and the next position depending on the step size
-	 *
 	 * @return next Position
 	 */
 	public void doStep() {
@@ -58,13 +56,11 @@ public abstract class Person extends Circle implements Positionable {
 		if (p != null) this.setPosition(p);
 	}
 
-
-	/**
-	 * calculate the next position by reducing the speed if needed
-	 *
-	 * @return
-	 */
-	private Position calculateNextPossiblePosition() {
+    /**
+     * calculate the next position by reducing the speed if needed
+     * @return
+     */
+    private Position calculateNextPossiblePosition() {
 		int tries = 1;
 		while (tries < 5) {
 			Position nextTarget = this.path.get(0);
@@ -91,11 +87,10 @@ public abstract class Person extends Circle implements Positionable {
 		return null;
 	}
 
-
 	private boolean isNewPositionAllowed(Position position) {
 		if(position == null) return false;
-
-		Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
+        if (this.currentPerimeter == null) PerimeterManager.getInstance().movePersonRegistration(this);
+        Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
 		for (Perimeter perimeter : neighPerimeters)
 			for (Person person : perimeter.getRegistredPersons()) {
 				if (person.equals(this)) continue;
@@ -105,12 +100,10 @@ public abstract class Person extends Circle implements Positionable {
 		return true;
 	}
 
-
 	/**
 	 * Sets a new Position, puts the old position into the list.
 	 * moves the person
 	 * unregisters in the current perimeter and registers in the new one if needed
-	 *
 	 * @param position
 	 */
 	private void setPosition(Position position) {
@@ -123,92 +116,69 @@ public abstract class Person extends Circle implements Positionable {
 			PerimeterManager.getInstance().movePersonRegistration(this);
 	}
 
-
 	public boolean isColliding(double x, double y, Person otherPerson) {
 		return Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < this.getRadius() + otherPerson.getRadius() &&
 				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < this.getRadius() + otherPerson.getRadius() &&
 				!otherPerson.isInGoalArea();
 	}
 
-//    public double roundWithDecimalFormat(double val) {
-//        DecimalFormat df = new DecimalFormat("#0.##");
-//        return Double.parseDouble(df.format(val));
-//    }
-
-
 	public boolean isInNextPathArea() {
 		Position nextPosition = this.path.get(0);
 		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
 	}
-
 
 	public boolean isInGoalArea() {
 		Position targetPosition = this.path.get(this.path.size() - 1);
 		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
 	}
 
-
 	public ArrayList<Position> getOldPositions() {
 		return this.oldPositions;
 	}
-
 
 	public void setOldPositions(ArrayList<Position> oldPositions) {
 		this.oldPositions = oldPositions;
 	}
 
-
-	@Override
 	public Position getCurrentPosition() {
 		return this.currentPosition;
 	}
-
 
 	public void setCurrentPosition(Position currentPosition) {
 		this.currentPosition = currentPosition;
 	}
 
-
 	public List<Position> getPath() {
 		return this.path;
 	}
-
 
 	public int getAge() {
 		return this.age;
 	}
 
-
 	public void setAge(int age) {
 		this.age = age;
 	}
-
 
 	public double getSpeed() {
 		return this.speed;
 	}
 
-
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
-
-	@Override
 	public boolean intersects(double x, double y) {
 		return this.intersects(x, y);
 	}
-
 
 	public Perimeter getCurrentPerimeter() {
 		return this.currentPerimeter;
 	}
 
-
 	public void setCurrentPerimeter(Perimeter currentPerimeter) {
 		this.currentPerimeter = currentPerimeter;
 	}
-
 
 	public PathManager getPathManager() {
 		return this.pathManager;

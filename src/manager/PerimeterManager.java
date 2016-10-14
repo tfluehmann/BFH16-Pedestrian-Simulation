@@ -78,7 +78,7 @@ public class PerimeterManager {
 
     public void unregisterPerson(Person person){
         Perimeter p = person.getCurrentPerimeter();
-        p.getRegistredPersons().remove(person);
+        if (p.getRegistredPersons().contains(person)) p.getRegistredPersons().remove(person);
         person.setCurrentPerimeter(null);
     }
 
