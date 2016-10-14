@@ -9,7 +9,7 @@ import model.GVector;
 import model.Perimeter;
 import model.Position;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -17,7 +17,7 @@ import java.util.Vector;
  * Created by fluth1 on 30/09/16.
  */
 public abstract class Person extends Circle {
-    protected ArrayList<Position> oldPositions = new ArrayList<>();
+	protected LinkedList<Position> oldPositions = new LinkedList<>();
 	protected Position currentPosition;
 	protected int age;
 	protected double speed;
@@ -132,7 +132,7 @@ public abstract class Person extends Circle {
 		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
-	public ArrayList<Position> getOldPositions() {
+	public LinkedList<Position> getOldPositions() {
 		return this.oldPositions;
 	}
 
