@@ -30,7 +30,6 @@ public class Room extends Pane {
 	private final ArrayList<Obstacle> obstacles = new ArrayList();
 	private final ConfigModel config = ConfigModel.getInstance();
 	private List<Person> persons = new ArrayList<>();
-	private final ArrayList<Obstacle> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 

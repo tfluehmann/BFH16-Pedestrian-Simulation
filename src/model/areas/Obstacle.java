@@ -36,7 +36,6 @@ public class Obstacle extends Area {
 
 
     @Override
-    @Override
     public List<Position> getCorners() {
         return this.corners;
     }
@@ -56,8 +55,8 @@ public class Obstacle extends Area {
             a = this.corners.get(i);
             GVector c = new GVector(a.getXValue(), a.getYValue(), b.getXValue(), b.getYValue());
             GVector unitVector = c.norm();
-            a = unitVector.invert().getEndPosition().multiply(Obstacle.Obstacle.EDGE_EXTENDER).add(a);
-            b = unitVector.getEndPosition().multiply(Obstacle.Obstacle.EDGE_EXTENDER).add(b);
+            a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
+            b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
 
             if (this.includes(a) && !this.intersects(a.getXValue(), a.getYValue())) this.vertices.add(a);
             if (this.includes(b) && !this.intersects(b.getXValue(), b.getYValue())) this.vertices.add(b);

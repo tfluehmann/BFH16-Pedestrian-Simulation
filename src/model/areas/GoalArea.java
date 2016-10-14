@@ -25,7 +25,6 @@ public class GoalArea extends Area {
 
 
 	@Override
-	@Override
 	public List<Position> getCorners() {
 		return null;
 	}
