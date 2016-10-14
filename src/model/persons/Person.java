@@ -88,9 +88,6 @@ public abstract class Person extends Circle implements Positionable {
 
 	private boolean isNewPositionAllowed(Position position) {
 		if(position == null) return false;
-		if (currentPerimeter == null) {
-			PerimeterManager.getInstance().registerPerson(this);
-		}
 
 		Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
 		for(Perimeter perimeter : neighPerimeters)
