@@ -140,15 +140,11 @@ public class PathManager {
     }
 
     private double getShortestDistance(Position destination) {
-        Double d = this.distance.get(destination);
-        double returnValue;
-        if (d == null) {
-            returnValue = Double.MAX_VALUE;
-        } else {
-            returnValue = d;
-        }
-        //    System.out.println("distance to destination: "+destination + " is : "+ returnValue);
-        return returnValue;
+        Double d = distance.get(destination);
+        if (d == null)
+            return Double.MAX_VALUE;
+        else
+            return d;
     }
 
     /**
@@ -176,7 +172,6 @@ public class PathManager {
             step = getKey(step);
             path.add(step);
             lastStep = step;
-
         }
         // Put it into the correct order
         Collections.reverse(path);
