@@ -13,6 +13,7 @@ import model.Positionable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -23,10 +24,10 @@ public abstract class Person extends Circle implements Positionable {
     protected List<Position> path = new ArrayList<>();
     protected int age;
     protected double speed;
-    // protected Character character;
+	protected PathManager pathManager = new PathManager();
+	// protected Character character;
 
 	protected Perimeter currentPerimeter;
-	protected PathManager pathManager = PathManager.getInstance();
 
 
 	public Person() {
@@ -87,7 +88,11 @@ public abstract class Person extends Circle implements Positionable {
 
 	private boolean isNewPositionAllowed(Position position) {
 		if(position == null) return false;
-		List<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
+		if (currentPerimeter == null) {
+			PerimeterManager.getInstance().registerPerson(this);
+		}
+
+		Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
 		for(Perimeter perimeter : neighPerimeters)
 			for(Person person : perimeter.getRegistredPersons()){
 				if(person.equals(this)) continue;
@@ -184,5 +189,9 @@ public abstract class Person extends Circle implements Positionable {
 
 	public Perimeter getCurrentPerimeter() {
 		return this.currentPerimeter;
+	}
+
+	public PathManager getPathManager() {
+		return this.pathManager;
 	}
 }

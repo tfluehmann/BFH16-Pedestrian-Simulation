@@ -24,8 +24,6 @@ public class PathManager {
 
     private static PathManager instance;
 
-    private PathManager() {
-    }
 
     /**
      * Fucking magic just took us 10h of Fluch und Hass
@@ -192,12 +190,6 @@ public class PathManager {
             if (pos.equals(p)) return predecessors.get(p);
         }
         return null;
-    }
-
-
-    public static PathManager getInstance() {
-        if (instance == null) instance = new PathManager();
-        return instance;
     }
 
     public List<Position> getVertices() {

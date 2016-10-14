@@ -1,10 +1,10 @@
 package model;
 
-import javafx.scene.shape.Shape;
 import manager.PerimeterManager;
 import model.persons.Person;
 
-import java.util.*;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -17,7 +17,7 @@ public class Perimeter {
     private double width;
     private int verticalArrayPosition;
     private int horizontalArrayPosition;
-    private List<Person> registredPersons = new ArrayList<>();
+    private Vector<Person> registredPersons = new Vector<>();
 
 
     public Perimeter(Position position, double height, double width, int verticalArrayPosition, int horizontalArrayPosition){
@@ -26,13 +26,17 @@ public class Perimeter {
         this.width = width;
         this.verticalArrayPosition = verticalArrayPosition;
         this.horizontalArrayPosition = horizontalArrayPosition;
+//        this.heightProperty().set(this.heigth);
+//        this.widthProperty().set(this.width);
+//        this.relocate(this.position.getXValue(), this.position.getYValue());
+//        this.setStyle("-fx-stroke: aqua;");
     }
 
 
 
     public boolean isInRange(Position position){
-        return (((this.position.getXValue() < position.getXValue()) || (position.getXValue() < this.position.getXValue()+width) ) &&
-                ((this.position.getYValue() < position.getYValue()) || (position.getYValue() < this.position.getYValue() + heigth)));
+        return (((this.position.getXValue() <= position.getXValue()) || (position.getXValue() <= this.position.getXValue() + width)) &&
+                ((this.position.getYValue() <= position.getYValue()) || (position.getYValue() <= this.position.getYValue() + heigth)));
 
     }
 
@@ -41,7 +45,7 @@ public class Perimeter {
         person.setCurrentPerimeter(this);
     }
 
-    public List<Perimeter> getNeighbors() {
+    public Vector<Perimeter> getNeighbors() {
         PerimeterManager pm  = PerimeterManager.getInstance();
         return pm.getNeighbors(this);
     }

@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import manager.PathManager;
 import manager.PerimeterManager;
 import model.areas.Area;
 import model.areas.GoalArea;
@@ -28,8 +27,7 @@ public class Room extends Pane {
 	private List<Person> persons = new ArrayList<>();
 	private List<Person> passivePersons = new ArrayList<>();
     private PerimeterManager perimeterManager = PerimeterManager.getInstance();
-    private PathManager pathManager = PathManager.getInstance();
-    private ArrayList<Area> obstacles = new ArrayList();
+	private ArrayList<Obstacle> obstacles = new ArrayList();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 
@@ -64,20 +62,25 @@ public class Room extends Pane {
         Obstacle o1 = new Obstacle(100.0, 200.0, 400.0, 200.0, 150.0, 220.0, 100.0, 250.0);
 		this.getChildren().addAll(o1, sa, ga);
 
-        pathManager.getVertices().addAll(o1.getVertices());
-
-		pathManager.getVertices().add(ga.getGoalPoint());
-		pathManager.getObstacleEdges().addAll(o1.getEdges());
-        for (Position p : o1.getVertices())
+		obstacles.add(o1);
+		for (Position p : o1.getVertices())
             this.getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
+		for (int i = 0; i < config.getTotalPersons(); i++)
+			spawnPerson(ga.getGoalPoint());
+
+		//this.getChildren().addAll(perimeterManager.getAllNodes());
+		this.getChildren().addAll(persons);
+	}
+
+	private void spawnPerson(Position goal) {
 		/**
 		 * Generating different aged persons randomly
 		 * Created by suter1 on 05.10.2016
 		 */
 		Random rnd = new Random();
+		ConfigModel config = ConfigModel.getInstance();
 		int type;
-		for (int i = 0; i < config.getTotalPersons(); i++) {
 			Person newPerson;
 			type = rnd.nextInt(3);
 			switch (type) {
@@ -97,25 +100,27 @@ public class Room extends Pane {
 					newPerson = new MidAgePerson(config.getSpawnHeight(), config.getSpawnWidth(), config.getSpawnPosition());
 					break;
 			}
-			pathManager.getVertices().add(newPerson.getCurrentPosition());
-			perimeterManager.registerPerson(newPerson);
-			persons.add(newPerson);
+
+		for (Obstacle o : obstacles) {
+			newPerson.getPathManager().getVertices().addAll(o.getVertices());
+			newPerson.getPathManager().getObstacleEdges().addAll(o.getEdges());
 		}
 
-        pathManager.findValidEdges();
+		newPerson.getPathManager().getVertices().add(goal);
+		newPerson.getPathManager().getVertices().add(newPerson.getCurrentPosition());
+			perimeterManager.registerPerson(newPerson);
+		newPerson.getPathManager().findValidEdges();
 
-        for (Person pers : persons) {
-            pathManager.findShortestPath(pers.getCurrentPosition());
-	        List<Position> positions = pathManager.getPath(ga.getGoalPoint());
-	        pers.getPath().addAll(positions);
-        }
+		newPerson.getPathManager().findShortestPath(newPerson.getCurrentPosition());
+		List<Position> positions = newPerson.getPathManager().getPath(goal);
+		newPerson.getPath().addAll(positions);
+		this.getChildren().addAll(newPerson.getPathManager().getEdges());
+			persons.add(newPerson);
 
-        this.getChildren().addAll(pathManager.getEdges());
-        this.getChildren().addAll(pathManager.getObstacleEdges());
-        this.getChildren().addAll(persons);
-    }
 
-    public void start(Label time) {
+	}
+
+	public void start(Label time) {
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -129,8 +134,8 @@ public class Room extends Pane {
 						 */
 						long seed = System.nanoTime();
 						Collections.shuffle(persons, new Random(seed));
-                        persons.forEach(Person::doStep);
-                    });
+						persons.forEach(Person::doStep);
+					});
 					updateMessage(++i + " seconds");
 					Thread.sleep(30);
 				}
