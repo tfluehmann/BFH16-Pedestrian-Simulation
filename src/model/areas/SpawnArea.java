@@ -12,20 +12,27 @@ public class SpawnArea extends Area {
 	private double height;
 	private double width;
 
-	private Position position;
 
 	public SpawnArea(double width, double height, Position position) {
-		this.width = width;
+        super(position.getXValue(), position.getYValue(),
+                position.getXValue() + width, position.getYValue(),
+                position.getXValue() + width, position.getYValue() + height,
+                position.getXValue(), position.getYValue() + height);
+        this.width = width;
 		this.height = height;
 		this.position = position;
-		this.getPoints().addAll(new Double[]{this.position.getXValue(), this.position.getYValue(),
-				this.position.getXValue() + this.width, this.position.getYValue(),
-				this.position.getXValue() + this.width, this.position.getYValue() + this.height,
-				this.position.getXValue(), this.position.getYValue() + this.height});
 		this.setFill(Color.RED);
 	}
 
 	public List<Position> getCorners() {
 		return null;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWidth() {
+        return width;
     }
 }

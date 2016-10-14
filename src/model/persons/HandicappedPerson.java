@@ -9,8 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class HandicappedPerson extends Person {
 
-    public static final double MIN_SPEED = 0.46;
-    public static final double MAX_SPEED = 0.77;
+    private static final double MIN_SPEED = 0.46;
+    private static final double MAX_SPEED = 0.77;
 
 
     public HandicappedPerson(double maxHeigth, double maxWidth, Position spawnPosition) {

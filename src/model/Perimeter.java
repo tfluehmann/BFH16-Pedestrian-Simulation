@@ -16,11 +16,11 @@ public class Perimeter {
     private final double width;
     private final int verticalArrayPosition;
     private final int horizontalArrayPosition;
-    private final Vector<Person> registredPersons;
+    private final Vector<Person> registeredPersons;
 
 
     public Perimeter(Position position, double height, double width, int verticalArrayPosition, int horizontalArrayPosition){
-        this.registredPersons = new Vector<>();
+        this.registeredPersons = new Vector<>();
         this.position = position;
         this.height = height;
         this.width = width;
@@ -41,7 +41,7 @@ public class Perimeter {
     }
 
     public void register(Person person) {
-        this.registredPersons.add(person);
+        this.registeredPersons.add(person);
         person.setCurrentPerimeter(this);
     }
 
@@ -58,7 +58,7 @@ public class Perimeter {
         return this.horizontalArrayPosition;
     }
 
-    public List<Person> getRegistredPersons() {
-        return this.registredPersons;
+    public List<Person> getRegisteredPersons() {
+        return this.registeredPersons;
     }
 }

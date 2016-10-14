@@ -13,7 +13,6 @@ import java.util.*;
  * dijkstra --> clearly inspired and mostly copied from http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html#shortestpath_graph (08.10.16)
  */
 public class PathManager {
-    private static PathManager instance;
     private final List<Position> vertices = new ArrayList<>();
     private final Collection<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
     private final List<GVector> edges = new ArrayList<>();
@@ -58,9 +57,8 @@ public class PathManager {
     /**
      * from here dijkstra as described in class comment
      *
-     * @param startPosition
+     * @param startPosition defines the point to start
      *
-     * @return
      */
     public void findShortestPath(Position startPosition) {
 //        System.out.println("edge nodes " + edges.size());
@@ -150,9 +148,9 @@ public class PathManager {
     /**
      * last method dijkstra
      *
-     * @param target
+     * @param target target point (usualy goal point)
      *
-     * @return
+     * @return reversed found list
      */
     public LinkedList<Position> getPath(Position target) {
         LinkedList<Position> path = new LinkedList<>();

@@ -9,8 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class OldPerson extends Person{
 
-    public static final double MIN_SPEED = 0.68;
-    public static final double MAX_SPEED = 1.42;
+    private static final double MIN_SPEED = 0.68;
+    private static final double MAX_SPEED = 1.42;
 
 
     public OldPerson(double maxHeight, double maxWidth, Position spawnPosition) {

@@ -12,8 +12,7 @@ import java.util.List;
  * Created by suter1 on 06.10.2016.
  */
 public class Obstacle extends Area {
-    public static final double EDGE_EXTENDER = 20.0;
-    private final Position position;
+    private static final double EDGE_EXTENDER = 20.0;
     private final ArrayList<Position> corners;
     private ArrayList<Position> vertices = new ArrayList<>();
 
@@ -44,7 +43,6 @@ public class Obstacle extends Area {
      * Created by suter1 on 06.10.2016.
      */
     private void calculateVertices() {
-        ConfigModel config = ConfigModel.getInstance();
         Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
             if (i + 1 >= this.corners.size()) {

@@ -3,7 +3,6 @@ package manager;
 import config.ConfigModel;
 import model.Perimeter;
 import model.Position;
-import model.Room;
 import model.persons.Person;
 
 import java.util.ArrayList;
@@ -15,15 +14,12 @@ import java.util.Vector;
  */
 public class PerimeterManager {
     private static PerimeterManager instance;
-    private Room room;
     private Vector<Vector<Perimeter>> perimeters;
     private long numberOfPerimetersY;
     private long numberOfPerimetersX;
 
-
     private PerimeterManager() {
     }
-
 
     public static PerimeterManager getInstance(){
 	    if (PerimeterManager.instance == null)
@@ -60,10 +56,6 @@ public class PerimeterManager {
             throw new RuntimeException("No Perimeter for Person found " + person.getCurrentPosition());
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
     public Vector<Perimeter> getNeighbors(Perimeter perimeter) {
         int i = perimeter.getHorizontalArrayPosition() - 1;
         int j = perimeter.getVerticalArrayPosition() - 1;
@@ -78,7 +70,7 @@ public class PerimeterManager {
 
     public void unregisterPerson(Person person){
         Perimeter p = person.getCurrentPerimeter();
-        if (p.getRegistredPersons().contains(person)) p.getRegistredPersons().remove(person);
+        if (p.getRegisteredPersons().contains(person)) p.getRegisteredPersons().remove(person);
         person.setCurrentPerimeter(null);
     }
 

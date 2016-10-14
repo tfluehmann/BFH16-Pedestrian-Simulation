@@ -52,7 +52,7 @@ public class GVector extends Line {
     /**
      * reduces the vector to a new vector with length 1
      *
-     * @return
+     * @return new Vector with length 1
      */
     public GVector norm() {
         return new GVector(getStartPointX(), getStartPointY(), 1 / this.length() * this.x, 1 / this.length() * this.y);
@@ -62,6 +62,9 @@ public class GVector extends Line {
         return new GVector(getStartPointX(), getStartPointY(), getEndPointX() * -1, getEndPointY() * -1);
     }
 
+    /**
+     * @return new vector in the other direction
+     */
     public GVector otherEdge() {
         return new GVector(getEndPosition(), getStartPosition());
     }
@@ -75,7 +78,7 @@ public class GVector extends Line {
      * This h number is the key. If h is between 0 and 1, the lines intersect, otherwise they don't.
      * If F*P is zero, of course you cannot make the calculation,
      * but in this case the lines are parallel and therefore only intersect in the obvious cases;
-     * @param vector
+     * @param vector to check with
      *
      * @return boolean
      *
@@ -110,7 +113,7 @@ public class GVector extends Line {
         if (s_numer > denom == denomPositive || t_numer > denom == denomPositive)
             return false; // No collision
         // Collision detected
-        t = t_numer / denom;
+        //t = t_numer / denom;
         //System.out.println("crossing at x " + this.startPointX + (t * s10_x));
         //System.out.println("crossing at y " + this.startPointY + (t * s10_y));
         return true;

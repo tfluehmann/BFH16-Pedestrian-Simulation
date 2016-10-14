@@ -91,7 +91,7 @@ public abstract class Person extends Circle {
         if (this.currentPerimeter == null) PerimeterManager.getInstance().movePersonRegistration(this);
         Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
 		for (Perimeter perimeter : neighPerimeters)
-			for (Person person : perimeter.getRegistredPersons()) {
+			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
 				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
 				if (collision) return false;

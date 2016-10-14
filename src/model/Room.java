@@ -36,7 +36,6 @@ public class Room extends Pane {
 
 	public Room() {
 		setPrefSize(this.config.getRoomWidth(), this.config.getRoomHeight());
-		this.perimeterManager.setRoom(this);
 		this.perimeterManager.initializeAll();
 
         double x, y;
@@ -74,11 +73,11 @@ public class Room extends Pane {
 		getChildren().addAll(this.persons);
 	}
 
-	private void spawnPerson(Position goal) {
-		/**
-		 * Generating different aged persons randomly
-		 * Created by suter1 on 05.10.2016
-		 */
+    /**
+     * Generating different aged persons randomly
+     * Created by suter1 on 05.10.2016
+     */
+    private void spawnPerson(Position goal) {
 		Random rnd = new Random();
 		int type;
 			Person newPerson;
@@ -119,7 +118,11 @@ public class Room extends Pane {
 		this.persons.add(newPerson);
 	}
 
-	public void start(Label time) {
+    /**
+     * shuffle before every run because there might be
+     * unsolvable issues if it is always the same order
+     */
+    public void start(Label time) {
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -127,10 +130,6 @@ public class Room extends Pane {
                 while (!isSimulationFinished()) {
                     handlePersonsInRange();
                     Platform.runLater(() -> {
-						/**
-						 * shuffle before every run because there might be
-						 * unsolvable issues if it is always the same order
-						 */
 						long seed = System.nanoTime();
                         Collections.shuffle(persons, new Random(seed));
                         persons.forEach(Person::doStep);
