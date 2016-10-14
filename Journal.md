@@ -14,4 +14,6 @@ Datum | Zeitaufwand | Wer | Was
 08.10.2016 | 4 h | suter1 | Config erweitert mit verschiedenen Auswahlfelder.
 09.10.2016 | 4 h | suter1 | Config bearbeitet, damit Personen, Goal und Spawn area abhängig der Config-Daten generiert werden.
 12.10.2016 | 4 h | fluht1, suter1 | Dijkstra in erster lauffähigen Version, sehr langsam
+14.10.2016 | 6 h | fluht1, suter1 | Perimeter umgeschrieben (unabhängig, von person), Config slider bearbeitet, Refactoring Room, Person, PerimeterManager, Pathmanager
+
 
