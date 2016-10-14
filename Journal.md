@@ -13,3 +13,5 @@ Datum | Zeitaufwand | Wer | Was
 07.10.2016 | 4 h | fluth1 | Dijkstra implementiert, findet die Pfade am Anfang noch nicht -> neuer Branch erstellt
 08.10.2016 | 4 h | suter1 | Config erweitert mit verschiedenen Auswahlfelder.
 09.10.2016 | 4 h | suter1 | Config bearbeitet, damit Personen, Goal und Spawn area abhängig der Config-Daten generiert werden.
+12.10.2016 | 4 h | fluht1, suter1 | Dijkstra in erster lauffähigen Version, sehr langsam
+
