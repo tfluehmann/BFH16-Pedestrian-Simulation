@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
+<?import java.lang.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101"
             fx:controller="config.ConfigController">
@@ -52,7 +54,16 @@
                                                            promptText="Room height in meters" text="72"/>
                                                 <Label layoutX="13.0" layoutY="108.0" text="Spawn area"/>
                                                 <ComboBox fx:id="spawnAreaPosition" layoutX="126.0" layoutY="105.0"
-                                                          prefWidth="150.0" promptText="Select Position"/>
+                                                          prefWidth="150.0" promptText="Select Position">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <String fx:value="TOP_LEFT"/>
+                                                            <String fx:value="TOP_CENTER"/>
+                                                            <String fx:value="TOP_RIGHT"/>
+                                                        </FXCollections>
+                                                    </items>
+                                                    <value>TOP_LEFT</value>
+                                                </ComboBox>
                                                 <Label layoutX="13.0" layoutY="146.0" text="Width"/>
                                                 <TextField fx:id="spawnWidth" alignment="CENTER" layoutX="126.0"
                                                            layoutY="143.0" prefHeight="25.0" prefWidth="40.0"
@@ -80,7 +91,16 @@
                                                            text="5"/>
                                                 <Label layoutX="10.0" layoutY="283.0" text="Width"/>
                                                 <ComboBox fx:id="goalAreaPosition" layoutX="128.0" layoutY="241.0"
-                                                          prefWidth="150.0" promptText="Select Position"/>
+                                                          prefWidth="150.0" promptText="Select Position">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <String fx:value="BOTTOM_LEFT"/>
+                                                            <String fx:value="BOTTOM_CENTER"/>
+                                                            <String fx:value="BOTTOM_RIGHT"/>
+                                                        </FXCollections>
+                                                    </items>
+                                                    <value>BOTTOM_LEFT</value>
+                                                </ComboBox>
                                                 <Label layoutX="10.0" layoutY="245.0" text="Goal area"/>
                                                 <Separator layoutX="11.0" layoutY="357.0" prefHeight="0.0"
                                                            prefWidth="376.0"/>

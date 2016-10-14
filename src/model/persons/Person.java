@@ -122,12 +122,12 @@ public abstract class Person extends Circle {
 
 	public boolean isInNextPathArea() {
 		Position nextPosition = this.pathManager.getPath().getFirst();
-		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
+		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
 	public boolean isInGoalArea() {
 		Position targetPosition = this.pathManager.getPath().getLast();
-		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
+		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
 	public ArrayList<Position> getOldPositions() {
