@@ -10,7 +10,6 @@ import model.Perimeter;
 import model.Position;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
@@ -20,13 +19,11 @@ import java.util.Vector;
 public abstract class Person extends Circle {
     protected ArrayList<Position> oldPositions = new ArrayList<>();
 	protected Position currentPosition;
-	protected List<Position> path = new ArrayList<>();
 	protected int age;
 	protected double speed;
 	protected PathManager pathManager = new PathManager();
 	protected ConfigModel config = ConfigModel.getInstance();
 	// protected Character character;
-
 	protected Perimeter currentPerimeter;
 
 
@@ -61,8 +58,9 @@ public abstract class Person extends Circle {
      */
     private Position calculateNextPossiblePosition() {
 		int tries = 1;
+//		System.out.println("getting " + this.getPath().);
+		Position nextTarget = this.pathManager.getPath().getFirst();
 		while (tries < 5) {
-			Position nextTarget = this.path.get(0);
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
 			double lambda = this.speed / tries++ / vToNextTarget.length();
@@ -88,8 +86,8 @@ public abstract class Person extends Circle {
 
 	private boolean isNewPositionAllowed(Position position) {
 		if(position == null) return false;
-        if (this.currentPerimeter == null) PerimeterManager.getInstance().movePersonRegistration(this);
-        Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
+		if (this.currentPerimeter == null) PerimeterManager.getInstance().registerPerson(this);
+		Vector<Perimeter> neighPerimeters = this.currentPerimeter.getNeighbors();
 		for (Perimeter perimeter : neighPerimeters)
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
@@ -110,7 +108,7 @@ public abstract class Person extends Circle {
 				this.currentPosition.getYValue()));
 		this.currentPosition.setX(position.getXValue());
 		this.currentPosition.setY(position.getYValue());
-		if (this.isInNextPathArea() && !this.isInGoalArea()) this.path.remove(0);
+		if (this.isInNextPathArea() && !this.isInGoalArea()) this.pathManager.getPath().removeFirst();
 		if (!this.currentPerimeter.isInRange(this.getCurrentPosition()))
 			PerimeterManager.getInstance().movePersonRegistration(this);
 	}
@@ -122,21 +120,17 @@ public abstract class Person extends Circle {
 	}
 
 	public boolean isInNextPathArea() {
-		Position nextPosition = this.path.get(0);
+		Position nextPosition = this.pathManager.getPath().getFirst();
 		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
 	}
 
 	public boolean isInGoalArea() {
-		Position targetPosition = this.path.get(this.path.size() - 1);
+		Position targetPosition = this.pathManager.getPath().getLast();
 		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
 	}
 
 	public ArrayList<Position> getOldPositions() {
 		return this.oldPositions;
-	}
-
-	public void setOldPositions(ArrayList<Position> oldPositions) {
-		this.oldPositions = oldPositions;
 	}
 
 	public Position getCurrentPosition() {
@@ -145,10 +139,6 @@ public abstract class Person extends Circle {
 
 	public void setCurrentPosition(Position currentPosition) {
 		this.currentPosition = currentPosition;
-	}
-
-	public List<Position> getPath() {
-		return this.path;
 	}
 
 	public int getAge() {

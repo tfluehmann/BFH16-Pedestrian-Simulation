@@ -108,12 +108,10 @@ public class Room extends Pane {
 		newPerson.getPathManager().getVertices().add(goal);
 		newPerson.getPathManager().getVertices().add(newPerson.getCurrentPosition());
 		this.perimeterManager.registerPerson(newPerson);
-		newPerson.getPathManager().findValidEdges();
+		newPerson.getPathManager().setStartPosition(newPerson.getCurrentPosition());
+		newPerson.getPathManager().setTarget(goal);
+		newPerson.getPathManager().start();
 
-		newPerson.getPathManager().findShortestPath(newPerson.getCurrentPosition());
-		List<Position> positions = newPerson.getPathManager().getPath(goal);
-		newPerson.getPath().addAll(positions);
-		System.out.println(newPerson.getPath());
 		getChildren().addAll(newPerson.getPathManager().getEdges());
 		this.persons.add(newPerson);
 	}

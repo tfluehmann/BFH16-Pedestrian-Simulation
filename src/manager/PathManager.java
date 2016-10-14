@@ -20,6 +20,9 @@ public class PathManager {
     private Set<Position> unSettledNodes;
     private Map<Position, Position> predecessors;
     private Map<Position, Double> distance;
+    private LinkedList<Position> path;
+    private Position startPosition;
+    private Position target;
 
 
     /**
@@ -54,20 +57,22 @@ public class PathManager {
         return isCrossing;
     }
 
+    public void start() {
+        this.findValidEdges();
+        this.findShortestPath();
+        this.findPathToTarget();
+    }
+
     /**
      * from here dijkstra as described in class comment
-     *
-     * @param startPosition defines the point to start
-     *
      */
-    public void findShortestPath(Position startPosition) {
-//        System.out.println("edge nodes " + edges.size());
+    public void findShortestPath() {
         this.settledNodes = new HashSet<>();
         this.unSettledNodes = new HashSet<>();
         this.distance = new HashMap<>();
         this.predecessors = new HashMap<>();
-        this.distance.put(startPosition, 0.0);
-        this.unSettledNodes.add(startPosition);
+        this.distance.put(this.startPosition, 0.0);
+        this.unSettledNodes.add(this.startPosition);
         while (this.unSettledNodes.size() > 0) {
             //set all to double.max
             Position node = this.getMinimum(this.unSettledNodes);
@@ -147,21 +152,16 @@ public class PathManager {
 
     /**
      * last method dijkstra
-     *
-     * @param target target point (usualy goal point)
-     *
-     * @return reversed found list
      */
-    public LinkedList<Position> getPath(Position target) {
-        LinkedList<Position> path = new LinkedList<>();
-        Position step = target;
+    public void findPathToTarget() {
+        path = new LinkedList<>();
+        Position step = this.target;
 
         // check if a path exists
 //        System.out.println("looking for: " + target);
 //        System.out.println("got: " + getKey(target));
         if (this.getKey(step) == null) {
-//            System.out.println("target not found: " + target);
-            return null;
+            return;
         }
         path.add(step);
         Position lastStep = null;
@@ -173,7 +173,6 @@ public class PathManager {
         }
         // Put it into the correct order
         Collections.reverse(path);
-        return path;
     }
 
     private Position getKey(Position pos) {
@@ -196,4 +195,18 @@ public class PathManager {
     public List<GVector> getEdges() {
         return this.edges;
     }
+
+    public LinkedList<Position> getPath() {
+        return path;
+    }
+
+    public void setStartPosition(Position startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public void setTarget(Position target) {
+        this.target = target;
+    }
+
+
 }
