@@ -3,7 +3,6 @@ package model.areas;
 import javafx.scene.shape.Polygon;
 import model.GVector;
 import model.Position;
-import model.Positionable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Set;
 /**
  * Created by fluth1 on 30/09/16.
  */
-public abstract class  Area extends Polygon implements Positionable{
+public abstract class Area extends Polygon {
 	protected Position position;
 	protected Set<GVector> edges = new HashSet<>();
 
@@ -26,18 +25,6 @@ public abstract class  Area extends Polygon implements Positionable{
 
 
 	public abstract List<Position> getCorners();
-
-
-	@Override
-	public Position getCurrentPosition() {
-		return this.position;
-	}
-
-
-	@Override
-	public boolean intersects(double x, double y) {
-		return contains(x, y);
-	}
 
 	/**
 	 * from each point to next point-> create gvector --> edge

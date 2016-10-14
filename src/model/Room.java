@@ -117,8 +117,6 @@ public class Room extends Pane {
 		System.out.println(newPerson.getPath());
 		getChildren().addAll(newPerson.getPathManager().getEdges());
 		this.persons.add(newPerson);
-
-
 	}
 
 	public void start(Label time) {

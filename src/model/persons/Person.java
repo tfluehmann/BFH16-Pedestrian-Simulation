@@ -8,7 +8,6 @@ import manager.PerimeterManager;
 import model.GVector;
 import model.Perimeter;
 import model.Position;
-import model.Positionable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,8 @@ import java.util.Vector;
 /**
  * Created by fluth1 on 30/09/16.
  */
-public abstract class Person extends Circle implements Positionable {
-	protected ArrayList<Position> oldPositions = new ArrayList<>();
+public abstract class Person extends Circle {
+    protected ArrayList<Position> oldPositions = new ArrayList<>();
 	protected Position currentPosition;
 	protected List<Position> path = new ArrayList<>();
 	protected int age;
@@ -166,10 +165,6 @@ public abstract class Person extends Circle implements Positionable {
 
 	public void setSpeed(double speed) {
 		this.speed = speed;
-	}
-
-	public boolean intersects(double x, double y) {
-		return this.intersects(x, y);
 	}
 
 	public Perimeter getCurrentPerimeter() {
