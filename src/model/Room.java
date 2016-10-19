@@ -73,50 +73,90 @@ public class Room extends Pane {
 		pathManager.findValidEdges(this);
 		pathManager.findShortestPath(goal);
 
-		for (int i = 0; i < this.config.getTotalPersons(); i++)
-			this.spawnPerson(pathManager);
+		/**
+		 * spawn persons randomly or weighted
+		 */
+		int type;
+		if (!config.isWeighted()) {
+			for (int i = 0; i < this.config.getTotalPersons(); i++) {
+				Random rnd = new Random();
+				type = rnd.nextInt(3);
+				this.spawnPerson(pathManager, type);
+			}
+		} else {
+			double personMultiplicator = this.config.getTotalPersons() / 100;
+			int young = (int) Math.round(config.getWeightedYoungPersons() * personMultiplicator);
+			int midAge = (int) Math.round(config.getWeigthedMidagePersons() * personMultiplicator);
+			int old = (int) Math.round(config.getWeightedOldPersons() * personMultiplicator);
 
+			int handicap = (int) Math.round(config.getWeightedHandicappedPersons() * personMultiplicator);
+			if (young + midAge + old + handicap != config.getTotalPersons()) {
+				handicap = (int) config.getTotalPersons() - young - midAge - old;
+			}
+
+//			spawn young persons
+			for (int i = 0; i < young; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 0);
+			}
+
+//			spawn mid age persons
+			for (int i = 0; i < midAge; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 1);
+			}
+
+//			spawn old persons
+			for (int i = 0; i < old; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 2);
+			}
+
+//			spawn handicapped persons
+			for (int i = 0; i < handicap; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 3);
+			}
+
+		}
 
 		this.getChildren().addAll(perimeterManager.getAllNodes());
 		getChildren().addAll(this.persons);
 	}
 
-    /**
-     * Generating different aged persons randomly
-     * Created by suter1 on 05.10.2016
-     */
-	private void spawnPerson(PathManager pathManager) {
-		Random rnd = new Random();
-		int type;
-			Person newPerson;
-			type = rnd.nextInt(3);
-			switch (type) {
-				case 0:
-					newPerson = new YoungPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				case 1:
-					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				case 2:
-					newPerson = new OldPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				case 3:
-					newPerson = new HandicappedPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				default:
-					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-			}
-		this.persons.add(newPerson);
+
+	/**
+	 * Generating different aged persons randomly
+	 * Created by suter1 on 05.10.2016
+	 */
+	private void spawnPerson(PathManager pathManager, int type) {
+
+		Person newPerson;
+		switch (type) {
+			case 0:
+				newPerson = new YoungPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			case 1:
+				newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			case 2:
+				newPerson = new OldPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			case 3:
+				newPerson = new HandicappedPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			default:
+				newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+		}
+
+        this.persons.add(newPerson);
 		newPerson.setPath(pathManager.getShortestPathFromPosition(newPerson.getCurrentPosition()));
 
 	}
 
-    /**
-     * shuffle before every run because there might be
-     * unsolvable issues if it is always the same order
-     */
-    public void start(Label time) {
+
+	/**
+	 * shuffle before every run because there might be
+	 * unsolvable issues if it is always the same order
+	 */
+	public void start(Label time) {
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -129,7 +169,7 @@ public class Room extends Pane {
 					});
 
 					this.updateMessage(++i + " seconds");
-					Thread.sleep(50);
+					Thread.sleep(20);
 				}
 				System.out.println("finished simulation");
 				return null;

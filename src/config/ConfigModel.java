@@ -21,7 +21,7 @@ public class ConfigModel {
 	private double weightedYoungPersons;
 	private double weigthedMidagePersons;
 	private double weightedOldPersons;
-	private double weightedHandycappedPersons;
+	private double weightedHandicappedPersons;
 	private String spawnAreaPosition;
 	private Position spawnPosition;
 	private double spawnWidth;
@@ -30,6 +30,7 @@ public class ConfigModel {
 	private Position goalPosition;
 	private double goalWidth;
 	private double goalHeight;
+	private boolean isWeighted;
 
 
 	private ConfigModel() {
@@ -121,13 +122,13 @@ public class ConfigModel {
 	}
 
 
-	public double getWeightedHandycappedPersons() {
-		return this.weightedHandycappedPersons;
+	public double getWeightedHandicappedPersons() {
+		return this.weightedHandicappedPersons;
 	}
 
 
-	public void setWeightedHandycappedPersons(double weightedHandycappedPersons) {
-		this.weightedHandycappedPersons = weightedHandycappedPersons;
+	public void setWeightedHandicappedPersons(double weightedHandicappedPersons) {
+		this.weightedHandicappedPersons = weightedHandicappedPersons;
 	}
 
 
@@ -237,4 +238,15 @@ public class ConfigModel {
 	public void setGoalHeight(double goalHeight) {
 		this.goalHeight = goalHeight * getPixelPerMeter();
 	}
+
+
+	public boolean isWeighted() {
+		return this.isWeighted;
+	}
+
+
+	public void setWeighted(Boolean weighted) {
+		this.isWeighted = weighted;
+	}
+
 }
