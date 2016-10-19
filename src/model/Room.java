@@ -95,30 +95,25 @@ public class Room extends Pane {
 			}
 
 //			spawn young persons
-			for (int i = 0; i < young; i++) {
-				this.spawnPerson(ga.getGoalPoint(), 0);
-			}
-
+            createPersons(0, young, pathManager);
 //			spawn mid age persons
-			for (int i = 0; i < midAge; i++) {
-				this.spawnPerson(ga.getGoalPoint(), 1);
-			}
-
+            createPersons(1, midAge, pathManager);
 //			spawn old persons
-			for (int i = 0; i < old; i++) {
-				this.spawnPerson(ga.getGoalPoint(), 2);
-			}
-
+            createPersons(2, old, pathManager);
 //			spawn handicapped persons
-			for (int i = 0; i < handicap; i++) {
-				this.spawnPerson(ga.getGoalPoint(), 3);
-			}
+            createPersons(3, handicap, pathManager);
 
-		}
+        }
+
 
 		this.getChildren().addAll(perimeterManager.getAllNodes());
 		getChildren().addAll(this.persons);
 	}
+
+    private void createPersons(int type, int count, PathManager pathManager) {
+        for (int i = 0; i < count; i++)
+            this.spawnPerson(pathManager, type);
+    }
 
 
 	/**
