@@ -36,15 +36,15 @@ public class Room extends Pane {
 		setPrefSize(this.config.getRoomWidth(), this.config.getRoomHeight());
 		this.perimeterManager.initializeAll();
 
-        double x, y;
+		double x, y;
 		if (this.config.getRoomWidth() < ConfigModel.ROOM_WIDTH_ORIGIN)
 			x = this.config.getRoomWidth();
 		else
-            x = 0.0;
+			x = 0.0;
 		if (this.config.getRoomHeight() < ConfigModel.ROOM_HEIGHT_ORIGIN)
 			y = this.config.getRoomHeight();
 		else
-            y = 0.0;
+			y = 0.0;
 
 		if (this.config.getRoomHeight() != ConfigModel.ROOM_HEIGHT_ORIGIN || this.config.getRoomWidth() != ConfigModel.ROOM_WIDTH_ORIGIN) {
 			Obstacle border = new Obstacle(x, y,
@@ -64,45 +64,78 @@ public class Room extends Pane {
 		for (Position p : o1.getVertices())
 			getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
 
-		for (int i = 0; i < this.config.getTotalPersons(); i++)
-			this.spawnPerson(ga.getGoalPoint());
+		/**
+		 * spawn persons randomly or weighted
+		 */
+		int type;
+		if (!config.isWeighted()) {
+			for (int i = 0; i < this.config.getTotalPersons(); i++) {
+				Random rnd = new Random();
+				type = rnd.nextInt(3);
+				this.spawnPerson(ga.getGoalPoint(), type);
+			}
+		} else {
+			double personMultiplicator = this.config.getTotalPersons() / 100;
+			int young = (int) Math.round(config.getWeightedYoungPersons() * personMultiplicator);
+			int midAge = (int) Math.round(config.getWeigthedMidagePersons() * personMultiplicator);
+			int old = (int) Math.round(config.getWeightedOldPersons() * personMultiplicator);
 
-//		for(Person p : persons){
-//			System.out.println("Perimeter from person :"+p.getCurrentPerimeter());
-//			System.out.println("Position from person :"+p.getCurrentPosition());
-//			System.out.println("perimeter includes person "+ p.getCurrentPerimeter().isInRange(p.getCurrentPosition()));
-//		}
+			int handicap = (int) Math.round(config.getWeightedHandicappedPersons() * personMultiplicator);
+			if (young + midAge + old + handicap != config.getTotalPersons()) {
+				handicap = (int) config.getTotalPersons() - young - midAge - old;
+			}
+
+//			spawn young persons
+			for (int i = 0; i < young; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 0);
+			}
+
+//			spawn mid age persons
+			for (int i = 0; i < midAge; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 1);
+			}
+
+//			spawn old persons
+			for (int i = 0; i < old; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 2);
+			}
+
+//			spawn handicapped persons
+			for (int i = 0; i < handicap; i++) {
+				this.spawnPerson(ga.getGoalPoint(), 3);
+			}
+
+		}
 
 		this.getChildren().addAll(perimeterManager.getAllNodes());
 		getChildren().addAll(this.persons);
 	}
 
-    /**
-     * Generating different aged persons randomly
-     * Created by suter1 on 05.10.2016
-     */
-    private void spawnPerson(Position goal) {
-		Random rnd = new Random();
-		int type;
-			Person newPerson;
-			type = rnd.nextInt(3);
-			switch (type) {
-				case 0:
-					newPerson = new YoungPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				case 1:
-					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				case 2:
-					newPerson = new OldPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				case 3:
-					newPerson = new HandicappedPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-				default:
-					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-					break;
-			}
+
+	/**
+	 * Generating different aged persons randomly
+	 * Created by suter1 on 05.10.2016
+	 */
+	private void spawnPerson(Position goal, int type) {
+
+		Person newPerson;
+		switch (type) {
+			case 0:
+				newPerson = new YoungPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			case 1:
+				newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			case 2:
+				newPerson = new OldPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			case 3:
+				newPerson = new HandicappedPerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+			default:
+				newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+				break;
+		}
 
 		for (Obstacle o : this.obstacles) {
 			newPerson.getPathManager().getVertices().addAll(o.getVertices());
@@ -120,16 +153,17 @@ public class Room extends Pane {
 		this.persons.add(newPerson);
 	}
 
-    /**
-     * shuffle before every run because there might be
-     * unsolvable issues if it is always the same order
-     */
-    public void start(Label time) {
+
+	/**
+	 * shuffle before every run because there might be
+	 * unsolvable issues if it is always the same order
+	 */
+	public void start(Label time) {
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws Exception {
 				int i = 0;
-                while (!isSimulationFinished()) {
+				while (!isSimulationFinished()) {
 					Map<Person, Position> newPositions = new HashMap<>();
 					handlePersonsInRange();
 					for (Person p : persons) {
@@ -153,24 +187,27 @@ public class Room extends Pane {
 		simulation.start();
 	}
 
+
 	private void handlePersonsInRange() {
 		Vector<Person> newPersons = new Vector<>();
 		for (Person p : this.persons)
 			if (p.isInGoalArea())
-	            this.passivePersons.add(p);
+				this.passivePersons.add(p);
 			else
 				newPersons.add(p);
 
 		persons = newPersons;
 	}
 
+
 	private boolean isSimulationFinished() {
 		for (Person p : this.persons) {
 			if (!p.isInGoalArea())
-                return false;
+				return false;
 		}
 		return true;
 	}
+
 
 	public Thread getSimulationThread() {
 		return simulation;

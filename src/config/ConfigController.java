@@ -1,13 +1,13 @@
 package config;
 
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
 /**
@@ -43,6 +43,9 @@ public class ConfigController implements Initializable {
 	private TextField totalPersons;
 
 	@FXML
+	private CheckBox isWeighted;
+
+	@FXML
 	private Slider sliderYoung;
 
 	@FXML
@@ -52,7 +55,7 @@ public class ConfigController implements Initializable {
 	private Slider sliderOld;
 
 	@FXML
-	private Slider sliderHandycap;
+	private Slider sliderHandicap;
 
 	@FXML
 	private TextField weightYoung;
@@ -64,7 +67,7 @@ public class ConfigController implements Initializable {
 	private TextField weightOld;
 
 	@FXML
-	private TextField weightHandycap;
+	private TextField weightHandicap;
 
 	@FXML
 	private Button buttonOK;
@@ -73,6 +76,52 @@ public class ConfigController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ConfigModel cfg = ConfigModel.getInstance();
+
+		this.spawnAreaPosition.getItems().addAll("TOP_LEFT", "TOP_CENTER", "TOP_RIGHT");
+		this.goalAreaPosition.getItems().addAll("BOTTOM_LEFT", "BOTTOM_CENTER", "BOTTOM_RIGHT");
+
+		weightYoung.textProperty().bindBidirectional(sliderYoung.valueProperty(), NumberFormat.getNumberInstance());
+		weightMidage.textProperty().bindBidirectional(sliderMidage.valueProperty(), NumberFormat.getNumberInstance());
+		weightOld.textProperty().bindBidirectional(sliderOld.valueProperty(), NumberFormat.getNumberInstance());
+		weightHandicap.textProperty().bindBidirectional(sliderHandicap.valueProperty(), NumberFormat.getNumberInstance());
+
+//		Accept only int for the sliders. And check that the sum of all Sliders is 100%.
+		sliderYoung.valueProperty().addListener((observable, oldValue, newValue) -> {
+			sliderYoung.setValue(Math.round(newValue.doubleValue()));
+			calculateSlider();
+		});
+
+		sliderMidage.valueProperty().addListener((observable, oldValue, newValue) -> {
+			sliderMidage.setValue(Math.round(newValue.doubleValue()));
+			calculateSlider();
+		});
+
+		sliderOld.valueProperty().addListener((observable, oldValue, newValue) -> {
+			sliderOld.setValue(Math.round(newValue.doubleValue()));
+			calculateSlider();
+		});
+
+		sliderHandicap.valueProperty().addListener((observable, oldValue, newValue) -> {
+			sliderHandicap.setValue(Math.round(newValue.doubleValue()));
+			calculateSlider();
+		});
+
+		/**
+		 * Numberlistener from user "javasuns"
+		 * on: http://stackoverflow.com/a/37360657
+		 */
+		ChangeListener<String> forceNumberListener = (observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*"))
+				((StringProperty) observable).set(oldValue);
+		};
+
+//		Make sure, that only numbers (int) are entered in Textfields.
+		weightYoung.textProperty().addListener(forceNumberListener);
+		weightMidage.textProperty().addListener(forceNumberListener);
+		weightOld.textProperty().addListener(forceNumberListener);
+		weightHandicap.textProperty().addListener(forceNumberListener);
+
+
 		buttonOK.setOnAction((event) -> {
 			/**
 			 * Save data form the config window for usage in simulation.
@@ -80,10 +129,11 @@ public class ConfigController implements Initializable {
 			cfg.setRoomWidthMeter(getRoomWidth());
 			cfg.setRoomHeightMeter(getRoomHeight());
 			cfg.setTotalPersons(getTotalPersons());
+			cfg.setWeighted(getIsWeighted());
 			cfg.setWeightedYoungPersons(getWeightYoung());
 			cfg.setWeigthedMidagePersons(getWeightMidage());
 			cfg.setWeightedOldPersons(getWeightOld());
-			cfg.setWeightedHandycappedPersons(getWeightHandycap());
+			cfg.setWeightedHandicappedPersons(getWeightHandicap());
 
 			/**
 			 * Merge meter from the config to pixel for the view.
@@ -108,6 +158,33 @@ public class ConfigController implements Initializable {
 	}
 
 
+	private int sliderSum() {
+		return (int) Math.round(sliderYoung.getValue() + sliderMidage.getValue() + sliderOld.getValue() + sliderHandicap.getValue());
+	}
+
+
+	private void calculateSlider() {
+		int sum = sliderSum();
+		if (sum != 100) {
+			int diff = sum - 100;
+			sliderYoung.setValue(Math.round(sliderYoung.getValue() - diff / 4));
+			sliderMidage.setValue(Math.round(sliderMidage.getValue() - diff / 4));
+			sliderOld.setValue(Math.round(sliderOld.getValue() - diff / 4));
+			sliderHandicap.setValue(Math.round(sliderHandicap.getValue() - diff / 4));
+		}
+	}
+
+
+	public Boolean getIsWeighted() {
+		return this.isWeighted.isSelected();
+	}
+
+
+//	public void setIsWeighted(boolean isWeighted) {
+//		this.isWeighted.setSelected(isWeighted);
+//	}
+
+
 	private TextField doubleToTextfield(Double value) {
 		return new TextField("" + value);
 	}
@@ -115,6 +192,16 @@ public class ConfigController implements Initializable {
 
 	private double textFieldToDouble(TextField text) {
 		return new Double(text.getText());
+	}
+
+
+	private int textFieldToInt(TextField text) {
+		return new Integer(text.getText());
+	}
+
+
+	private TextField intToTextfield(int value) {
+		return new TextField("" + value);
 	}
 
 
@@ -178,53 +265,53 @@ public class ConfigController implements Initializable {
 	}
 
 
-	public double getSliderHandycapValue() {
-		return this.sliderHandycap.getValue();
+	public double getSliderHandicapValue() {
+		return this.sliderHandicap.getValue();
 	}
 
 
-	public void setSliderHandycapValue(double sliderHandycap) {
-		this.sliderHandycap.setValue(sliderHandycap);
+	public void setSliderHandicapValue(double sliderHandicap) {
+		this.sliderHandicap.setValue(sliderHandicap);
 	}
 
 
 	public double getWeightYoung() {
-		return textFieldToDouble(this.weightYoung);
+		return textFieldToInt(this.weightYoung);
 	}
 
 
-	public void setWeightYoung(double weightYoung) {
-		this.weightYoung = doubleToTextfield(weightYoung);
+	public void setWeightYoung(int weightYoung) {
+		this.weightYoung = intToTextfield(weightYoung);
 	}
 
 
-	public double getWeightMidage() {
-		return textFieldToDouble(this.weightMidage);
+	public int getWeightMidage() {
+		return textFieldToInt(this.weightMidage);
 	}
 
 
-	public void setWeightMidage(double weightMidage) {
-		this.weightMidage = doubleToTextfield(weightMidage);
+	public void setWeightMidage(int weightMidage) {
+		this.weightMidage = intToTextfield(weightMidage);
 	}
 
 
-	public double getWeightOld() {
-		return textFieldToDouble(this.weightOld);
+	public int getWeightOld() {
+		return textFieldToInt(this.weightOld);
 	}
 
 
-	public void setWeightOld(double weightOld) {
-		this.weightOld = doubleToTextfield(weightOld);
+	public void setWeightOld(int weightOld) {
+		this.weightOld = intToTextfield(weightOld);
 	}
 
 
-	public double getWeightHandycap() {
-		return textFieldToDouble(this.weightHandycap);
+	public int getWeightHandicap() {
+		return textFieldToInt(this.weightHandicap);
 	}
 
 
-	public void setWeightHandycap(double weightHandycap) {
-		this.weightHandycap = doubleToTextfield(weightHandycap);
+	public void setWeightHandicap(int weightHandicap) {
+		this.weightHandicap = intToTextfield(weightHandicap);
 	}
 
 
