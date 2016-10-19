@@ -3,15 +3,15 @@ package model.persons;
 import config.ConfigModel;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import manager.PathManager;
 import manager.PerimeterManager;
 import model.GVector;
 import model.Perimeter;
 import model.Position;
+import model.Vertex;
 
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Vector;
+import java.util.Set;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -21,7 +21,9 @@ public abstract class Person extends Circle {
 	protected Position currentPosition;
 	protected int age;
 	protected double speed;
-	protected PathManager pathManager = new PathManager();
+	protected PerimeterManager pm = PerimeterManager.getInstance();
+	protected LinkedList<Vertex> path = new LinkedList();
+
 	protected ConfigModel config = ConfigModel.getInstance();
 	// protected Character character;
 
@@ -46,8 +48,10 @@ public abstract class Person extends Circle {
 	 * Calculates the vector and the next position depending on the step size
 	 * @return next Position
 	 */
-	public Position calculateStep() {
-		return this.calculateNextPossiblePosition();
+	public void calculateStep() {
+
+		Position newPos = this.calculateNextPossiblePosition();
+		if (newPos != null) this.setPosition(newPos);
 	}
 
     /**
@@ -57,42 +61,49 @@ public abstract class Person extends Circle {
     private Position calculateNextPossiblePosition() {
 		int tries = 1;
 //		System.out.println("getting " + this.getPath().);
-		Position nextTarget = this.pathManager.getPath().getFirst();
+		Position nextTarget = path.getFirst().getPosition();
 		//System.out.println("next target. "+nextTarget);
 		while (tries < 5) {
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
-			double lambda = this.speed / tries++ / vToNextTarget.length();
+			double lambda = this.speed / tries / vToNextTarget.length();
 			Position newPosition = vToNextTarget.getLambdaPosition(lambda);
 			if (this.isNewPositionAllowed(newPosition)) {
 				return newPosition;
-			} else if (tries == 2) {
+			} else if (tries >= 2) {
 				/**
 				 * Try to walk into the left or right hand position
 				 */
 				Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
 				Position rightPos = vToNextTarget.moveParallelRight(newPosition).getEndPosition();
-				if (this.isNewPositionAllowed(leftPos)) return leftPos;
-				if (this.isNewPositionAllowed(rightPos)) return rightPos;
+				if (this.isNewPositionAllowed(leftPos)) {
+					System.out.println("second try left: " + tries);
+					return leftPos;
+				}
+				if (this.isNewPositionAllowed(rightPos)) {
+					System.out.println("second try right: " + tries);
+
+					return rightPos;
+				}
 			} else if (tries == 5) {
+				System.out.println("step back");
 				//TODO probably implement a better solution
 				Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda);
 				if (this.isNewPositionAllowed(stepBack)) return stepBack;
 			}
+			tries++;
 		}
 		return null;
 	}
 
 	private boolean isNewPositionAllowed(Position position) {
 		if (position == null || position.isEmpty()) return false;
-		Vector<Perimeter> neighPerimeters = PerimeterManager.getInstance().getNeighbors(position);
-		//	System.out.println("neighborperimeters: "+neighPerimeters.size());
+		Set<Perimeter> neighPerimeters = PerimeterManager.getInstance().getNeighbors(position);
 		for (Perimeter perimeter : neighPerimeters) {
-			//System.out.println("neihbor perimeter has " + perimeter.getRegisteredPersons().size() + " persons");
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
 				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
-//				System.out.println("collission: " + collision);
+				System.out.println(position + " and " + person.getCurrentPosition() + " collision: " + collision);
 				if (collision) return false;
 			}
 		}
@@ -106,29 +117,30 @@ public abstract class Person extends Circle {
 	 * @param position
 	 */
 	public void setPosition(Position position) {
-		PerimeterManager pm = PerimeterManager.getInstance();
 		pm.unregisterPerson(this, pm.getCurrentPerimeter(this.currentPosition));
 		this.oldPositions.add(new Position(this.currentPosition.getXValue(),
 				this.currentPosition.getYValue()));
 		this.currentPosition.setX(position.getXValue());
 		this.currentPosition.setY(position.getYValue());
-		if (this.isInNextPathArea() && !this.isInGoalArea()) this.pathManager.getPath().removeFirst();
+		if (this.isInNextPathArea() && !this.isInGoalArea()) this.path.removeFirst();
 		pm.registerPerson(this);
 	}
 
 	public boolean isColliding(double x, double y, Person otherPerson) {
-		return Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < this.getRadius() + otherPerson.getRadius() &&
-				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < this.getRadius() + otherPerson.getRadius() &&
-				!otherPerson.isInGoalArea();
+		boolean collision = (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < config.getPersonRadius() * 2 &&
+				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < config.getPersonRadius() * 2 &&
+				!otherPerson.isInGoalArea());
+		return collision;
+
 	}
 
 	public boolean isInNextPathArea() {
-		Position nextPosition = this.pathManager.getPath().getFirst();
+		Position nextPosition = path.getFirst().getPosition();
 		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
 	public boolean isInGoalArea() {
-		Position targetPosition = this.pathManager.getPath().getLast();
+		Position targetPosition = this.path.getLast().getPosition();
 		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
@@ -160,7 +172,8 @@ public abstract class Person extends Circle {
 		this.speed = speed;
 	}
 
-	public PathManager getPathManager() {
-		return this.pathManager;
+	public void setPath(LinkedList<Vertex> path) {
+		System.out.println("path for person is " + path);
+		this.path = path;
 	}
 }

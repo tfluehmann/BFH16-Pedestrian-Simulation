@@ -14,7 +14,7 @@ import java.util.List;
 public class Obstacle extends Area {
     private static final double EDGE_EXTENDER = 20.0;
     private final ArrayList<Position> corners;
-    private ArrayList<Position> vertices = new ArrayList<>();
+    private ArrayList<Position> edgePoints = new ArrayList<>();
 
     /**
      * Created by suter1 on 06.10.2016.
@@ -22,7 +22,7 @@ public class Obstacle extends Area {
     public Obstacle(double... points) {
         super(points);
         corners = new ArrayList<>();
-        vertices = new ArrayList<>();
+        edgePoints = new ArrayList<>();
 
         for (int i = 0; i < points.length; i += 2) {
             corners.add(new Position(points[i], points[i + 1]));
@@ -31,12 +31,6 @@ public class Obstacle extends Area {
 
         position = new Position(points[0], points[1]);
         setFill(Color.BLACK);
-    }
-
-
-    @Override
-    public List<Position> getCorners() {
-        return this.corners;
     }
 
     /**
@@ -56,8 +50,8 @@ public class Obstacle extends Area {
             a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
             b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
 
-            if (this.includes(a) && !this.contains(a.getXValue(), a.getYValue())) this.vertices.add(a);
-            if (this.includes(b) && !this.contains(b.getXValue(), b.getYValue())) this.vertices.add(b);
+            if (this.includes(a) && !this.contains(a.getXValue(), a.getYValue())) this.edgePoints.add(a);
+            if (this.includes(b) && !this.contains(b.getXValue(), b.getYValue())) this.edgePoints.add(b);
         }
     }
 
@@ -72,7 +66,13 @@ public class Obstacle extends Area {
                 position.getYValue() < config.getRoomHeight();
     }
 
-    public List<Position> getVertices() {
-        return this.vertices;
+    public List<Position> getEdgePoints() {
+        return this.edgePoints;
     }
+
+    @Override
+    public List<Position> getCorners() {
+        return this.corners;
+    }
+
 }

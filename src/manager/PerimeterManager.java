@@ -5,6 +5,9 @@ import model.Perimeter;
 import model.Position;
 import model.persons.Person;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -51,12 +54,12 @@ public class PerimeterManager {
         if (!perimeter.isInRange(person.getCurrentPosition())) throw new RuntimeException("fail does not conclude it");
     }
 
-    public Vector<Perimeter> getNeighbors(Position position) {
+    public Set<Perimeter> getNeighbors(Position position) {
         Perimeter perimeter = getCurrentPerimeter(position);
         int i = perimeter.getHorizontalArrayPosition() - 1;
         int j = perimeter.getVerticalArrayPosition() - 1;
-        Vector<Perimeter> neighbors = new Vector<>();
-	    for (int a = i; a <= i + 2; a++)
+        Set<Perimeter> neighbors = Collections.synchronizedSet(new HashSet<>());
+        for (int a = i; a <= i + 2; a++)
 		    for (int b = j; b <= j + 2; b++)
                 if (i >= 0 && i < this.perimeters.size() && j >= 0 && j < this.perimeters.get(i).size())
                     neighbors.add(this.perimeters.get(i).get(j));

@@ -2,7 +2,6 @@ package model;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import manager.PerimeterManager;
 import model.persons.Person;
 
 import java.util.List;
@@ -48,13 +47,6 @@ public class Perimeter extends Rectangle {
 
     public void register(Person person) {
         if (!this.registeredPersons.contains(person)) this.registeredPersons.add(person);
-    }
-
-    public Vector<Perimeter> getNeighbors() {
-        PerimeterManager pm  = PerimeterManager.getInstance();
-        Vector<Perimeter> neigh = pm.getNeighbors(this.position);
-//        System.out.println("neighbor perimeters "+neigh.size());
-        return neigh;
     }
 
     public int getVerticalArrayPosition() {

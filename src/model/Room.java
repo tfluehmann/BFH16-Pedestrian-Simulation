@@ -5,8 +5,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import manager.PathManager;
 import manager.PerimeterManager;
 import model.areas.Area;
 import model.areas.GoalArea;
@@ -14,7 +13,9 @@ import model.areas.Obstacle;
 import model.areas.SpawnArea;
 import model.persons.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Vector;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -61,17 +62,20 @@ public class Room extends Pane {
 		getChildren().addAll(o1, sa, ga);
 
 		this.obstacles.add(o1);
-		for (Position p : o1.getVertices())
-			getChildren().add(new Circle(p.getXValue(), p.getYValue(), 2, Color.YELLOW));
+		PathManager pathManager = new PathManager();
+		for (Obstacle obstacle : this.obstacles) {
+			for (Position p : obstacle.getEdgePoints())
+				pathManager.getVertexList().add(new Vertex(p));
+			pathManager.getObstacleEdges().addAll(obstacle.getEdges());
+		}
+		Vertex goal = new Vertex(ga.getGoalPoint());
+		pathManager.getVertexList().add(goal);
+		pathManager.findValidEdges(this);
+		pathManager.findShortestPath(goal);
 
 		for (int i = 0; i < this.config.getTotalPersons(); i++)
-			this.spawnPerson(ga.getGoalPoint());
+			this.spawnPerson(pathManager);
 
-//		for(Person p : persons){
-//			System.out.println("Perimeter from person :"+p.getCurrentPerimeter());
-//			System.out.println("Position from person :"+p.getCurrentPosition());
-//			System.out.println("perimeter includes person "+ p.getCurrentPerimeter().isInRange(p.getCurrentPosition()));
-//		}
 
 		this.getChildren().addAll(perimeterManager.getAllNodes());
 		getChildren().addAll(this.persons);
@@ -81,7 +85,7 @@ public class Room extends Pane {
      * Generating different aged persons randomly
      * Created by suter1 on 05.10.2016
      */
-    private void spawnPerson(Position goal) {
+	private void spawnPerson(PathManager pathManager) {
 		Random rnd = new Random();
 		int type;
 			Person newPerson;
@@ -103,21 +107,9 @@ public class Room extends Pane {
 					newPerson = new MidAgePerson(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 					break;
 			}
-
-		for (Obstacle o : this.obstacles) {
-			newPerson.getPathManager().getVertices().addAll(o.getVertices());
-			newPerson.getPathManager().getObstacleEdges().addAll(o.getEdges());
-		}
-
-		newPerson.getPathManager().getVertices().add(goal);
-		newPerson.getPathManager().getVertices().add(newPerson.getCurrentPosition());
-		this.perimeterManager.registerPerson(newPerson);
-		newPerson.getPathManager().setStartPosition(newPerson.getCurrentPosition());
-		newPerson.getPathManager().setTarget(goal);
-		newPerson.getPathManager().start();
-
-		getChildren().addAll(newPerson.getPathManager().getEdges());
 		this.persons.add(newPerson);
+		newPerson.setPath(pathManager.getShortestPathFromPosition(newPerson.getCurrentPosition()));
+
 	}
 
     /**
@@ -130,18 +122,14 @@ public class Room extends Pane {
 			public Void call() throws Exception {
 				int i = 0;
                 while (!isSimulationFinished()) {
-					Map<Person, Position> newPositions = new HashMap<>();
 					handlePersonsInRange();
-					for (Person p : persons) {
-						newPositions.put(p, p.calculateStep());
-					}
 					Platform.runLater(() -> {
-						newPositions.forEach((k, v) -> {
-							if (v != null) k.setPosition(v);
-						});
+						for (Person p : persons)
+							p.calculateStep();
 					});
+
 					this.updateMessage(++i + " seconds");
-					Thread.sleep(20);
+					Thread.sleep(50);
 				}
 				System.out.println("finished simulation");
 				return null;
