@@ -18,9 +18,7 @@ public abstract class Area extends Polygon {
 
 	public Area(double... points) {
 		super(points);
-//		System.out.println("points: " + getPoints().size());
 		this.calculateEdges();
-//		System.out.println("edges calculated (" + edges.size() + ")");
 	}
 
 

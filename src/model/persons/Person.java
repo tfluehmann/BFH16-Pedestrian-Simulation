@@ -98,14 +98,10 @@ public abstract class Person extends Circle {
 	private boolean isNewPositionAllowed(Position position) {
 		if (position == null || position.isEmpty()) return false;
 		Set<Perimeter> neighPerimeters = perimeterManager.getNeighbors(position);
-//		Perimeter currentPerimeter = perimeterManager.getCurrentPerimeter(position);
-//		currentPerimeter.getHorizontalArrayPosition();
-//		currentPerimeter.getVerticalArrayPosition();
 		for (Perimeter perimeter : neighPerimeters) {
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
 				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
-				//System.out.println(position + " and " + person.getCurrentPosition() + " collision: " + collision);
 				if (collision) return false;
 			}
 		}

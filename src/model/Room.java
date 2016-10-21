@@ -131,16 +131,9 @@ public class Room extends Pane {
 			partypes[2] = Position.class;
 			Constructor ct = klass.getConstructor(partypes);
 			newPerson = (Person) ct.newInstance(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-
 			this.persons.add(newPerson);
 			newPerson.setPath(pathManager.getShortestPathFromPosition(newPerson.getCurrentPosition()));
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}
