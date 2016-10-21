@@ -28,6 +28,7 @@ public class BaseViewController implements Initializable{
 
     @FXML
     private Button resetButton;
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         startButton.setOnAction((event) -> {
@@ -36,6 +37,7 @@ public class BaseViewController implements Initializable{
             pauseButton.setDisable(false);
 
         });
+
 
         pauseButton.setOnAction((event) -> {
             simulationRoom.getSimulationThread().interrupt();

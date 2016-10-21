@@ -28,7 +28,6 @@ public abstract class Area extends Polygon {
 	 * from each point to next point-> create gvector --> edge
 	 */
 	public void calculateEdges() {
-		System.out.println(this.getPoints());
 		for (int x = 0; x < this.getPoints().size(); x += 2) {
 			int y = x + 1;
 			int x1 = y + 1;

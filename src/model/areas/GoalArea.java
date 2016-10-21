@@ -23,12 +23,10 @@ public class GoalArea extends Area {
 		this.setFill(Color.GREEN);
 	}
 
-
 	@Override
 	public List<Position> getCorners() {
 		return null;
 	}
-
 
 	public Position getGoalPoint() {
 		return new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2);

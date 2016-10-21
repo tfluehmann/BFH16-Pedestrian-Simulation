@@ -12,13 +12,14 @@ import java.util.Vector;
 
 /**
  * Created by tgdflto1 on 05/10/16.
+ * manages the grid of perimeters
  */
 public class PerimeterManager {
     private static PerimeterManager instance;
     private Vector<Vector<Perimeter>> perimeters;
     private long numberOfPerimetersY;
     private long numberOfPerimetersX;
-    ConfigModel config = ConfigModel.getInstance();
+    private ConfigModel config = ConfigModel.getInstance();
     private double perimeterSize = config.getPersonRadius() * 10;
 
     private PerimeterManager() {
@@ -54,7 +55,7 @@ public class PerimeterManager {
     /**
      * get the person's perimeter and register it
      *
-     * @param person
+     * @param person that will be registred
      */
     public void registerPerson(Person person){
         Perimeter perimeter = getCurrentPerimeter(person.getCurrentPosition());
@@ -63,7 +64,7 @@ public class PerimeterManager {
 
     /**
      * get all 8 neighbor perimeters (or less in edge cases)
-     * @param position
+     * @param position the neighbors should be returned
      * @return A set of Neighbor-Perimeters
      */
     public Set<Perimeter> getNeighbors(Position position) {
@@ -80,8 +81,8 @@ public class PerimeterManager {
 
     /**
      * remove person if registred in perimeter
-     * @param person
-     * @param perimeter
+     * @param person  want to remove
+     * @param perimeter expected to contain the person
      */
     public void unregisterPerson(Person person, Perimeter perimeter) {
         perimeter.unregister(person);
@@ -89,7 +90,7 @@ public class PerimeterManager {
 
     /**
      * calculate the perimeter based on position
-     * @param position
+     * @param position from you would like to know the perimeter
      * @return currentPerimeter
      */
     public Perimeter getCurrentPerimeter(Position position) {
@@ -101,7 +102,7 @@ public class PerimeterManager {
 
     /**
      * get all Perimeters in the room
-     * @return
+     * @return all perimeters that exist
      */
     public Vector<Perimeter> getAllNodes() {
         Vector<Perimeter> perimetersList = new Vector<>();
