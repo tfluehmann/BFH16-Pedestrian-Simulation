@@ -4,7 +4,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.persons.Person;
 
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -49,6 +48,10 @@ public class Perimeter extends Rectangle {
         if (!this.registeredPersons.contains(person)) this.registeredPersons.add(person);
     }
 
+    public void unregister(Person person) {
+        if (this.registeredPersons.contains(person)) this.registeredPersons.remove(person);
+    }
+
     public int getVerticalArrayPosition() {
         return this.verticalArrayPosition;
     }
@@ -57,7 +60,7 @@ public class Perimeter extends Rectangle {
         return this.horizontalArrayPosition;
     }
 
-    public List<Person> getRegisteredPersons() {
-        return this.registeredPersons;
+    public Vector<Person> getRegisteredPersons() {
+        return registeredPersons;
     }
 }

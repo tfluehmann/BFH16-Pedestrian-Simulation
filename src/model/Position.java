@@ -62,7 +62,6 @@ public class Position implements Cloneable {
         if (position == null) return false;
 	    double xComparision = Math.abs(getXValue() - position.getXValue());
 	    double yComparision = Math.abs(getYValue() - position.getYValue());
-	    //  System.out.println("comparision x: "+xComparision + " y: "+yComparision);
         return xComparision < epsilon && yComparision < epsilon;
     }
 
