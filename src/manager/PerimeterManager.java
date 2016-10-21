@@ -31,6 +31,9 @@ public class PerimeterManager {
     }
 
 
+    /**
+     * create a grid layout from perimeters on the the room
+     */
     public void initializeAll() {
         Double height = config.getRoomHeight();
         Double width = config.getRoomWidth();
@@ -48,12 +51,21 @@ public class PerimeterManager {
 	    }
     }
 
+    /**
+     * get the person's perimeter and register it
+     *
+     * @param person
+     */
     public void registerPerson(Person person){
         Perimeter perimeter = getCurrentPerimeter(person.getCurrentPosition());
         perimeter.register(person);
-        if (!perimeter.isInRange(person.getCurrentPosition())) throw new RuntimeException("fail does not conclude it");
     }
 
+    /**
+     * get all 8 neighbor perimeters (or less in edge cases)
+     * @param position
+     * @return A set of Neighbor-Perimeters
+     */
     public Set<Perimeter> getNeighbors(Position position) {
         Perimeter perimeter = getCurrentPerimeter(position);
         int i = perimeter.getHorizontalArrayPosition() - 1;
@@ -66,10 +78,20 @@ public class PerimeterManager {
         return neighbors;
     }
 
+    /**
+     * remove person if registred in perimeter
+     * @param person
+     * @param perimeter
+     */
     public void unregisterPerson(Person person, Perimeter perimeter) {
         perimeter.unregister(person);
     }
 
+    /**
+     * calculate the perimeter based on position
+     * @param position
+     * @return currentPerimeter
+     */
     public Perimeter getCurrentPerimeter(Position position) {
         int perimeterI = (int) Math.floor(position.getXValue() / perimeterSize);
         int perimeterJ = (int) Math.floor(position.getYValue() / perimeterSize);
@@ -77,6 +99,10 @@ public class PerimeterManager {
 
     }
 
+    /**
+     * get all Perimeters in the room
+     * @return
+     */
     public Vector<Perimeter> getAllNodes() {
         Vector<Perimeter> perimetersList = new Vector<>();
         for (int i = 0; i < this.numberOfPerimetersX; i++) {
