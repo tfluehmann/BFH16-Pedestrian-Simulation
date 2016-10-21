@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
 <?import java.lang.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigWindowController">
     <children>
@@ -82,38 +81,6 @@
                                                 <Separator layoutX="11.0" layoutY="357.0" prefHeight="0.0" prefWidth="376.0" />
                                             </children>
                                         </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Persons">
-                                    <content>
-                                        <AnchorPane prefHeight="330.0" prefWidth="400.0">
-                                            <children>
-                                                <Label layoutX="14.0" layoutY="18.0" text="Total persons" />
-                                                <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0" layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="10" />
-                                                <CheckBox fx:id="isWeighted" layoutX="13.0" layoutY="89.0" mnemonicParsing="false" text="use weighted person creation" />
-                                                <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="133.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="30.0" />
-                                                <Slider fx:id="sliderMidage" layoutX="155.0" layoutY="184.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="40.0" />
-                                                <Slider fx:id="sliderOld" layoutX="155.0" layoutY="230.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="25.0" />
-                                                <Slider fx:id="sliderHandicap" layoutX="155.0" layoutY="280.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="5.0" />
-                                                <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="128.0" prefHeight="25.0" prefWidth="40.0" text="30" />
-                                                <TextField fx:id="weightMidage" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="179.0" prefHeight="25.0" prefWidth="40.0" text="40" />
-                                                <TextField fx:id="weightOld" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="225.0" prefHeight="25.0" prefWidth="40.0" text="25" />
-                                                <TextField fx:id="weightHandicap" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="275.0" prefHeight="25.0" prefWidth="40.0" text="5" />
-                                                <Label layoutX="14.0" layoutY="183.0" text="30 to 50 years" />
-                                                <Label layoutX="14.0" layoutY="229.0" text="over 50 years" />
-                                                <Label layoutX="14.0" layoutY="279.0" text="handicapped persons" />
-                                                <Text layoutX="353.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Text layoutX="353.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Text layoutX="353.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Text layoutX="353.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Label layoutX="14.0" layoutY="132.0" text="under 30 years" />
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Obstacles">
-                                    <content>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                                     </content>
                                 </Tab>
                             </tabs>

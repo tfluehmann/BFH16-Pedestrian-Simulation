@@ -46,5 +46,7 @@ public class BaseViewController implements Initializable{
 
     }
 
-
+	public Room getSimulationRoom() {
+		return this.simulationRoom;
+	}
 }

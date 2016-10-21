@@ -189,4 +189,5 @@ public class Room extends Pane {
 	public Thread getSimulationThread() {
 		return simulation;
 	}
+
 }
