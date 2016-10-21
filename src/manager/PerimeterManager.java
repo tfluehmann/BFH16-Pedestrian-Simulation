@@ -42,7 +42,7 @@ public class PerimeterManager {
 		    Vector<Perimeter> currentList = new Vector<>();
 		    for (int j = 0; j < this.numberOfPerimetersY; j++) {
 			    currentList.add(new Perimeter(new Position(i * perimeterSize, j * perimeterSize),
-                        perimeterSize, perimeterSize, i, j));
+                        perimeterSize, perimeterSize, j, i));
             }
 		    this.perimeters.add(currentList);
 	    }
@@ -61,13 +61,13 @@ public class PerimeterManager {
         Set<Perimeter> neighbors = Collections.synchronizedSet(new HashSet<>());
         for (int a = i; a <= i + 2; a++)
 		    for (int b = j; b <= j + 2; b++)
-                if (i >= 0 && i < this.perimeters.size() && j >= 0 && j < this.perimeters.get(i).size())
-                    neighbors.add(this.perimeters.get(i).get(j));
-	    return neighbors;
+                if (a >= 0 && a < this.perimeters.size() && b >= 0 && b < this.perimeters.get(a).size())
+                    neighbors.add(this.perimeters.get(a).get(b));
+        return neighbors;
     }
 
     public void unregisterPerson(Person person, Perimeter perimeter) {
-        if (perimeter.getRegisteredPersons().contains(person)) perimeter.getRegisteredPersons().remove(person);
+        perimeter.unregister(person);
     }
 
     public Perimeter getCurrentPerimeter(Position position) {

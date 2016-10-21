@@ -23,6 +23,7 @@ public abstract class Person extends Circle {
 	protected double speed;
 	protected PerimeterManager pm = PerimeterManager.getInstance();
 	protected LinkedList<Vertex> path = new LinkedList();
+	protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
 
 	protected ConfigModel config = ConfigModel.getInstance();
 	// protected Character character;
@@ -60,9 +61,7 @@ public abstract class Person extends Circle {
      */
     private Position calculateNextPossiblePosition() {
 		int tries = 1;
-//		System.out.println("getting " + this.getPath().);
 		Position nextTarget = path.getFirst().getPosition();
-		//System.out.println("next target. "+nextTarget);
 		while (tries < 5) {
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
@@ -98,12 +97,15 @@ public abstract class Person extends Circle {
 
 	private boolean isNewPositionAllowed(Position position) {
 		if (position == null || position.isEmpty()) return false;
-		Set<Perimeter> neighPerimeters = PerimeterManager.getInstance().getNeighbors(position);
+		Set<Perimeter> neighPerimeters = perimeterManager.getNeighbors(position);
+//		Perimeter currentPerimeter = perimeterManager.getCurrentPerimeter(position);
+//		currentPerimeter.getHorizontalArrayPosition();
+//		currentPerimeter.getVerticalArrayPosition();
 		for (Perimeter perimeter : neighPerimeters) {
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
 				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
-				System.out.println(position + " and " + person.getCurrentPosition() + " collision: " + collision);
+				//System.out.println(position + " and " + person.getCurrentPosition() + " collision: " + collision);
 				if (collision) return false;
 			}
 		}
@@ -127,8 +129,9 @@ public abstract class Person extends Circle {
 	}
 
 	public boolean isColliding(double x, double y, Person otherPerson) {
-		boolean collision = (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < config.getPersonRadius() * 2 &&
-				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < config.getPersonRadius() * 2 &&
+		double minimalDistance = config.getPersonRadius() * 2;
+		boolean collision = (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
+				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < minimalDistance &&
 				!otherPerson.isInGoalArea());
 		return collision;
 
