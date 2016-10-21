@@ -1,13 +1,9 @@
 package model.persons;
 
-import config.ConfigModel;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import manager.PerimeterManager;
-import model.GVector;
-import model.Perimeter;
-import model.Position;
-import model.Vertex;
+import model.*;
 
 import java.util.LinkedList;
 import java.util.Random;

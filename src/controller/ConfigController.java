@@ -1,4 +1,4 @@
-package config;
+package controller;
 
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import model.ConfigModel;
 
 import java.net.URL;
 import java.text.NumberFormat;

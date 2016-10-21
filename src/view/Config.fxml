@@ -3,7 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="730.0" maxWidth="400.0" minHeight="730.0" minWidth="400.0" prefHeight="730.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="config.ConfigController">
+<AnchorPane maxHeight="730.0" maxWidth="400.0" minHeight="730.0" minWidth="400.0" prefHeight="730.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigController">
     <VBox maxHeight="730.0" maxWidth="400.0" prefHeight="730.0" prefWidth="400.0" BorderPane.alignment="CENTER">
         <children>
             <HBox alignment="TOP_RIGHT">

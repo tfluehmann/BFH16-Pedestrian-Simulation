@@ -1,6 +1,6 @@
 package manager;
 
-import config.ConfigModel;
+import model.ConfigModel;
 import model.Perimeter;
 import model.Position;
 import model.persons.Person;

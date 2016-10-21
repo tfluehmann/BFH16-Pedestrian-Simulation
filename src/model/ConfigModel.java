@@ -1,6 +1,4 @@
-package config;
-
-import model.Position;
+package model;
 
 /**
  * Created by suter1 on 07.10.2016.

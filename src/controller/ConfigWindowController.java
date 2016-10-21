@@ -1,4 +1,4 @@
-package config;
+package controller;
 
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import model.ConfigModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
