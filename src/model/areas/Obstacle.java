@@ -1,7 +1,7 @@
 package model.areas;
 
-import config.ConfigModel;
 import javafx.scene.paint.Color;
+import model.ConfigModel;
 import model.GVector;
 import model.Position;
 

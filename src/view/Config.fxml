@@ -1,131 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="config.ConfigController">
-    <children>
-        <VBox prefHeight="500.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <MenuBar>
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Close" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <AnchorPane prefHeight="450.0" prefWidth="400.0">
-                    <children>
-                        <TabPane prefHeight="400.0" prefWidth="400.0" styleClass="TabPaneStyle" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <tabs>
-                                <Tab text="Room">
-                                    <content>
-                                        <AnchorPane prefHeight="450.0" prefWidth="400.0">
-                                            <children>
-                                                <Label layoutX="11.0" layoutY="20.0" text="Room Width" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="20.0" />
-                                                <TextField fx:id="roomWidth" alignment="CENTER" layoutX="126.0" layoutY="16.0" prefHeight="25.0" prefWidth="40.0" promptText="Room width in meters" text="128" />
-                                                <Label layoutX="11.0" layoutY="59.0" text="Room Height" AnchorPane.leftAnchor="11.0" />
-                                                <TextField fx:id="roomHeight" alignment="CENTER" layoutX="126.0" layoutY="55.0" prefHeight="25.0" prefWidth="40.0" promptText="Room height in meters" text="72" />
-                                                <Label layoutX="13.0" layoutY="108.0" text="Spawn area" />
-                                                <ComboBox fx:id="spawnAreaPosition" layoutX="126.0" layoutY="105.0" prefWidth="150.0" promptText="Select Position">
-                                                    <items>
-                                                        <FXCollections fx:factory="observableArrayList">
-                                                            <String fx:value="TOP_LEFT" />
-                                                            <String fx:value="TOP_CENTER" />
-                                                            <String fx:value="TOP_RIGHT" />
-                                                        </FXCollections>
-                                                    </items>
-                                                    <value>TOP_LEFT</value>
-                                                </ComboBox>
-                                                <Label layoutX="13.0" layoutY="146.0" text="Width" />
-                                                <TextField fx:id="spawnWidth" alignment="CENTER" layoutX="126.0" layoutY="143.0" prefHeight="25.0" prefWidth="40.0" text="16" />
-                                                <Label layoutX="174.0" layoutY="20.0" text="meters" />
-                                                <Label layoutX="174.0" layoutY="59.0" text="meters" />
-                                                <Label layoutX="183.0" layoutY="147.0" text="meters" />
-                                                <TextField fx:id="spawnHeight" alignment="CENTER" layoutX="126.0" layoutY="183.0" prefHeight="25.0" prefWidth="40.0" text="10" />
-                                                <Label layoutX="13.0" layoutY="186.0" text="Height" />
-                                                <Label layoutX="183.0" layoutY="187.0" text="meters" />
-                                                <Separator layoutX="11.0" layoutY="90.0" prefHeight="0.0" prefWidth="376.0" />
-                                                <Separator layoutX="13.0" layoutY="226.0" prefHeight="0.0" prefWidth="376.0" />
-                                                <Label layoutX="185.0" layoutY="323.0" text="meters" />
-                                                <Label layoutX="10.0" layoutY="323.0" text="Height" />
-                                                <TextField fx:id="goalHeight" alignment="CENTER" layoutX="128.0" layoutY="319.0" prefHeight="25.0" prefWidth="40.0" text="5" />
-                                                <Label layoutX="185.0" layoutY="283.0" text="meters" />
-                                                <TextField fx:id="goalWidth" alignment="CENTER" layoutX="128.0" layoutY="279.0" prefHeight="25.0" prefWidth="40.0" text="5" />
-                                                <Label layoutX="10.0" layoutY="283.0" text="Width" />
-                                                <ComboBox fx:id="goalAreaPosition" layoutX="128.0" layoutY="241.0" prefWidth="150.0" promptText="Select Position">
-                                                    <items>
-                                                        <FXCollections fx:factory="observableArrayList">
-                                                            <String fx:value="BOTTOM_LEFT" />
-                                                            <String fx:value="BOTTOM_CENTER" />
-                                                            <String fx:value="BOTTOM_RIGHT" />
-                                                        </FXCollections>
-                                                    </items>
-                                                    <value>BOTTOM_LEFT</value>
-                                                </ComboBox>
-                                                <Label layoutX="10.0" layoutY="245.0" text="Goal area" />
-                                                <Separator layoutX="11.0" layoutY="357.0" prefHeight="0.0" prefWidth="376.0" />
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Persons">
-                                    <content>
-                                        <AnchorPane prefHeight="330.0" prefWidth="400.0">
-                                            <children>
-                                                <Label layoutX="14.0" layoutY="18.0" text="Total persons" />
-                                                <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0" layoutY="14.0" prefHeight="25.0" prefWidth="40.0" text="10" />
-                                                <CheckBox fx:id="isWeighted" layoutX="13.0" layoutY="89.0" mnemonicParsing="false" text="use weighted person creation" />
-                                                <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="133.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="30.0" />
-                                                <Slider fx:id="sliderMidage" layoutX="155.0" layoutY="184.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="40.0" />
-                                                <Slider fx:id="sliderOld" layoutX="155.0" layoutY="230.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="25.0" />
-                                                <Slider fx:id="sliderHandicap" layoutX="155.0" layoutY="280.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="5.0" />
-                                                <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="128.0" prefHeight="25.0" prefWidth="40.0" text="30" />
-                                                <TextField fx:id="weightMidage" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="179.0" prefHeight="25.0" prefWidth="40.0" text="40" />
-                                                <TextField fx:id="weightOld" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="225.0" prefHeight="25.0" prefWidth="40.0" text="25" />
-                                                <TextField fx:id="weightHandicap" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="275.0" prefHeight="25.0" prefWidth="40.0" text="5" />
-                                                <Label layoutX="14.0" layoutY="183.0" text="30 to 50 years" />
-                                                <Label layoutX="14.0" layoutY="229.0" text="over 50 years" />
-                                                <Label layoutX="14.0" layoutY="279.0" text="handicapped persons" />
-                                                <Text layoutX="353.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Text layoutX="353.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Text layoutX="353.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Text layoutX="353.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
-                                                <Label layoutX="14.0" layoutY="132.0" text="under 30 years" />
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Obstacles">
-                                    <content>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                    </content>
-                                </Tab>
-                            </tabs>
-                        </TabPane>
-                    </children>
-                </AnchorPane>
-                <Button fx:id="buttonOK" alignment="CENTER" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="OK" textAlignment="CENTER">
-                    <VBox.margin>
-                        <Insets bottom="5.0" left="350.0" right="5.0" />
-                    </VBox.margin>
-                </Button>
-            </children>
-        </VBox>
-    </children>
-</AnchorPane>
+<AnchorPane maxHeight="730.0" maxWidth="400.0" minHeight="730.0" minWidth="400.0" prefHeight="730.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigController">
+    <VBox maxHeight="730.0" maxWidth="400.0" prefHeight="730.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+        <children>
+            <HBox alignment="TOP_RIGHT">
+                <Label layoutX="14.0" layoutY="18.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="Total persons" />
+                <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0" layoutY="14.0" maxHeight="25.0" maxWidth="40.0" prefHeight="25.0" prefWidth="40.0" text="10">
+                    <HBox.margin>
+                        <Insets left="5.0" right="190.0" />
+                    </HBox.margin></TextField>
+            </HBox>
+            <CheckBox fx:id="isWeighted" layoutX="13.0" layoutY="89.0" maxHeight="25.0" mnemonicParsing="false" prefHeight="25.0" text="use weighted person creation">
+                <VBox.margin>
+                    <Insets bottom="5.0" top="30.0" />
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="5.0" />
+                </padding></CheckBox>
+            <HBox alignment="TOP_RIGHT">
+                <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="132.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="under 30 years" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin></Label>
+                <Slider fx:id="sliderYoung" layoutX="155.0" layoutY="133.0" maxHeight="25.0" maxWidth="150.0" minHeight="25.0" minWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="30.0" />
+                <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="128.0" maxHeight="25.0" maxWidth="40.0" prefHeight="25.0" prefWidth="40.0" text="30">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin></TextField>
+                <Label maxHeight="25.0" prefHeight="25.0" text="\%">
+                    <HBox.margin>
+                        <Insets left="5.0" right="20.0" />
+                    </HBox.margin></Label>
+                <VBox.margin>
+                    <Insets bottom="5.0" />
+                </VBox.margin>
+            </HBox>
+            <HBox alignment="TOP_RIGHT">
+                <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="183.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="30 to 50 years">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin></Label>
+                <Slider fx:id="sliderMidage" layoutX="155.0" layoutY="184.0" maxHeight="25.0" maxWidth="150.0" minHeight="25.0" minWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="40.0" />
+                <TextField fx:id="weightMidage" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="179.0" maxHeight="25.0" maxWidth="40.0" prefHeight="25.0" prefWidth="40.0" text="40">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin></TextField>
+                <Label maxHeight="25.0" prefHeight="25.0" text="\%">
+                    <HBox.margin>
+                        <Insets left="5.0" right="20.0" />
+                    </HBox.margin></Label>
+                <VBox.margin>
+                    <Insets bottom="5.0" />
+                </VBox.margin>
+            </HBox>
+            <HBox alignment="TOP_RIGHT">
+                <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="230.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="over 50 years">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin></Label>
+                <Slider fx:id="sliderOld" layoutX="100.0" layoutY="230.0" maxHeight="25.0" maxWidth="150.0" minHeight="25.0" minWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="25.0" />
+                <TextField fx:id="weightOld" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="225.0" maxHeight="25.0" maxWidth="40.0" prefHeight="25.0" prefWidth="40.0" text="25">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin></TextField>
+                <Label maxHeight="25.0" prefHeight="25.0" text="\%">
+                    <HBox.margin>
+                        <Insets left="5.0" right="20.0" />
+                    </HBox.margin></Label>
+                <VBox.margin>
+                    <Insets bottom="5.0" />
+                </VBox.margin>
+            </HBox>
+            <HBox alignment="TOP_RIGHT">
+                <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="280.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="handicapped persons">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin></Label>
+                <Slider fx:id="sliderHandicap" layoutX="100.0" layoutY="280.0" maxHeight="25.0" maxWidth="150.0" minHeight="25.0" minWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="5.0" />
+                <TextField fx:id="weightHandicap" alignment="CENTER_RIGHT" layoutX="306.0" layoutY="275.0" maxHeight="25.0" maxWidth="40.0" prefHeight="25.0" prefWidth="40.0" text="5">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin></TextField>
+                <Label maxHeight="25.0" prefHeight="25.0" text="\%">
+                    <HBox.margin>
+                        <Insets left="5.0" right="20.0" />
+                    </HBox.margin></Label>
+            </HBox>
+            <HBox alignment="TOP_RIGHT">
+                <Button fx:id="spawnButton" mnemonicParsing="false" prefWidth="60.0" text="Spawn">
+                    <HBox.margin>
+                        <Insets right="20.0" top="10.0" />
+                    </HBox.margin></Button>
+            </HBox>
+        </children>
+        <padding>
+            <Insets left="20.0" top="20.0" />
+        </padding>
+        <BorderPane.margin>
+            <Insets />
+        </BorderPane.margin>
+    </VBox>
+    </AnchorPane>

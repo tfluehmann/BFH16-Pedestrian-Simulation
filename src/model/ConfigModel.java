@@ -1,13 +1,11 @@
-package config;
-
-import model.Position;
+package model;
 
 /**
  * Created by suter1 on 07.10.2016.
  */
 public class ConfigModel {
 
-	public static final double ROOM_WIDTH_ORIGIN = 1280.0;
+	public static final double ROOM_WIDTH_ORIGIN = 1080.0;
 	public static final double ROOM_HEIGHT_ORIGIN = 720.0;
 	private static ConfigModel instance = null;
 	// Room size ratio= 16:10

@@ -25,7 +25,7 @@ public class Simulation extends Application {
 		try {
 			// creating view for the initial configuration
 			FXMLLoader configLoader = new FXMLLoader();
-			configLoader.setLocation(Simulation.class.getResource("view/Config.fxml"));
+			configLoader.setLocation(Simulation.class.getResource("view/ConfigWindow.fxml"));
 			configScene = new Scene(configLoader.load());
 			configStage = new Stage();
 			configStage.setScene(configScene);

@@ -1,6 +1,5 @@
 package model;
 
-import config.ConfigModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
@@ -192,4 +191,5 @@ public class Room extends Pane {
 	public Thread getSimulationThread() {
 		return simulation;
 	}
+
 }
