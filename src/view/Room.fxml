@@ -2,4 +2,4 @@
 
 
 <?import model.Room?>
-<Room fx:id="Room" xmlns:fx="http://javafx.com/fxml/1" styleClass="room" xmlns="http://javafx.com/javafx/8.0.101"/>
+<Room fx:id="Room" xmlns:fx="http://javafx.com/fxml/1" styleClass="room" xmlns="http://javafx.com/javafx"/>
