@@ -6,16 +6,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import manager.PathManager;
 import manager.PerimeterManager;
+import manager.SpawnManager;
 import model.areas.Area;
 import model.areas.GoalArea;
 import model.areas.Obstacle;
 import model.areas.SpawnArea;
 import model.persons.Person;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -32,7 +30,7 @@ public class Room extends Pane {
 	private Thread simulation;
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
-	private Random rnd = new Random();
+	private SpawnManager spawnManager = SpawnManager.getInstance();
 
 
 	public Room() {
@@ -64,7 +62,7 @@ public class Room extends Pane {
 		getChildren().addAll(o1, sa, ga);
 
 		this.obstacles.add(o1);
-		PathManager pathManager = new PathManager();
+		PathManager pathManager = spawnManager.getPathManager();
 		for (Obstacle obstacle : this.obstacles) {
 			for (Position p : obstacle.getEdgePoints())
 				pathManager.getVertexList().add(new Vertex(p));
@@ -75,66 +73,6 @@ public class Room extends Pane {
 		pathManager.findValidEdges(this);
 		pathManager.findShortestPath(goal);
 
-		/**
-		 * spawn persons randomly or weighted
-		 */
-		try {
-			Class[] personTypes = {Class.forName("model.persons.YoungPerson"),
-					Class.forName("model.persons.MidAgePerson"),
-					Class.forName("model.persons.OldPerson"),
-					Class.forName("model.persons.HandicappedPerson")};
-
-			if (!config.isWeighted()) {
-				for (int i = 0; i < this.config.getTotalPersons(); i++) {
-					int type = rnd.nextInt(3);
-					this.spawnPerson(pathManager, personTypes[type]);
-				}
-			} else {
-				double personMultiplicator = this.config.getTotalPersons() / 100;
-				int[] ageDistribution = new int[4];
-				ageDistribution[0] = (int) Math.round(config.getWeightedYoungPersons() * personMultiplicator);
-				ageDistribution[1] = (int) Math.round(config.getWeigthedMidagePersons() * personMultiplicator);
-				ageDistribution[2] = (int) Math.round(config.getWeightedOldPersons() * personMultiplicator);
-				ageDistribution[3] = (int) Math.round(config.getWeightedHandicappedPersons() * personMultiplicator);
-				if (ageDistribution[0] + ageDistribution[1] + ageDistribution[2] + ageDistribution[3] != config.getTotalPersons())
-					ageDistribution[3] = (int) config.getTotalPersons() - ageDistribution[0] - ageDistribution[1] - ageDistribution[2];
-
-				for (int i = 0; i < ageDistribution.length; i++)
-					createPersons(personTypes[i], ageDistribution[i], pathManager);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		this.getChildren().addAll(perimeterManager.getAllNodes());
-		getChildren().addAll(this.persons);
-	}
-
-	private void createPersons(Class klass, int count, PathManager pathManager) {
-		for (int i = 0; i < count; i++)
-			this.spawnPerson(pathManager, klass);
-	}
-
-
-	/**
-	 * Generating different aged persons randomly
-	 * Created by suter1 on 05.10.2016
-	 */
-	private void spawnPerson(PathManager pathManager, Class<? extends Person> klass) {
-
-		Person newPerson;
-		try {
-			Class partypes[] = new Class[3];
-			partypes[0] = Double.TYPE;
-			partypes[1] = Double.TYPE;
-			partypes[2] = Position.class;
-			Constructor ct = klass.getConstructor(partypes);
-			newPerson = (Person) ct.newInstance(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
-			this.persons.add(newPerson);
-			newPerson.setPath(pathManager.getShortestPathFromPosition(newPerson.getCurrentPosition()));
-		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
 	}
 
 

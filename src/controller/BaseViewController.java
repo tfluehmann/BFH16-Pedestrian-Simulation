@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import manager.SpawnManager;
 import model.Room;
 
 import java.net.URL;
@@ -28,9 +29,15 @@ public class BaseViewController implements Initializable{
 
     @FXML
     private Button resetButton;
+
+	@FXML
+	private ConfigController config;
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+
         startButton.setOnAction((event) -> {
+	        simulationRoom.getChildren().addAll(SpawnManager.getInstance().getPersons());
             simulationRoom.start(time);
             startButton.setDisable(true);
             pauseButton.setDisable(false);
@@ -45,8 +52,4 @@ public class BaseViewController implements Initializable{
         // initialize your logic here: all @FXML variables will have been injected
 
     }
-
-	public Room getSimulationRoom() {
-		return this.simulationRoom;
-	}
 }

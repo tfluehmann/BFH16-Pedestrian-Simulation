@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import manager.SpawnManager;
 import model.ConfigModel;
 
 import java.net.URL;
@@ -110,7 +111,8 @@ public class ConfigController implements Initializable {
 			cfg.setWeightedOldPersons(getWeightOld());
 			cfg.setWeightedHandicappedPersons(getWeightHandicap());
 
-
+			SpawnManager spMgr = SpawnManager.getInstance();
+			spMgr.createPersons();
 
 			spawnButton.setDisable(true);
 
