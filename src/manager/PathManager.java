@@ -1,9 +1,6 @@
 package manager;
 
-import model.GVector;
-import model.Position;
-import model.Room;
-import model.Vertex;
+import model.*;
 
 import java.util.*;
 
@@ -15,7 +12,14 @@ import java.util.*;
 public class PathManager {
     private final List<Vertex> vertexList = new ArrayList<>();
     private final Collection<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
-    private final Map<Vertex, Vertex> settledNodes = new HashMap<>();
+    private final Set<Vertex> settledNodes = new HashSet<>();
+    private Map<Vertex, Double> nodes = new HashMap<>();
+    private List<Vertex> targetVertexes = new ArrayList<>();
+
+    public PathManager(Vertex... targetVertexes) {
+        this.targetVertexes.addAll(Arrays.asList(targetVertexes));
+        this.vertexList.addAll(this.targetVertexes);
+    }
 
     /**
      * Fucking magic just took us 10h of Fluch und Hass
@@ -40,6 +44,10 @@ public class PathManager {
                     v.setStyle("-fx-stroke: green;");
                     room.getChildren().add(v);
                     double distance = v.length();
+                    if (nodes.containsKey(targetVertex)) {
+                        if (distance < nodes.get(targetVertex)) nodes.put(targetVertex, distance);
+                    } else
+                        nodes.put(targetVertex, distance);
                     vertex.addNeighbor(targetVertex, distance);
                     targetVertex.addNeighbor(vertex, distance);
                 }
@@ -57,56 +65,59 @@ public class PathManager {
         return isCrossing;
     }
 
-    public void findShortestPath(Vertex target) {
-        findMinimumDistance(target, null, 0.0);
-    }
+    public void crapFindAlgorithm(Vertex target) {
+        Queue<Node> pq = new PriorityQueue<>(new Node());//Heap to extract value
+        Map<Vertex, Double> distances = new HashMap<>();
+        for (Vertex v : vertexList)
+            distances.put(v, Double.MAX_VALUE);
+        distances.put(target, 0.0);
+        pq.clear();
+        pq.offer(new Node(target, 0));
 
-    private void findMinimumDistance(Vertex nextVertex, Vertex lastVertex, double currentLength) {
-        if (nextVertex == null) return;
-        settledNodes.put(nextVertex, lastVertex);
+        while (!pq.isEmpty() && settledNodes.size() < vertexList.size()) {
+            Node element = pq.poll();
+            Vertex candidate = element.getVertex();//Getting next node from heap
+            double cost = element.getWeight();
+            candidate.setVisited(true);
+            settledNodes.add(candidate);
+            for (Vertex z : candidate.getNeighbors().keySet()) {
+                // if(!z.isVisited()){//Not checking visited Vertices
+                GVector vector = new GVector(z.getPosition(), candidate.getPosition());
+                double newDist = cost + vector.length();
+                if (distances.get(z) > newDist) {                        //Checking for min weight
+                    z.setTarget(target, candidate, newDist);
+                    distances.put(z, newDist);
+                    pq.offer(new Node(z, distances.get(z)));//Adding element to PriorityQueue
 
-        Vertex shortestNeighbor = null;
-        for (Vertex neighbor : nextVertex.getNeighbors().keySet()) {
-            if (shortestNeighbor == null && !settledNodes.containsKey(neighbor)) shortestNeighbor = neighbor;
-
-            if (shortestNeighbor != null && nextVertex.getNeighbors().get(neighbor) < nextVertex.getNeighbors().get(shortestNeighbor) &&
-                    !settledNodes.containsKey(neighbor)) shortestNeighbor = neighbor;
+                }
+                //}
+            }
         }
-        if (shortestNeighbor == null) return;
-        findMinimumDistance(shortestNeighbor, nextVertex, currentLength + nextVertex.getNeighbors().get(shortestNeighbor));
-    }
 
-    private LinkedList<Vertex> getPath(Vertex start, LinkedList<Vertex> currentPath) {
-        Vertex nextVertex = settledNodes.get(start);
-        if (nextVertex == null) return currentPath;
-        currentPath.add(nextVertex);
-        // the list is passed by reference, it is always the same list and we just fill it until done
-        return getPath(nextVertex, currentPath);
     }
 
     public List<Vertex> getVertexList() {
         return vertexList;
     }
 
-    public LinkedList<Vertex> getShortestPathFromPosition(Position currentPosition) {
-        LinkedList<Vertex> targetList = new LinkedList<>();
-        targetList.add(vertexList.get(vertexList.size() - 1));
-        Vertex shortestVector = null;
-        double shortestDistance = Double.MAX_VALUE;
-        GVector goalVector = new GVector(currentPosition, vertexList.get(vertexList.size() - 1).getPosition());
-        if (!checkAgainstObstacles(goalVector)) return targetList;
+    public Vertex getNearestVertex(Position currentPosition) {
+        Vertex smallestDist = null;
+        double smallestDistTOVect = Double.MAX_VALUE;
         for (Vertex v : vertexList) {
             GVector vect = new GVector(v.getPosition(), currentPosition);
-            if (vect.length() < shortestDistance && !checkAgainstObstacles(vect)) {
-                shortestDistance = vect.length();
-                shortestVector = v;
+            if (vect.length() < smallestDistTOVect) {
+                smallestDistTOVect = vect.length();
+                smallestDist = v;
             }
         }
-
-        return getPath(shortestVector, new LinkedList<>());
+        return smallestDist;
     }
 
     public Collection<GVector> getObstacleEdges() {
         return obstacleEdges;
+    }
+
+    public List<Vertex> getTargetVertexes() {
+        return this.targetVertexes;
     }
 }

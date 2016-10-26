@@ -16,6 +16,7 @@ import model.persons.Person;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
@@ -65,16 +66,15 @@ public class Room extends Pane {
 		getChildren().addAll(o1, sa, ga);
 
 		this.obstacles.add(o1);
-		PathManager pathManager = new PathManager();
+		Vertex goal = new Vertex(ga.getGoalPoint());
+		PathManager pathManager = new PathManager(goal);
 		for (Obstacle obstacle : this.obstacles) {
 			for (Position p : obstacle.getEdgePoints())
 				pathManager.getVertexList().add(new Vertex(p));
 			pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 		}
-		Vertex goal = new Vertex(ga.getGoalPoint());
-		pathManager.getVertexList().add(goal);
 		pathManager.findValidEdges(this);
-		pathManager.findShortestPath(goal);
+		pathManager.crapFindAlgorithm(goal);
 
 		/**
 		 * spawn persons randomly or weighted
@@ -132,7 +132,8 @@ public class Room extends Pane {
 			Constructor ct = klass.getConstructor(partypes);
 			newPerson = (Person) ct.newInstance(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
 			this.persons.add(newPerson);
-			newPerson.setPath(pathManager.getShortestPathFromPosition(newPerson.getCurrentPosition()));
+			newPerson.setNextVertex(pathManager.getNearestVertex(newPerson.getCurrentPosition()));
+			newPerson.setTarget(pathManager.getTargetVertexes().get(0));
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
@@ -149,6 +150,7 @@ public class Room extends Pane {
 			public Void call() throws Exception {
 				int i = 0;
                 while (!isSimulationFinished()) {
+					Collections.shuffle(persons);
 					handlePersonsInRange();
 					Platform.runLater(() -> {
 						for (Person p : persons)

@@ -7,7 +7,6 @@ import javafx.scene.shape.Line;
  * Created by tgdflto1 on 07/10/16.
  */
 public class GVector extends Line {
-    public static final double EPSILON = 0.00001;
     private final double x;
     private final double y;
     private double startPointX;

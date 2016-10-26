@@ -41,7 +41,6 @@ public class Perimeter extends Rectangle {
                 (position.getXValue() <= (this.position.getXValue() + this.width)) &&
                 (this.position.getYValue() <= position.getYValue()) &&
                 (position.getYValue() <= (this.position.getYValue() + this.height)));
-
     }
 
     public void register(Person person) {

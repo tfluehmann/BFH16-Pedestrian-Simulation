@@ -22,10 +22,11 @@ public abstract class Person extends Circle {
 	protected int age;
 	protected double speed;
 	protected PerimeterManager pm = PerimeterManager.getInstance();
-	protected LinkedList<Vertex> path = new LinkedList();
 	protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
 
 	protected ConfigModel config = ConfigModel.getInstance();
+	private Vertex nextVertex;
+	private Vertex target;
 	// protected Character character;
 
 
@@ -61,7 +62,7 @@ public abstract class Person extends Circle {
      */
     private Position calculateNextPossiblePosition() {
 		int tries = 1;
-		Position nextTarget = path.getFirst().getPosition();
+		Position nextTarget = nextVertex.getPosition();
 		while (tries < 5) {
 			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
 					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
@@ -120,7 +121,8 @@ public abstract class Person extends Circle {
 				this.currentPosition.getYValue()));
 		this.currentPosition.setX(position.getXValue());
 		this.currentPosition.setY(position.getYValue());
-		if (this.isInNextPathArea() && !this.isInGoalArea()) this.path.removeFirst();
+		if (this.isInNextPathArea() && !this.isInGoalArea())
+			this.nextVertex = nextVertex.getNextHopForTarget(this.target);
 		pm.registerPerson(this);
 	}
 
@@ -134,13 +136,14 @@ public abstract class Person extends Circle {
 	}
 
 	public boolean isInNextPathArea() {
-		Position nextPosition = path.getFirst().getPosition();
+		Position nextPosition = nextVertex.getPosition();
 		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
 	public boolean isInGoalArea() {
-		Position targetPosition = this.path.getLast().getPosition();
-		return targetPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
+		Vertex targetVertex = nextVertex.getNextHopForTarget(this.target);
+		if (targetVertex != null) return false;
+		return nextVertex.getPosition().isInRange(this.currentPosition, this.config.getPersonRadius());
 	}
 
 	public LinkedList<Position> getOldPositions() {
@@ -171,8 +174,11 @@ public abstract class Person extends Circle {
 		this.speed = speed;
 	}
 
-	public void setPath(LinkedList<Vertex> path) {
-		System.out.println("path for person is " + path);
-		this.path = path;
+	public void setNextVertex(Vertex nextVertex) {
+		this.nextVertex = nextVertex;
+	}
+
+	public void setTarget(Vertex target) {
+		this.target = target;
 	}
 }
