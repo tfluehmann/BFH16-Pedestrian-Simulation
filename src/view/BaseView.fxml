@@ -33,11 +33,6 @@
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="pauseButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Stop">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Button>
                         <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Reset" />
                     </children>
                 </VBox>

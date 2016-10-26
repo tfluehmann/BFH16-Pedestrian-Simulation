@@ -49,9 +49,6 @@ public class ConfigWindowController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		ConfigModel cfg = ConfigModel.getInstance();
 
-		this.spawnAreaPosition.getItems().addAll("TOP_LEFT", "TOP_CENTER", "TOP_RIGHT");
-		this.goalAreaPosition.getItems().addAll("BOTTOM_LEFT", "BOTTOM_CENTER", "BOTTOM_RIGHT");
-
 		/**
 		 * Numberlistener from user "javasuns"
 		 * on: http://stackoverflow.com/a/37360657

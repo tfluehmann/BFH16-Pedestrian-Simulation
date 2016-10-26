@@ -24,9 +24,6 @@ public class BaseViewController implements Initializable{
     private Button startButton;
 
     @FXML
-    private Button pauseButton;
-
-    @FXML
     private Label time;
 
     @FXML
@@ -39,18 +36,18 @@ public class BaseViewController implements Initializable{
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         SimulationManager simulationManager = SimulationManager.getInstance();
         startButton.setOnAction((event) -> {
-	        simulationRoom.getChildren().addAll(SpawnManager.getInstance().getPersons());
-            simulationManager.start(time);
             startButton.setDisable(true);
-            pauseButton.setDisable(false);
-
-        });
-
-        pauseButton.setOnAction((event) -> {
-            simulationManager.getSimulationThread().interrupt();
-            pauseButton.setDisable(true);
+            if (startButton.getText().equals("Start")) {
+                startButton.setText("Pause");
+                simulationRoom.getChildren().addAll(SpawnManager.getInstance().getPersons());
+                simulationManager.start(time);
+            } else {
+                startButton.setText("Start");
+                simulationManager.getSimulationThread().interrupt();
+            }
             startButton.setDisable(false);
         });
+
         // initialize your logic here: all @FXML variables will have been injected
 
     }
