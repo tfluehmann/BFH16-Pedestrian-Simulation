@@ -1,8 +1,5 @@
 package model;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import manager.PathManager;
 import manager.PerimeterManager;
@@ -11,14 +8,8 @@ import model.areas.Area;
 import model.areas.GoalArea;
 import model.areas.Obstacle;
 import model.areas.SpawnArea;
-import model.persons.Person;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Vector;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -26,12 +17,9 @@ import java.util.Vector;
 public class Room extends Pane {
 
 
-	private final Vector<Person> passivePersons = new Vector<>();
 	private final PerimeterManager perimeterManager = PerimeterManager.getInstance();
 	private final ArrayList<Obstacle> obstacles = new ArrayList();
 	private final ConfigModel config = ConfigModel.getInstance();
-	private Vector<Person> persons = new Vector<>();
-	private Thread simulation;
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
 	private SpawnManager spawnManager = SpawnManager.getInstance();
@@ -68,68 +56,13 @@ public class Room extends Pane {
 		this.obstacles.add(o1);
 		Vertex goal = new Vertex(ga.getGoalPoint());
 		PathManager pathManager = spawnManager.getPathManager();
-		for (Obstacle obstacle : this.obstacles) {
+        pathManager.addTarget(goal);
+        for (Obstacle obstacle : this.obstacles) {
 			for (Position p : obstacle.getEdgePoints())
 				pathManager.getVertexList().add(new Vertex(p));
 			pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 		}
 		pathManager.findValidEdges(this);
 		pathManager.crapFindAlgorithm(goal);
-
 	}
-
-
-	/**
-	 * shuffle before every run because there might be
-	 * unsolvable issues if it is always the same order
-	 */
-	public void start(Label time) {
-		Task task = new Task<Void>() {
-			@Override
-			public Void call() throws Exception {
-				int i = 0;
-                while (!isSimulationFinished()) {
-					Collections.shuffle(persons);
-					handlePersonsInRange();
-					Platform.runLater(() -> {
-						for (Person p : persons)
-							p.calculateStep();
-					});
-
-					this.updateMessage(++i + " seconds");
-					Thread.sleep(20);
-				}
-				System.out.println("finished simulation");
-				return null;
-			}
-		};
-		time.textProperty().bind(task.messageProperty());
-
-		simulation = new Thread(task);
-		simulation.start();
-	}
-
-	private void handlePersonsInRange() {
-		Vector<Person> newPersons = new Vector<>();
-		for (Person p : this.persons)
-			if (p.isInGoalArea())
-	            this.passivePersons.add(p);
-			else
-				newPersons.add(p);
-
-		persons = newPersons;
-	}
-
-	private boolean isSimulationFinished() {
-		for (Person p : this.persons) {
-			if (!p.isInGoalArea())
-                return false;
-		}
-		return true;
-	}
-
-	public Thread getSimulationThread() {
-		return simulation;
-	}
-
 }

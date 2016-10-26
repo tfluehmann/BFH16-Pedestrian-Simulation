@@ -25,7 +25,7 @@ public class PathManager {
      * Fucking magic just took us 10h of Fluch und Hass
      * we add neighbors in both directions, we do not have to check the ones already done
      *
-     * a b c d
+     *   a b c d
      * a x - - -
      * b x x - -
      * c x x x -
@@ -119,5 +119,10 @@ public class PathManager {
 
     public List<Vertex> getTargetVertexes() {
         return this.targetVertexes;
+    }
+
+    public void addTarget(Vertex target) {
+        this.targetVertexes.add(target);
+        this.vertexList.add(target);
     }
 }

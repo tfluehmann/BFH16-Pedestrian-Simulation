@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import manager.SimulationManager;
 import manager.SpawnManager;
 import model.Room;
 
@@ -36,16 +37,17 @@ public class BaseViewController implements Initializable{
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+        SimulationManager simulationManager = SimulationManager.getInstance();
         startButton.setOnAction((event) -> {
 	        simulationRoom.getChildren().addAll(SpawnManager.getInstance().getPersons());
-            simulationRoom.start(time);
+            simulationManager.start(time);
             startButton.setDisable(true);
             pauseButton.setDisable(false);
 
         });
 
         pauseButton.setOnAction((event) -> {
-            simulationRoom.getSimulationThread().interrupt();
+            simulationManager.getSimulationThread().interrupt();
             pauseButton.setDisable(true);
             startButton.setDisable(false);
         });
