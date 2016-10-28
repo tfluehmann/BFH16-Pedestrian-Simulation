@@ -33,7 +33,7 @@ public abstract class Person extends Circle {
 
 	public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
 		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
-		this.speed = speed;
+		this.speed = speed*config.getPixelPerMeter();
 		Random r = new Random();
 		double randomWidth = (maxWidth - 2 * this.config.getPersonRadius()) * r.nextDouble();
 		double randomHeight = (maxHeight - 2 * this.config.getPersonRadius()) * r.nextDouble();
@@ -139,7 +139,7 @@ public abstract class Person extends Circle {
 	public boolean isInGoalArea() {
 		Vertex targetVertex = nextVertex.getNextHopForTarget(this.target);
 		if (targetVertex != null) return false;
-		return nextVertex.getPosition().isInRange(this.currentPosition, this.config.getPersonRadius());
+		return nextVertex.getPosition().isInRange(this.currentPosition, this.config.getPersonRadius()*2);
 	}
 
 	public LinkedList<Position> getOldPositions() {

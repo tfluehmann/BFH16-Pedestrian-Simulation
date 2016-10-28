@@ -4,21 +4,23 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import manager.SimulationManager;
 import manager.SpawnManager;
 import model.ConfigModel;
+import model.Room;
 
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
 /**
- * Created by suter1 on 07.10.2016.
+ * Created by suter1 on 28.10.2016.
  */
-public class ConfigController implements Initializable {
+public class MainController implements Initializable {
+
+	@FXML
+	private Room simulationRoom;
 
 	@FXML
 	private TextField totalPersons;
@@ -53,10 +55,24 @@ public class ConfigController implements Initializable {
 	@FXML
 	private Button spawnButton;
 
+	@FXML
+	private Button startButton;
+
+	@FXML
+	private Button resetButton;
+
+	@FXML
+	private Label time;
+
+	private SimulationManager simulationManager = SimulationManager.getInstance();
+	private SpawnManager spMgr = SpawnManager.getInstance();
+	private ConfigModel cfg = ConfigModel.getInstance();
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ConfigModel cfg = ConfigModel.getInstance();
+		startButton.setDisable(true);
+		resetButton.setDisable(true);
 
 		weightYoung.textProperty().bindBidirectional(sliderYoung.valueProperty(), NumberFormat.getNumberInstance());
 		weightMidage.textProperty().bindBidirectional(sliderMidage.valueProperty(), NumberFormat.getNumberInstance());
@@ -111,16 +127,38 @@ public class ConfigController implements Initializable {
 			cfg.setWeightedOldPersons(getWeightOld());
 			cfg.setWeightedHandicappedPersons(getWeightHandicap());
 
-			SpawnManager spMgr = SpawnManager.getInstance();
 			spMgr.createPersons();
 
 			spawnButton.setDisable(true);
+			startButton.setDisable(false);
+			resetButton.setDisable(false);
 
 			/**
 			 * Merge meter from the config to pixel for the view.
 			 */
 //			cfg.calculateRoomSize();
 		});
+
+		startButton.setOnAction((event) -> {
+			if (startButton.getText().equals("Start")) {
+				startButton.setText("Pause");
+				System.out.println("Persons: " + spMgr.getPersons());
+				System.out.println("simulationRoom: " + simulationRoom);
+				simulationRoom.getChildren().addAll(spMgr.getPersons());
+				simulationManager.start(time);
+			} else {
+				startButton.setText("Start");
+				simulationManager.getSimulationThread().interrupt();
+			}
+			startButton.setDisable(false);
+		});
+
+		resetButton.setOnAction((event -> {
+//	        implement a reset.
+
+			spawnButton.setDisable(false);
+			startButton.setDisable(true);
+		}));
 	}
 
 
@@ -253,6 +291,11 @@ public class ConfigController implements Initializable {
 
 	public void setWeightHandicap(int weightHandicap) {
 		this.weightHandicap = intToTextfield(weightHandicap);
+	}
+
+
+	public Button getSpawnButton() {
+		return this.spawnButton;
 	}
 
 }

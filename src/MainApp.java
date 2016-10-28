@@ -34,8 +34,10 @@ public class MainApp extends Application {
 			configStage.showAndWait();
 
 			// Creating view for the simulation
+//			MainController controller = new MainController();
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/BaseView.fxml"));
+//			loader.setController(controller);
 			rootLayout = loader.load();
 			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
