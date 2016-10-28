@@ -34,7 +34,6 @@ public class ConfigModel {
 	private ConfigModel() {
 	}
 
-
 	public static ConfigModel getInstance() {
 		if (instance == null) {
 			instance = new ConfigModel();
@@ -53,11 +52,12 @@ public class ConfigModel {
 		double h = ROOM_HEIGHT_ORIGIN / getRoomHeightMeter();
 		double w = ROOM_WIDTH_ORIGIN / getRoomWidthMeter();
 
-		setPixelPerMeter(Math.min((ROOM_HEIGHT_ORIGIN / getRoomHeightMeter()), (ROOM_WIDTH_ORIGIN / getRoomWidthMeter())));
+        setPixelPerMeter(Math.min(h, w));
 
 		setRoomHeight(getRoomHeightMeter() * getPixelPerMeter());
 		setRoomWidth(getRoomWidthMeter() * getPixelPerMeter());
-	}
+
+    }
 
 
 	public double getRoomWidth() {
