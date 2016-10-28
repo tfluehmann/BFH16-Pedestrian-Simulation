@@ -41,9 +41,9 @@ public class MainApp extends Application {
 			rootLayout = loader.load();
 			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Test");
-			primaryStage.show();
-		} catch (Exception ex) {
+            primaryStage.setTitle("Pedestrian Simulation");
+            primaryStage.show();
+        } catch (Exception ex) {
 			Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}

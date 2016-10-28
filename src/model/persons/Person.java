@@ -1,5 +1,6 @@
 package model.persons;
 
+import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import manager.PerimeterManager;
@@ -23,13 +24,17 @@ public abstract class Person extends Circle {
 	protected ConfigModel config = ConfigModel.getInstance();
 	private Vertex nextVertex;
 	private Vertex target;
-	// protected Character character;
 
+    private double originX;
+    private double originY;
+
+    private double targetX;
+    private double targetY;
+    // protected Character character;
 
 	public Person() {
 		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
 	}
-
 
 	public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
 		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
@@ -40,14 +45,35 @@ public abstract class Person extends Circle {
 		this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
 		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
-	}
+        this.setCursor(Cursor.HAND);
+        initDragAndDrop();
+    }
+
+    private void initDragAndDrop() {
+        this.setOnMousePressed((e) -> {
+            this.setCursor(Cursor.CLOSED_HAND);
+            this.originX = e.getSceneX();
+            this.originY = e.getSceneY();
+            this.targetX = this.getCurrentPosition().getXValue();
+            this.targetY = this.getCurrentPosition().getYValue();
+        });
+        this.setOnMouseReleased((e) -> {
+            this.setCursor(Cursor.HAND);
+        });
+        this.setOnMouseDragged((event) -> {
+            double offsetX = event.getSceneX() - this.originX;
+            double offsetY = event.getSceneY() - this.originY;
+            double newTranslateX = this.targetX + offsetX;
+            double newTranslateY = this.targetY + offsetY;
+            this.setPosition(new Position(newTranslateX, newTranslateY));
+        });
+    }
 
 	/**
 	 * Calculates the vector and the next position depending on the step size
 	 * @return next Position
 	 */
 	public void calculateStep() {
-
 		Position newPos = this.calculateNextPossiblePosition();
 		if (newPos != null) this.setPosition(newPos);
 	}
@@ -59,12 +85,12 @@ public abstract class Person extends Circle {
     private Position calculateNextPossiblePosition() {
 		int tries = 1;
 		Position nextTarget = nextVertex.getPosition();
-		while (tries < 5) {
-			GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
-					this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
-			double lambda = this.speed / tries / vToNextTarget.length();
-			Position newPosition = vToNextTarget.getLambdaPosition(lambda);
-			if (this.isNewPositionAllowed(newPosition)) {
+        while (tries <= 5) {
+            GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
+                    this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
+            double lambda = (this.speed / tries) / vToNextTarget.length();
+            Position newPosition = vToNextTarget.getLambdaPosition(lambda);
+            if (this.isNewPositionAllowed(newPosition)) {
 				return newPosition;
 			} else if (tries >= 2) {
 				/**
@@ -98,10 +124,11 @@ public abstract class Person extends Circle {
 		for (Perimeter perimeter : neighPerimeters) {
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
-				boolean collision = this.isColliding(position.getXValue(), position.getYValue(), person);
-				if (collision) return false;
-			}
-		}
+                boolean personCollision = this.isColliding(position.getXValue(), position.getYValue(), person);
+//				boolean obstacleCollision = this.isCollidingWithObstacle(position.getXValue(), position.getYValue());
+                if (personCollision) return false;
+            }
+        }
 		return true;
 	}
 
@@ -133,8 +160,8 @@ public abstract class Person extends Circle {
 
 	public boolean isInNextPathArea() {
 		Position nextPosition = nextVertex.getPosition();
-		return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius());
-	}
+        return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
+    }
 
 	public boolean isInGoalArea() {
 		Vertex targetVertex = nextVertex.getNextHopForTarget(this.target);
