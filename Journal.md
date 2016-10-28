@@ -16,5 +16,6 @@ Datum | Zeitaufwand | Wer | Was
 12.10.2016 | 4 h | fluht1, suter1 | Dijkstra in erster lauffähigen Version, sehr langsam
 14.10.2016 | 6 h | fluht1, suter1 | Perimeter umgeschrieben (unabhängig, von person), Config slider bearbeitet, Refactoring Room, Person, PerimeterManager, Pathmanager
 19.10.2016 | 4 h | fluht1, suter1 | Dijkstra gelöscht, eigene Version implementiert -> funktioniert. Config kann dynamisch oder statisch Personentypen erstellen.
-
-
+21.10.2016 | 4 h | fluht1, suter1 | Reflection, refactoring, person generierung, Config aufgesplittet in Window und Sideconfig.
+26.10.2016 | 3 h | fluht1, suter1 | Dijkstra mit PriorityQueue, startup fix und config anpassungen.
+28.10.2016 | 4 h | fluht1, suter1 | Draggable persons, reset-button, create room design, refactor

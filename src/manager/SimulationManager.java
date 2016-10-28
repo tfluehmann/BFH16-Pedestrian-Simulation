@@ -1,6 +1,8 @@
 package manager;
 
 import javafx.application.Platform;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import model.persons.Person;
@@ -14,6 +16,7 @@ public class SimulationManager {
 	private static SimulationManager instance;
 	private static SpawnManager spawnManager = SpawnManager.getInstance();
 	private static Thread simulation;
+	public static LongProperty speedProperty = new SimpleLongProperty();
 
 
 	private SimulationManager() {
@@ -44,7 +47,7 @@ public class SimulationManager {
 							p.calculateStep();
 					});
 					this.updateMessage(++i + " seconds");
-					Thread.sleep(20);
+					Thread.sleep(speedProperty.getValue());
 				}
 				System.out.println("finished simulation");
 				return null;

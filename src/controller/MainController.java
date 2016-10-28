@@ -70,6 +70,9 @@ public class MainController implements Initializable {
 	@FXML
 	private Label time;
 
+	@FXML
+	private Slider simulationSpeed;
+
 	private SimulationManager simulationManager = SimulationManager.getInstance();
 	private SpawnManager spMgr = SpawnManager.getInstance();
 	private ConfigModel cfg = ConfigModel.getInstance();
@@ -122,6 +125,8 @@ public class MainController implements Initializable {
 		weightMidage.textProperty().addListener(forceNumberListener);
 		weightOld.textProperty().addListener(forceNumberListener);
 		weightHandicap.textProperty().addListener(forceNumberListener);
+
+		simulationSpeed.valueProperty().bind(simulationManager.speedProperty);
 
 
 		spawnButton.setOnAction((event) -> {
