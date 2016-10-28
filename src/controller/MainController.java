@@ -11,6 +11,7 @@ import manager.SimulationManager;
 import manager.SpawnManager;
 import model.ConfigModel;
 import model.Room;
+import model.persons.Person;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -152,7 +153,6 @@ public class MainController implements Initializable {
 				startButton.setText("Pause");
 				System.out.println("Persons: " + spMgr.getPersons());
 				System.out.println("simulationRoom: " + simulationRoom);
-//				simulationRoom.getChildren().addAll(spMgr.getPersons());
 				simulationManager.start(time);
 			} else {
 				startButton.setText("Start");
@@ -163,8 +163,9 @@ public class MainController implements Initializable {
 
 		resetButton.setOnAction((event -> {
 //	        implement a reset.
-			simulationRoom.getChildren().removeAll();
+			simulationRoom.getChildren().removeIf(item -> (item instanceof Person));
 			spawnButton.setDisable(false);
+			startButton.setText("Start");
 			startButton.setDisable(true);
 		}));
 	}
