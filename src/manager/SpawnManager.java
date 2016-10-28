@@ -21,7 +21,6 @@ public class SpawnManager {
     private PathManager pathManager = new PathManager();
     private final Vector<Person> passivePersons = new Vector<>();
 
-
     private SpawnManager() {
     }
 
@@ -63,24 +62,18 @@ public class SpawnManager {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-//		this.getChildren().addAll(perimeterManager.getAllNodes());
-//		getChildren().addAll(this.persons);
     }
-
 
     private void createPersons(Class klass, int count, PathManager pathManager) {
         for (int i = 0; i < count; i++)
             this.spawnPerson(pathManager, klass);
     }
 
-
     /**
      * Generating different aged persons randomly
      * Created by suter1 on 05.10.2016
      */
     private void spawnPerson(PathManager pathManager, Class<? extends Person> klass) {
-
         Person newPerson;
         try {
             Class partypes[] = new Class[3];
@@ -97,11 +90,9 @@ public class SpawnManager {
         }
     }
 
-
     public Vector<Person> getPersons() {
         return this.persons;
     }
-
 
     public PathManager getPathManager() {
         return this.pathManager;
@@ -114,7 +105,6 @@ public class SpawnManager {
                 this.passivePersons.add(p);
             else
                 newPersons.add(p);
-
         this.persons = newPersons;
     }
 }

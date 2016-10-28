@@ -135,6 +135,7 @@ public class MainController implements Initializable {
 			cfg.setWeightedHandicappedPersons(getWeightHandicap());
 
 			spMgr.createPersons();
+			this.simulationRoom.getChildren().addAll(spMgr.getPersons());
 
 			spawnButton.setDisable(true);
 			startButton.setDisable(false);
@@ -151,7 +152,7 @@ public class MainController implements Initializable {
 				startButton.setText("Pause");
 				System.out.println("Persons: " + spMgr.getPersons());
 				System.out.println("simulationRoom: " + simulationRoom);
-				simulationRoom.getChildren().addAll(spMgr.getPersons());
+//				simulationRoom.getChildren().addAll(spMgr.getPersons());
 				simulationManager.start(time);
 			} else {
 				startButton.setText("Start");
@@ -162,7 +163,7 @@ public class MainController implements Initializable {
 
 		resetButton.setOnAction((event -> {
 //	        implement a reset.
-
+			simulationRoom.getChildren().removeAll();
 			spawnButton.setDisable(false);
 			startButton.setDisable(true);
 		}));
