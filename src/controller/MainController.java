@@ -5,6 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 import manager.SimulationManager;
 import manager.SpawnManager;
 import model.ConfigModel;
@@ -62,6 +64,9 @@ public class MainController implements Initializable {
 	private Button resetButton;
 
 	@FXML
+	private AnchorPane basePane;
+
+	@FXML
 	private Label time;
 
 	private SimulationManager simulationManager = SimulationManager.getInstance();
@@ -71,6 +76,8 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight());
+		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth());
 		startButton.setDisable(true);
 		resetButton.setDisable(true);
 
@@ -123,7 +130,7 @@ public class MainController implements Initializable {
 			cfg.setTotalPersons(getTotalPersons());
 			cfg.setWeighted(getIsWeighted());
 			cfg.setWeightedYoungPersons(getWeightYoung());
-			cfg.setWeigthedMidagePersons(getWeightMidage());
+			cfg.setWeightedMidAgePersons(getWeightMidage());
 			cfg.setWeightedOldPersons(getWeightOld());
 			cfg.setWeightedHandicappedPersons(getWeightHandicap());
 

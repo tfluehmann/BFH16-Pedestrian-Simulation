@@ -42,7 +42,8 @@ public class MainApp extends Application {
 			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
             primaryStage.setTitle("Pedestrian Simulation");
-            primaryStage.show();
+//			primaryStage.setFullScreen(true);
+			primaryStage.show();
         } catch (Exception ex) {
 			Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
 		}

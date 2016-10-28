@@ -51,7 +51,7 @@ public class SpawnManager {
                 double personMultiplicator = this.config.getTotalPersons() / 100;
                 int[] ageDistribution = new int[4];
                 ageDistribution[0] = (int) Math.round(config.getWeightedYoungPersons() * personMultiplicator);
-                ageDistribution[1] = (int) Math.round(config.getWeigthedMidagePersons() * personMultiplicator);
+                ageDistribution[1] = (int) Math.round(config.getWeightedMidAgePersons() * personMultiplicator);
                 ageDistribution[2] = (int) Math.round(config.getWeightedOldPersons() * personMultiplicator);
                 ageDistribution[3] = (int) Math.round(config.getWeightedHandicappedPersons() * personMultiplicator);
                 if (ageDistribution[0] + ageDistribution[1] + ageDistribution[2] + ageDistribution[3] != config.getTotalPersons())

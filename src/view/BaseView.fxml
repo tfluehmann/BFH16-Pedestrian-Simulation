@@ -4,10 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import model.Room?>
-<AnchorPane maxHeight="730.0" maxWidth="1690.0" minHeight="730.0" minWidth="1690.0" prefHeight="730.0"
-            prefWidth="1690.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane fx:id="basePane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.MainController">
     <children>
-        <BorderPane prefHeight="730.0" prefWidth="1690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
             <left>
                 <!--<fx:include fx:id="conf" source="Config.fxml"/>-->
                 <AnchorPane fx:id="config" maxHeight="730.0" maxWidth="400.0" minHeight="730.0" minWidth="400.0" prefHeight="730.0"
@@ -15,8 +16,8 @@
                     <VBox maxHeight="730.0" maxWidth="400.0" prefHeight="730.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                         <children>
                             <HBox alignment="TOP_RIGHT">
-                                <Label layoutX="14.0" layoutY="18.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0"
-                                       prefWidth="150.0" text="Total persons"/>
+                                <Label layoutX="14.0" layoutY="18.0" maxHeight="25.0" maxWidth="150.0"
+                                       text="Total persons"/>
                                 <TextField fx:id="totalPersons" alignment="CENTER" layoutX="155.0" layoutY="14.0" maxHeight="25.0"
                                            maxWidth="40.0" prefHeight="25.0" prefWidth="40.0" text="10">
                                     <HBox.margin>
@@ -166,18 +167,11 @@
                 </AnchorPane>
             </left>
             <center>
-                <AnchorPane maxHeight="720.0" maxWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: LIGHTGREY;" BorderPane.alignment="CENTER">
-                    <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </BorderPane.margin>
-                    <children>
-                        <!--<fx:include fx:id="simulationRoom" source="Room.fxml"/>-->
-                        <Room fx:id="simulationRoom" xmlns:fx="http://javafx.com/fxml/1" styleClass="room" xmlns="http://javafx.com/javafx"/>
-                    </children>
-                </AnchorPane>
+                <Room fx:id="simulationRoom" xmlns:fx="http://javafx.com/fxml/1" styleClass="room"
+                      xmlns="http://javafx.com/javafx"/>
             </center>
             <right>
-                <VBox prefHeight="720.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+                <VBox prefHeight="720.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
                         <Label fx:id="time" text="0">
                             <padding>

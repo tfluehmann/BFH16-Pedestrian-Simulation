@@ -26,27 +26,13 @@ public class Room extends Pane {
 
 
 	public Room() {
-		setPrefSize(this.config.getRoomWidth(), this.config.getRoomHeight());
+		//	setPrefSize(this.config.getRoomWidth(), this.config.getRoomHeight());
 		this.perimeterManager.initializeAll();
-
-        double x, y;
-		if (this.config.getRoomWidth() < ConfigModel.ROOM_WIDTH_ORIGIN)
-			x = this.config.getRoomWidth();
-		else
-            x = 0.0;
-		if (this.config.getRoomHeight() < ConfigModel.ROOM_HEIGHT_ORIGIN)
-			y = this.config.getRoomHeight();
-		else
-            y = 0.0;
-
-		if (this.config.getRoomHeight() != ConfigModel.ROOM_HEIGHT_ORIGIN || this.config.getRoomWidth() != ConfigModel.ROOM_WIDTH_ORIGIN) {
-			Obstacle border = new Obstacle(x, y,
-					ConfigModel.ROOM_WIDTH_ORIGIN, y,
-					ConfigModel.ROOM_WIDTH_ORIGIN, ConfigModel.ROOM_HEIGHT_ORIGIN,
-					x, ConfigModel.ROOM_HEIGHT_ORIGIN);
-			getChildren().add(border);
-		}
-
+		this.setStyle("fx-border-color: gray; -fx-border-style: solid; -fx-border-width: 1px; -fx-padding: 1px; -fx-stroke: gray;");
+		this.setPrefHeight(config.getRoomHeight());
+		this.setPrefWidth(config.getRoomWidth());
+		this.setMaxHeight(config.getRoomHeight());
+		this.setMaxWidth(config.getRoomWidth());
 		SpawnArea sa = new SpawnArea(this.config.getSpawnWidth(), this.config.getSpawnHeight(), this.config.getSpawnPosition());
 		GoalArea ga = new GoalArea(this.config.getGoalWidth(), this.config.getGoalHeight(), this.config.getGoalPosition());
 
