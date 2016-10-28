@@ -58,7 +58,7 @@ public class Obstacle extends Area {
     /**
      * check if position in room
      */
-    private boolean includes(Position position) {
+    public boolean includes(Position position) {
         ConfigModel config = ConfigModel.getInstance();
         return position.getXValue() > 0 &&
                 position.getXValue() < config.getRoomWidth() &&

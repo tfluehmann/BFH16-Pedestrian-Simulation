@@ -125,9 +125,7 @@ public class MainController implements Initializable {
 		weightMidage.textProperty().addListener(forceNumberListener);
 		weightOld.textProperty().addListener(forceNumberListener);
 		weightHandicap.textProperty().addListener(forceNumberListener);
-
-		simulationSpeed.valueProperty().bind(simulationManager.speedProperty);
-
+		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
 
 		spawnButton.setOnAction((event) -> {
 			/**

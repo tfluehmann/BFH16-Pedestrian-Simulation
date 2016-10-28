@@ -74,14 +74,13 @@ public class PathManager {
         pq.clear();
         pq.offer(new Node(target, 0));
 
-        while (!pq.isEmpty() && settledNodes.size() < vertexList.size()) {
+        while (!pq.isEmpty()) {
             Node element = pq.poll();
             Vertex candidate = element.getVertex();//Getting next node from heap
             double cost = element.getWeight();
             candidate.setVisited(true);
             settledNodes.add(candidate);
             for (Vertex z : candidate.getNeighbors().keySet()) {
-                // if(!z.isVisited()){//Not checking visited Vertices
                 GVector vector = new GVector(z.getPosition(), candidate.getPosition());
                 double newDist = cost + vector.length();
                 if (distances.get(z) > newDist) {                        //Checking for min weight
@@ -90,7 +89,6 @@ public class PathManager {
                     pq.offer(new Node(z, distances.get(z)));//Adding element to PriorityQueue
 
                 }
-                //}
             }
         }
 

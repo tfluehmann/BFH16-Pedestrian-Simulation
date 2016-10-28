@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.layout.Pane;
+import manager.ObstacleManager;
 import manager.PathManager;
 import manager.PerimeterManager;
 import manager.SpawnManager;
@@ -18,10 +19,10 @@ public class Room extends Pane {
 
 
 	private final PerimeterManager perimeterManager = PerimeterManager.getInstance();
-	private final ArrayList<Obstacle> obstacles = new ArrayList();
 	private final ConfigModel config = ConfigModel.getInstance();
 	private ArrayList<Area> goalAreas;
 	private ArrayList<Area> spawnAreas;
+	private ObstacleManager obstacleManager = ObstacleManager.getInstance();
 	private SpawnManager spawnManager = SpawnManager.getInstance();
 
 
@@ -39,11 +40,11 @@ public class Room extends Pane {
 		Obstacle o1 = new Obstacle(100.0, 100.0, 450.0, 300.0, 500.0, 450.0, 100.0, 200.0);
 		getChildren().addAll(o1, sa, ga);
 
-		this.obstacles.add(o1);
+		obstacleManager.getObstacles().add(o1);
 		Vertex goal = new Vertex(ga.getGoalPoint());
 		PathManager pathManager = spawnManager.getPathManager();
         pathManager.addTarget(goal);
-        for (Obstacle obstacle : this.obstacles) {
+		for (Obstacle obstacle : obstacleManager.getObstacles()) {
 			for (Position p : obstacle.getEdgePoints())
 				pathManager.getVertexList().add(new Vertex(p));
 			pathManager.getObstacleEdges().addAll(obstacle.getEdges());

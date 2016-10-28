@@ -3,8 +3,10 @@ package model.persons;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import manager.ObstacleManager;
 import manager.PerimeterManager;
 import model.*;
+import model.areas.Obstacle;
 
 import java.util.LinkedList;
 import java.util.Random;
@@ -20,6 +22,7 @@ public abstract class Person extends Circle {
 	protected double speed;
 	protected PerimeterManager pm = PerimeterManager.getInstance();
 	protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
+    protected ObstacleManager obstacleManager = ObstacleManager.getInstance();
 
 	protected ConfigModel config = ConfigModel.getInstance();
 	private Vertex nextVertex;
@@ -125,15 +128,21 @@ public abstract class Person extends Circle {
 			for (Person person : perimeter.getRegisteredPersons()) {
 				if (person.equals(this)) continue;
                 boolean personCollision = this.isColliding(position.getXValue(), position.getYValue(), person);
-//				boolean obstacleCollision = this.isCollidingWithObstacle(position.getXValue(), position.getYValue());
-                if (personCollision) return false;
+                boolean obstacleCollision = this.isCollidingWithObstacle(position);
+                if (personCollision || obstacleCollision) return false;
             }
         }
 		return true;
 	}
 
-	/**
-	 * Sets a new Position, puts the old position into the list.
+    private boolean isCollidingWithObstacle(Position p) {
+        for (Obstacle o : obstacleManager.getObstacles())
+            if (o.contains(p.getXValue(), p.getYValue())) return true;
+        return false;
+    }
+
+    /**
+     * Sets a new Position, puts the old position into the list.
 	 * moves the person
 	 * unregisters in the current perimeter and registers in the new one if needed
 	 * @param position
