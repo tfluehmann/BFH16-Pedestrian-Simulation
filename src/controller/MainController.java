@@ -80,8 +80,8 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight());
-		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth());
+		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
+		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		startButton.setDisable(true);
 		resetButton.setDisable(true);
 

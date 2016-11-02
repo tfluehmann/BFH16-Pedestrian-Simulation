@@ -10,7 +10,6 @@ public class ConfigModel {
 	public static final double ROOM_WIDTH_ORIGIN = Screen.getPrimary().getVisualBounds().getWidth() - 500;
 	public static final double ROOM_HEIGHT_ORIGIN = Screen.getPrimary().getVisualBounds().getHeight();
 	private static ConfigModel instance = null;
-	// Room size ratio= 16:10
 	private double pixelPerMeter;
 	private double roomWidth;
 	private double roomHeight;
@@ -36,6 +35,7 @@ public class ConfigModel {
 	private ConfigModel() {
 	}
 
+
 	public static ConfigModel getInstance() {
 		if (instance == null) {
 			instance = new ConfigModel();
@@ -59,7 +59,7 @@ public class ConfigModel {
 		setRoomHeight(getRoomHeightMeter() * getPixelPerMeter());
 		setRoomWidth(getRoomWidthMeter() * getPixelPerMeter());
 
-    }
+	}
 
 
 	public double getRoomWidth() {
@@ -153,8 +153,8 @@ public class ConfigModel {
 	}
 
 
-	public void setRoomWidthMeter(double roomWidthMeder) {
-		this.roomWidthMeter = roomWidthMeder;
+	public void setRoomWidthMeter(double roomWidthMeter) {
+		this.roomWidthMeter = roomWidthMeter;
 	}
 
 
