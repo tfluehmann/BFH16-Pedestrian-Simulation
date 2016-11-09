@@ -19,3 +19,5 @@ Datum | Zeitaufwand | Wer | Was
 21.10.2016 | 4 h | fluht1, suter1 | Reflection, refactoring, person generierung, Config aufgesplittet in Window und Sideconfig.
 26.10.2016 | 3 h | fluht1, suter1 | Dijkstra mit PriorityQueue, startup fix und config anpassungen.
 28.10.2016 | 4 h | fluht1, suter1 | Draggable persons, reset-button, create room design, refactor
+02.11.2016 | 3 h | fluht1, suter1 | Working on movable obstacles
+09.11.2016 | 4 h | fluht1, suter1 | Further working on movable obstacles and CSS-Styling (not yet completed finished)
