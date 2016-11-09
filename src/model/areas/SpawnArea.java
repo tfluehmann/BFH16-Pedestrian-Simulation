@@ -19,10 +19,16 @@ public class SpawnArea extends Area {
                 position.getXValue() + width, position.getYValue() + height,
                 position.getXValue(), position.getYValue() + height);
         this.width = width;
-		this.height = height;
-		this.position = position;
-		this.setFill(Color.RED);
-	}
+        this.height = height;
+        this.position = position;
+        this.setFill(Color.RED);
+    }
+
+    public SpawnArea(double... points) {
+        super(points);
+        this.position = new Position(points[0], points[1]);
+        this.setFill(Color.RED);
+    }
 
 	public List<Position> getCorners() {
 		return null;

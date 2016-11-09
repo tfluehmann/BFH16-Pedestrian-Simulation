@@ -9,8 +9,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import manager.SimulationManager;
 import manager.SpawnManager;
+import manager.areamanagers.GoalAreaManager;
+import manager.areamanagers.ObstacleManager;
+import manager.areamanagers.SpawnAreaManager;
 import model.ConfigModel;
 import model.Room;
+import model.areas.GoalArea;
+import model.areas.Obstacle;
+import model.areas.SpawnArea;
 import model.persons.Person;
 
 import java.net.URL;
@@ -21,6 +27,10 @@ import java.util.ResourceBundle;
  * Created by suter1 on 28.10.2016.
  */
 public class MainController implements Initializable {
+
+    private ObstacleManager obstacleManager = ObstacleManager.getInstance();
+    private SpawnAreaManager spawnAreaManger = SpawnAreaManager.getInstance();
+    private GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
 
 	@FXML
 	private Room simulationRoom;
@@ -80,8 +90,12 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
-		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
+        ObstacleManager.getInstance().setRoom(simulationRoom);
+        GoalAreaManager.getInstance().setRoom(simulationRoom);
+        SpawnAreaManager.getInstance().setRoom(simulationRoom);
+
+        basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
+        basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		startButton.setDisable(true);
 		resetButton.setDisable(true);
 
@@ -109,7 +123,30 @@ public class MainController implements Initializable {
 		sliderHandicap.valueProperty().addListener((observable, oldValue, newValue) -> {
 			sliderHandicap.setValue(Math.round(newValue.doubleValue()));
 			calculateSlider();
-		});
+        });
+
+        ContextMenu cm = new ContextMenu();
+        MenuItem goalItem = new MenuItem("Goal area");
+        MenuItem spawnItem = new MenuItem("Spawn area");
+        Menu obstacleMenu = new Menu("Obstacles");
+
+        goalItem.setOnAction((e) -> GoalAreaManager.getInstance().add(GoalArea.createWithNEdges(4, GoalArea.class)));
+        spawnItem.setOnAction((e) -> SpawnAreaManager.getInstance().add(SpawnArea.createWithNEdges(4, SpawnArea.class)));
+
+        String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
+        for (int corners = 3, i = 0; corners <= 8; corners++, i++) {
+            MenuItem item = new MenuItem(polygonNames[i]);
+            final int cornerCount = corners;
+            item.setOnAction((e) -> ObstacleManager.getInstance().add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));
+            obstacleMenu.getItems().add(item);
+        }
+
+        cm.getItems().addAll(goalItem, spawnItem, obstacleMenu);
+
+        simulationRoom.setOnMouseClicked((event) -> {
+            if (event.getButton().toString().equals("SECONDARY"))
+                cm.show(simulationRoom, event.getScreenX(), event.getSceneY());
+        });
 
 		/**
 		 * Numberlistener from user "javasuns"
