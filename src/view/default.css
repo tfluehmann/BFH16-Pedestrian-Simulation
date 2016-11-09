@@ -1,3 +1,193 @@
+.background {
+    -fx-background-color: #1d1d1d;
+}
+
 .room {
-    -fx-background-color: gray;
+    -fx-background-color: #8e8e8e;
+    -fx-border-color: gray;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-padding: 1px;
+    -fx-stroke: gray;
+}
+
+.obstacle {
+    -fx-fill: #3b2b4b;
+    -fx-stroke: black;
+}
+
+.goal-area {
+    -fx-fill: #629755;
+}
+
+.person {
+    -fx-fill: darkorange;
+}
+
+.spawn-area {
+    -fx-fill: #d0dcff;
+}
+
+.slider .thumb {
+    -fx-background-color: #D3D3D3;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #c0c0c0;
+    -fx-stroke: white;
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #7d7d7d;
+}
+
+.slider .track {
+    -fx-background-color: white;
+}
+
+.slider .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark {
+    -fx-fill: null;
+    -fx-stroke: white;
+}
+
+.label {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-text-fill: white;
+}
+
+.label-bright {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-text-fill: white;
+}
+
+.label-header {
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+}
+
+.text-area, .text-field {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-accent: #7d7d7d;
+}
+
+.text-area:focused, .text-area:selected, .text-field:focused , .text-field:selected {
+    -fx-focus-color: red;
+}
+
+#text-error {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-background-color: #FFC6D0;
+}
+
+.check-box {
+    -fx-stroke: white;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: white;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.check-box *.box {
+    -fx-background-color: #D3D3D3;
+}
+
+.check-box *.box:hover {
+    -fx-background-color: #c0c0c0;
+}
+
+.check-box *.box:pressed {
+    -fx-stroke: white;
+    -fx-background-color: #7d7d7d;
+}
+
+
+.combo-box{
+    -fx-background-color: white;
+    -fx-text-fill: #3a3a3a;
+}
+
+.combo-box:focused {
+    -fx-border-color: darkred;
+    -fx-border-style: solid;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-insets: 1;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #D3D3D3;
+    -fx-text-fill: #3a3a3a;
+}
+
+.combo-box-popup .cell:selected {
+    -fx-background-color: #D3D3D3;
+    -fx-text-fill: #3a3a3a;
+}
+
+.button, .button:default {
+    -fx-padding: 5 22 5 22;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-focus-color:  #1d1d1d;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+/*.button {
+    -fx-font-size: 13.0px;
+    -fx-base: #000000;
+    -fx-background: #FFFFFF;
+    -fx-focus-color: #000;
+    -fx-control-inner-background: #FFFFFF;
+    -fx-text-base-color: #000000;
+    -fx-background-color:#00a7d4;
+    -fx-background-insets: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+}*/
+
+.button:hover, .button:default:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.button:pressed, .button:default:hover:pressed {
+    -fx-background-color: white;
+    -fx-text-fill: #1d1d1d;
+}
+
+.button:focused {
+    -fx-border-color: white, white;
+    -fx-border-width: 1, 1;
+    -fx-border-style: solid, segments(1, 1);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.button:disabled, .button:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.button:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.button:default:hover {
+    -fx-background-color: derive(-fx-focus-color,30%);
 }

@@ -1,6 +1,5 @@
 package model.areas;
 
-import javafx.scene.paint.Color;
 import model.Position;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class GoalArea extends Area {
 		this.position = position;
 		this.height = height;
 		this.width = width;
-		this.setFill(Color.GREEN);
+		getStyleClass().add("goal-area");
 	}
 
 	@Override

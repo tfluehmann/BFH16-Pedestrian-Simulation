@@ -42,7 +42,7 @@ public class PathManager {
                 boolean isCrossing = this.checkAgainstObstacles(v);
                 if (!isCrossing) {
                     v.setStyle("-fx-stroke: green;");
-                    room.getChildren().add(v);
+//                    room.getChildren().add(v);
                     double distance = v.length();
                     if (nodes.containsKey(targetVertex)) {
                         if (distance < nodes.get(targetVertex)) nodes.put(targetVertex, distance);

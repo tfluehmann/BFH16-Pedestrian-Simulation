@@ -29,7 +29,6 @@ public class Room extends Pane {
 	public Room() {
 		//	setPrefSize(this.config.getRoomWidth(), this.config.getRoomHeight());
 		this.perimeterManager.initializeAll();
-		this.setStyle("fx-border-color: gray; -fx-border-style: solid; -fx-border-width: 1px; -fx-padding: 1px; -fx-stroke: gray;");
 		this.setPrefHeight(config.getRoomHeight());
 		this.setPrefWidth(config.getRoomWidth());
 		this.setMaxHeight(config.getRoomHeight());

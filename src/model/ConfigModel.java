@@ -7,8 +7,8 @@ import javafx.stage.Screen;
  */
 public class ConfigModel {
 
-	public static final double ROOM_WIDTH_ORIGIN = Screen.getPrimary().getVisualBounds().getWidth() - 500;
-	public static final double ROOM_HEIGHT_ORIGIN = Screen.getPrimary().getVisualBounds().getHeight();
+	public static final double ROOM_WIDTH_ORIGIN = Screen.getPrimary().getVisualBounds().getWidth() - 570;
+	public static final double ROOM_HEIGHT_ORIGIN = Screen.getPrimary().getVisualBounds().getHeight() - 40;
 	private static ConfigModel instance = null;
 	private double pixelPerMeter;
 	private double roomWidth;

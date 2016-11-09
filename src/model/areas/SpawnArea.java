@@ -1,6 +1,5 @@
 package model.areas;
 
-import javafx.scene.paint.Color;
 import model.Position;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class SpawnArea extends Area {
         this.width = width;
 		this.height = height;
 		this.position = position;
-		this.setFill(Color.RED);
+		getStyleClass().add("spawn-area");
 	}
 
 	public List<Position> getCorners() {

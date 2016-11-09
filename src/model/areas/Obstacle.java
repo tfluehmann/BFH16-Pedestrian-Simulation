@@ -1,6 +1,5 @@
 package model.areas;
 
-import javafx.scene.paint.Color;
 import model.ConfigModel;
 import model.GVector;
 import model.Position;
@@ -30,7 +29,7 @@ public class Obstacle extends Area {
         this.calculateVertices();
 
         position = new Position(points[0], points[1]);
-        setFill(Color.BLACK);
+        getStyleClass().add("obstacle");
     }
 
     /**

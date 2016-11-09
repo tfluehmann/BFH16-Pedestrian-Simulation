@@ -1,7 +1,6 @@
 package model.persons;
 
 import javafx.scene.Cursor;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import manager.ObstacleManager;
 import manager.PerimeterManager;
@@ -36,11 +35,12 @@ public abstract class Person extends Circle {
     // protected Character character;
 
 	public Person() {
-		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
+		super(ConfigModel.getInstance().getPersonRadius());
 	}
 
 	public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
-		super(ConfigModel.getInstance().getPersonRadius(), Color.BLUE);
+		super(ConfigModel.getInstance().getPersonRadius());
+		getStyleClass().add("person");
 		this.speed = speed*config.getPixelPerMeter();
 		Random r = new Random();
 		double randomWidth = (maxWidth - 2 * this.config.getPersonRadius()) * r.nextDouble();
