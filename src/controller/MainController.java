@@ -7,13 +7,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
+import manager.PathManager;
 import manager.SimulationManager;
 import manager.SpawnManager;
 import manager.areamanagers.GoalAreaManager;
 import manager.areamanagers.ObstacleManager;
 import manager.areamanagers.SpawnAreaManager;
 import model.ConfigModel;
+import model.Position;
 import model.Room;
+import model.Vertex;
 import model.areas.GoalArea;
 import model.areas.Obstacle;
 import model.areas.SpawnArea;
@@ -90,9 +93,9 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        ObstacleManager.getInstance().setRoom(simulationRoom);
-        GoalAreaManager.getInstance().setRoom(simulationRoom);
-        SpawnAreaManager.getInstance().setRoom(simulationRoom);
+		obstacleManager.setRoom(simulationRoom);
+		goalAreaManager.setRoom(simulationRoom);
+		spawnAreaManger.setRoom(simulationRoom);
 
         basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
         basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
@@ -130,15 +133,15 @@ public class MainController implements Initializable {
         MenuItem spawnItem = new MenuItem("Spawn area");
         Menu obstacleMenu = new Menu("Obstacles");
 
-        goalItem.setOnAction((e) -> GoalAreaManager.getInstance().add(GoalArea.createWithNEdges(4, GoalArea.class)));
-        spawnItem.setOnAction((e) -> SpawnAreaManager.getInstance().add(SpawnArea.createWithNEdges(4, SpawnArea.class)));
+		goalItem.setOnAction((e) -> goalAreaManager.add(GoalArea.createWithNEdges(4, GoalArea.class)));
+		spawnItem.setOnAction((e) -> spawnAreaManger.add(SpawnArea.createWithNEdges(4, SpawnArea.class)));
 
         String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
         for (int corners = 3, i = 0; corners <= 8; corners++, i++) {
             MenuItem item = new MenuItem(polygonNames[i]);
             final int cornerCount = corners;
-            item.setOnAction((e) -> ObstacleManager.getInstance().add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));
-            obstacleMenu.getItems().add(item);
+			item.setOnAction((e) -> obstacleManager.add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));
+			obstacleMenu.getItems().add(item);
         }
 
         cm.getItems().addAll(goalItem, spawnItem, obstacleMenu);
@@ -165,6 +168,28 @@ public class MainController implements Initializable {
 		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
 
 		spawnButton.setOnAction((event) -> {
+			PathManager pathManager = spMgr.getPathManager();
+			Vertex goal = null;
+			for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
+				goal = new Vertex(ga.getPosition());
+				pathManager.addTarget(goal);
+			}
+			System.out.println(obstacleManager.getObstacles().size());
+			for (Obstacle obstacle : obstacleManager.getObstacles()) {
+				//FIXME TO BE CONTINUED -> calculate stuff on spawn, or on redraw
+				obstacle.calculateCornersAndVertices();
+				obstacle.calculateEdges();
+				for (Position p : obstacle.getEdgePoints()) {
+					System.out.println(pathManager.getVertexList().size());
+					pathManager.getVertexList().add(new Vertex(p));
+
+				}
+				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
+			}
+			pathManager.findValidEdges(simulationRoom);
+			pathManager.crapFindAlgorithm(goal);
+
+
 			/**
 			 * Save data form the config window for usage in simulation.
 			 */

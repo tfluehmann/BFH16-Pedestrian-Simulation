@@ -30,12 +30,12 @@ public class GoalAreaManager extends AreaManager {
         return instance;
     }
 
-    public List<GoalArea> getObstacles() {
+    public List<GoalArea> getGoalAreas() {
         return goalAreas;
     }
 
     public void add(GoalArea o) {
-        this.getObstacles().add(o);
+        this.getGoalAreas().add(o);
         getRoom().getChildren().add(o);
     }
 

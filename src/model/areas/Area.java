@@ -27,7 +27,7 @@ public abstract class Area extends Polygon {
 
 	public Area(double... points) {
 		super(points);
-		this.calculateEdges();
+		//FIXME move this to a common place this.calculateEdges();
 		this.initDragAndDrop();
 	}
 
@@ -101,8 +101,7 @@ public abstract class Area extends Polygon {
 					break;
 				}
 			}
-//			Constructor<T> constructor = type.getDeclaredConstructor(double[].class);
-			return (T) constructor.newInstance(new Object[]{points});
+			return (T) constructor.newInstance(points);
 		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -112,5 +111,9 @@ public abstract class Area extends Polygon {
 
 	public Set<GVector> getEdges() {
 		return this.edges;
+	}
+
+	public Position getPosition() {
+		return position;
 	}
 }
