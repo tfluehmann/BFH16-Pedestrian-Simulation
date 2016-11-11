@@ -15,6 +15,9 @@ import model.persons.Person;
 
 import java.net.URL;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -77,6 +80,7 @@ public class MainController implements Initializable {
 	private SpawnManager spMgr = SpawnManager.getInstance();
 	private ConfigModel cfg = ConfigModel.getInstance();
 
+	private List<Slider> sliders = new ArrayList<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -90,26 +94,14 @@ public class MainController implements Initializable {
 		weightOld.textProperty().bindBidirectional(sliderOld.valueProperty(), NumberFormat.getNumberInstance());
 		weightHandicap.textProperty().bindBidirectional(sliderHandicap.valueProperty(), NumberFormat.getNumberInstance());
 
-//		Accept only int for the sliders. And check that the sum of all Sliders is 100%.
-		sliderYoung.valueProperty().addListener((observable, oldValue, newValue) -> {
-			sliderYoung.setValue(Math.round(newValue.doubleValue()));
-			calculateSlider();
-		});
-
-		sliderMidage.valueProperty().addListener((observable, oldValue, newValue) -> {
-			sliderMidage.setValue(Math.round(newValue.doubleValue()));
-			calculateSlider();
-		});
-
-		sliderOld.valueProperty().addListener((observable, oldValue, newValue) -> {
-			sliderOld.setValue(Math.round(newValue.doubleValue()));
-			calculateSlider();
-		});
-
-		sliderHandicap.valueProperty().addListener((observable, oldValue, newValue) -> {
-			sliderHandicap.setValue(Math.round(newValue.doubleValue()));
-			calculateSlider();
-		});
+		Slider[] slid = {sliderYoung, sliderMidage, sliderOld, sliderHandicap};
+		sliders.addAll(Arrays.asList(slid));
+		for (Slider slider : sliders) {
+			slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+				slider.setValue(Math.round(newValue.doubleValue()));
+				calculateSlider();
+			});
+		}
 
 		/**
 		 * Numberlistener from user "javasuns"
@@ -173,138 +165,117 @@ public class MainController implements Initializable {
 		}));
 	}
 
-
 	private int sliderSum() {
-		return (int) Math.round(sliderYoung.getValue() + sliderMidage.getValue() + sliderOld.getValue() + sliderHandicap.getValue());
+		int sum = 0;
+		for (Slider slider : sliders) {
+			sum += Math.floor(slider.getValue() + 0.5f);
+		}
+		return sum;
 	}
-
 
 	private void calculateSlider() {
 		int sum = sliderSum();
-		if (sum != 100) {
-			int diff = sum - 100;
-			sliderYoung.setValue(Math.round(sliderYoung.getValue() - diff / 4));
-			sliderMidage.setValue(Math.round(sliderMidage.getValue() - diff / 4));
-			sliderOld.setValue(Math.round(sliderOld.getValue() - diff / 4));
-			sliderHandicap.setValue(Math.round(sliderHandicap.getValue() - diff / 4));
-		}
+		int operator;
+		operator = (sum > 100) ? -1 : 1;
+		while (sum != 100)
+			for (Slider slider : sliders) {
+				slider.setValue(slider.getValue() + operator);
+				sum += operator;
+				if (sum == 100) break;
+			}
 	}
-
 
 	public Boolean getIsWeighted() {
 		return this.isWeighted.isSelected();
 	}
 
-
 	private TextField doubleToTextfield(Double value) {
 		return new TextField("" + value);
 	}
-
 
 	private double textFieldToDouble(TextField text) {
 		return new Double(text.getText());
 	}
 
-
 	private int textFieldToInt(TextField text) {
 		return new Integer(text.getText());
 	}
-
 
 	private TextField intToTextfield(int value) {
 		return new TextField("" + value);
 	}
 
-
 	public double getTotalPersons() {
 		return textFieldToDouble(this.totalPersons);
 	}
-
 
 	public void setTotalPersons(double totalPersons) {
 		this.totalPersons = doubleToTextfield(totalPersons);
 	}
 
-
 	public double getSliderYoungValue() {
 		return this.sliderYoung.getValue();
 	}
-
 
 	public void setSliderYoungValue(double sliderYoung) {
 		this.sliderYoung.setValue(sliderYoung);
 	}
 
-
 	public double getSliderMidageValue() {
 		return this.sliderMidage.getValue();
 	}
-
 
 	public void setSliderMidageValue(double sliderMidage) {
 		this.sliderMidage.setValue(sliderMidage);
 	}
 
-
 	public double getSliderOldValue() {
 		return this.sliderOld.getValue();
 	}
-
 
 	public void setSliderOldValue(double sliderOld) {
 		this.sliderOld.setValue(sliderOld);
 	}
 
-
 	public double getSliderHandicapValue() {
 		return this.sliderHandicap.getValue();
 	}
-
 
 	public void setSliderHandicapValue(double sliderHandicap) {
 		this.sliderHandicap.setValue(sliderHandicap);
 	}
 
-
 	public double getWeightYoung() {
 		return textFieldToInt(this.weightYoung);
 	}
-
 
 	public void setWeightYoung(int weightYoung) {
 		this.weightYoung = intToTextfield(weightYoung);
 	}
 
-
 	public int getWeightMidage() {
 		return textFieldToInt(this.weightMidage);
 	}
-
 
 	public void setWeightMidage(int weightMidage) {
 		this.weightMidage = intToTextfield(weightMidage);
 	}
 
-
 	public int getWeightOld() {
 		return textFieldToInt(this.weightOld);
 	}
-
 
 	public void setWeightOld(int weightOld) {
 		this.weightOld = intToTextfield(weightOld);
 	}
 
-
 	public int getWeightHandicap() {
 		return textFieldToInt(this.weightHandicap);
 	}
 
-
 	public void setWeightHandicap(int weightHandicap) {
 		this.weightHandicap = intToTextfield(weightHandicap);
 	}
-
 
 	public Button getSpawnButton() {
 		return this.spawnButton;
