@@ -191,3 +191,11 @@
 .button:default:hover {
     -fx-background-color: derive(-fx-focus-color,30%);
 }
+
+.context-menu {
+    -fx-background-color: #1d1d1d;
+}
+
+.menu-item:hover, .menu-item:pressed, .menu-item:selected {
+    -fx-background-color: #3a3a3a;
+}
