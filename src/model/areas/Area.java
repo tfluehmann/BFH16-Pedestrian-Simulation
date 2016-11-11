@@ -33,7 +33,6 @@ public abstract class Area extends Polygon {
 			this.originY = e.getSceneY();
 		});
 		this.setOnMouseReleased((e) -> {
-
 			this.calculateEdges();
 			if (this instanceof Obstacle) {
 				Obstacle obst = (Obstacle) this;
@@ -57,18 +56,14 @@ public abstract class Area extends Polygon {
 
 		this.setOnScroll((e) -> {
 			double factor = 1.01;
-			if (e.getDeltaX() < 0 || e.getDeltaY() < 0) factor = 2.0 - factor;
-			if (factor < 1) factor *= -1;
-
-			System.out.println(factor);
+			if (e.getDeltaX() < 0 || e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
 			if (e.isShiftDown()) {
 				this.setRotate(this.getRotate() + factor);
 			} else {
 				this.setScaleX(this.getScaleX() * (factor));
 				this.setScaleY(this.getScaleY() * (factor));
 			}
-			this.
-					e.consume();
+			e.consume();
 		});
 	}
 
