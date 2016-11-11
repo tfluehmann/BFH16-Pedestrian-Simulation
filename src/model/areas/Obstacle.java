@@ -28,10 +28,15 @@ public class Obstacle extends Area {
     }
 
     public void calculateCornersAndVertices() {
-        for (int i = 0; i < getPoints().size(); i += 2)
-            corners.add(new Position(getPoints().get(i), getPoints().get(i + 1)));
+        for (int i = 0; i < getPoints().size(); i += 2) {
+            Position pos = new Position(getPoints().get(i), getPoints().get(i + 1));
+            System.out.println("position: " + pos.toString());
+            this.corners.add(pos);
+
+        }
         this.calculateVertices();
     }
+
 
     /**
      * Created by suter1 on 06.10.2016.
@@ -51,7 +56,6 @@ public class Obstacle extends Area {
             a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
             b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
 
-            //FIXME HERE IS A BUG, just adds 4 edges for every kind of object (pentagon, usw)
             if (this.includes(a) && !this.contains(a.getXValue(), a.getYValue())) this.edgePoints.add(a);
             if (this.includes(b) && !this.contains(b.getXValue(), b.getYValue())) this.edgePoints.add(b);
         }
