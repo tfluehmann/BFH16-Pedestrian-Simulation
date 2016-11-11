@@ -2,8 +2,8 @@ package model.persons;
 
 import javafx.scene.Cursor;
 import javafx.scene.shape.Circle;
-import manager.ObstacleManager;
 import manager.PerimeterManager;
+import manager.areamanagers.ObstacleManager;
 import model.*;
 import model.areas.Obstacle;
 

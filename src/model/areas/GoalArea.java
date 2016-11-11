@@ -8,8 +8,6 @@ import java.util.List;
  * Created by fluth1 on 30/09/16.
  */
 public class GoalArea extends Area {
-	private final double height;
-	private final double width;
 
 	public GoalArea(double width, double height, Position position) {
 		super(position.getXValue(), position.getYValue(),
@@ -17,9 +15,13 @@ public class GoalArea extends Area {
 				position.getXValue() + width, position.getYValue() + height,
 				position.getXValue(), position.getYValue() + height);
 		this.position = position;
-		this.height = height;
-		this.width = width;
 		getStyleClass().add("goal-area");
+	}
+
+	public GoalArea(double... points) {
+		super(points);
+		this.position = new Position(points[0], points[1]);
+		this.setFill(Color.GREEN);
 	}
 
 	@Override
@@ -27,7 +29,4 @@ public class GoalArea extends Area {
 		return null;
 	}
 
-	public Position getGoalPoint() {
-		return new Position(this.position.getXValue() + this.width / 2, this.position.getYValue() + this.height / 2);
-	}
 }

@@ -24,13 +24,12 @@ public class PathManager {
     /**
      * Fucking magic just took us 10h of Fluch und Hass
      * we add neighbors in both directions, we do not have to check the ones already done
-     *
-     *   a b c d
+     * <p>
+     * a b c d
      * a x - - -
      * b x x - -
      * c x x x -
      * d x x x x
-     *
      **/
     public void findValidEdges(Room room) {
         for (int i = 0; i < this.vertexList.size(); i++) {

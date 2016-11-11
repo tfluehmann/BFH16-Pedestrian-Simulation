@@ -22,15 +22,20 @@ public class Obstacle extends Area {
         super(points);
         corners = new ArrayList<>();
         edgePoints = new ArrayList<>();
-
-        for (int i = 0; i < points.length; i += 2) {
-            corners.add(new Position(points[i], points[i + 1]));
-        }
-        this.calculateVertices();
-
         position = new Position(points[0], points[1]);
         getStyleClass().add("obstacle");
     }
+
+    public void calculateCornersAndVertices() {
+        for (int i = 0; i < getPoints().size(); i += 2) {
+            Position pos = new Position(getPoints().get(i), getPoints().get(i + 1));
+            System.out.println("position: " + pos.toString());
+            this.corners.add(pos);
+
+        }
+        this.calculateVertices();
+    }
+
 
     /**
      * Created by suter1 on 06.10.2016.

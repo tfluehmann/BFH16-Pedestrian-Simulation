@@ -25,9 +25,7 @@ public class SpawnManager {
     }
 
     public static SpawnManager getInstance() {
-        if (instance == null) {
-            instance = new SpawnManager();
-        }
+        if (instance == null) instance = new SpawnManager();
         return instance;
     }
 

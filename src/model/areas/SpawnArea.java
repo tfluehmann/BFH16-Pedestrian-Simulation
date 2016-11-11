@@ -23,6 +23,12 @@ public class SpawnArea extends Area {
 		getStyleClass().add("spawn-area");
 	}
 
+    public SpawnArea(double... points) {
+        super(points);
+        this.position = new Position(points[0], points[1]);
+        this.setFill(Color.RED);
+    }
+
 	public List<Position> getCorners() {
 		return null;
     }
