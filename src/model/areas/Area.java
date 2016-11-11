@@ -21,13 +21,6 @@ public abstract class Area extends Polygon {
 	private double originX;
 	private double originY;
 
-	private double targetX;
-	private double targetY;
-
-	private double currentTranslateX;
-	private double currentTranslateY;
-
-
 	public Area(double... points) {
 		super(points);
 		this.initDragAndDrop();
@@ -38,14 +31,10 @@ public abstract class Area extends Polygon {
 			this.setCursor(Cursor.CLOSED_HAND);
 			this.originX = e.getSceneX();
 			this.originY = e.getSceneY();
-			this.targetX = this.position.getXValue();
-			this.targetY = this.position.getYValue();
 		});
 		this.setOnMouseReleased((e) -> {
-			translatePoints(currentTranslateX, currentTranslateY);
 
 			this.calculateEdges();
-
 			if (this instanceof Obstacle) {
 				Obstacle obst = (Obstacle) this;
 				obst.getEdgePoints().clear();
@@ -57,26 +46,37 @@ public abstract class Area extends Polygon {
 		this.setOnMouseDragged((event) -> {
 			double offsetX = event.getSceneX() - this.originX;
 			double offsetY = event.getSceneY() - this.originY;
-			double newTranslateX = this.targetX + offsetX;
-			double newTranslateY = this.targetY + offsetY;
-			this.position.setX(newTranslateX);
-			this.position.setY(newTranslateY);
+			this.originX = event.getSceneX();
+			this.originY = event.getSceneY();
+			this.position.setX(this.getPosition().getXValue() + offsetX);
+			this.position.setY(this.getPosition().getYValue() + offsetY);
 			this.edges.clear();
 			this.calculateEdges();
+			translatePoints(offsetX, offsetY);
+		});
 
-			this.currentTranslateX = offsetX;
-			this.currentTranslateY = offsetY;
+		this.setOnScroll((e) -> {
+			double factor = 1.01;
+			if (e.getDeltaX() < 0 || e.getDeltaY() < 0) factor = 2.0 - factor;
+			if (factor < 1) factor *= -1;
 
-
+			System.out.println(factor);
+			if (e.isShiftDown()) {
+				this.setRotate(this.getRotate() + factor);
+			} else {
+				this.setScaleX(this.getScaleX() * (factor));
+				this.setScaleY(this.getScaleY() * (factor));
+			}
+			this.
+					e.consume();
 		});
 	}
 
 	private void translatePoints(double translateX, double translateY) {
-		System.out.println("Translate X: " + translateX + " translatey" + translateY);
 		List<Double> newPoints = new ArrayList<>();
 		for (int i = 0; i < getPoints().size(); i += 2) {
-			newPoints.add(getPoints().get(i).doubleValue() + translateX);
-			newPoints.add(getPoints().get(i + 1).doubleValue() + translateY);
+			newPoints.add(getPoints().get(i) + translateX);
+			newPoints.add(getPoints().get(i + 1) + translateY);
 		}
 		getPoints().clear();
 		getPoints().addAll(newPoints);
@@ -124,6 +124,17 @@ public abstract class Area extends Polygon {
 			System.exit(0);
 		}
 		return null;
+	}
+
+
+	/**
+	 * normalize (radius 1)
+	 * scale to size
+	 *
+	 * @param size
+	 */
+	private void scale(double size) {
+
 	}
 
 	public Set<GVector> getEdges() {
