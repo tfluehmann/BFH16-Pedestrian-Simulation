@@ -9,8 +9,8 @@ Datum | Zeitaufwand | Wer | Was
 05.10.2016 | 3 h | fluht1, suter1 | Problemlösungsmeeting 1 "Collision control"
 06.10.2016 | 3 h | fluht1 | Ausweichen von Personen gegenüber anderen Personen
 06.10.2016 | 3 h | suter1 | Obstacle-Klasse erstellt inkl. Erweiterungspunkte für späteren Dijkstra-Wegsuche
-07.10.2016 | 4 h | fluth1, suter1 | Initiale Config erstellt, Obstacles extended edges ohne Fallunterscheidungen implementiert, Klasse GVector eingeführt, refactoring bisheriger Code
-07.10.2016 | 4 h | fluth1 | Dijkstra implementiert, findet die Pfade am Anfang noch nicht -> neuer Branch erstellt
+07.10.2016 | 4 h | fluth1, suter1 | Initiale Config erstellt, Obstacles extended edges ohne Fallunterscheidungen implementiert, Klasse GVector eingeführt, refactoring bisheriger Code
+07.10.2016 | 4 h | fluth1 | Dijkstra implementiert, findet die Pfade am Anfang noch nicht -> neuer Branch erstellt
 08.10.2016 | 4 h | suter1 | Config erweitert mit verschiedenen Auswahlfelder.
 09.10.2016 | 4 h | suter1 | Config bearbeitet, damit Personen, Goal und Spawn area abhängig der Config-Daten generiert werden.
 12.10.2016 | 4 h | fluht1, suter1 | Dijkstra in erster lauffähigen Version, sehr langsam
@@ -21,3 +21,4 @@ Datum | Zeitaufwand | Wer | Was
 28.10.2016 | 4 h | fluht1, suter1 | Draggable persons, reset-button, create room design, refactor
 02.11.2016 | 3 h | fluht1, suter1 | Working on movable obstacles
 09.11.2016 | 4 h | fluht1, suter1 | Further working on movable obstacles and CSS-Styling (not yet completed finished)
+11.11.2016 | 4 h | fluht1, suter1 | Further working on movable obstacles and more CSS-Styling.
