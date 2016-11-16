@@ -1,6 +1,5 @@
 package manager.areamanagers;
 
-import model.Room;
 import model.areas.GoalArea;
 
 import java.util.ArrayList;
@@ -12,15 +11,7 @@ import java.util.List;
 public class GoalAreaManager extends AreaManager {
     private static GoalAreaManager instance;
     private List<GoalArea> goalAreas = new ArrayList<>();
-    private Room simulationRoom;
 
-    public void setRoom(Room room) {
-        simulationRoom = room;
-    }
-
-    public Room getRoom() {
-        return simulationRoom;
-    }
 
     private GoalAreaManager() {
     }
@@ -35,8 +26,8 @@ public class GoalAreaManager extends AreaManager {
     }
 
     public void add(GoalArea o) {
+        super.add(o);
         this.getGoalAreas().add(o);
-        getRoom().getChildren().add(o);
     }
 
 

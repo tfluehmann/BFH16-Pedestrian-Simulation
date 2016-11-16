@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.stage.Screen;
 import manager.PathManager;
 import manager.SimulationManager;
@@ -215,7 +216,9 @@ public class MainController implements Initializable {
 
 		resetButton.setOnAction((event -> {
 //	        implement a reset.
-			simulationRoom.getChildren().removeIf(item -> (item instanceof Person));
+			simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
+			SpawnManager spawnManager = SpawnManager.getInstance();
+			spawnManager.getPathManager().clearAll();
 			spawnButton.setDisable(false);
 			startButton.setText("Start");
 			startButton.setDisable(true);

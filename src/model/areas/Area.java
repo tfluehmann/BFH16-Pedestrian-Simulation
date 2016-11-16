@@ -1,15 +1,18 @@
 package model.areas;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.Anchor;
 import model.GVector;
 import model.Position;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -17,12 +20,14 @@ import java.util.Set;
 public abstract class Area extends Polygon {
 	protected Position position;
 	protected Set<GVector> edges = new HashSet<>();
+	protected Collection anchors;
 
 	private double originX;
 	private double originY;
 
 	public Area(double... points) {
 		super(points);
+		createControlAnchors();
 		this.initDragAndDrop();
 	}
 
@@ -40,6 +45,7 @@ public abstract class Area extends Polygon {
 				obst.getCorners().clear();
 				obst.calculateCornersAndVertices();
 			}
+			this.createControlAnchors();
 			this.setCursor(Cursor.HAND);
 		});
 		this.setOnMouseDragged((event) -> {
@@ -121,15 +127,22 @@ public abstract class Area extends Polygon {
 		return null;
 	}
 
+	// @return a list of anchors which can be dragged around to modify points in the format [x1, y1, x2, y2...]
+	private void createControlAnchors() {
+		ObservableList<Anchor> anchors = FXCollections.observableArrayList();
 
-	/**
-	 * normalize (radius 1)
-	 * scale to size
-	 *
-	 * @param size
-	 */
-	private void scale(double size) {
+		for (int i = 0; i < getPoints().size(); i += 2) {
+			final int idx = i;
 
+			DoubleProperty xProperty = new SimpleDoubleProperty(getPoints().get(i));
+			DoubleProperty yProperty = new SimpleDoubleProperty(getPoints().get(i + 1));
+
+			xProperty.addListener((ov, oldX, x) -> getPoints().set(idx, (double) x));
+			yProperty.addListener((ov, oldY, y) -> getPoints().set(idx + 1, (double) y));
+
+			anchors.add(new Anchor(Color.GOLD, xProperty, yProperty));
+		}
+		this.anchors = anchors;
 	}
 
 	public Set<GVector> getEdges() {
@@ -138,5 +151,9 @@ public abstract class Area extends Polygon {
 
 	public Position getPosition() {
 		return position;
+	}
+
+	public Collection<Anchor> getAnchors() {
+		return anchors;
 	}
 }

@@ -35,7 +35,7 @@ public class SpawnAreaManager extends AreaManager {
     }
 
     public void add(SpawnArea o) {
+        super.add(o);
         this.getObstacles().add(o);
-        getRoom().getChildren().add(o);
     }
 }

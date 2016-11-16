@@ -41,7 +41,7 @@ public class PathManager {
                 boolean isCrossing = this.checkAgainstObstacles(v);
                 if (!isCrossing) {
                     v.setStyle("-fx-stroke: green;");
-//                    room.getChildren().add(v);
+                    room.getChildren().add(v);
                     double distance = v.length();
                     if (nodes.containsKey(targetVertex)) {
                         if (distance < nodes.get(targetVertex)) nodes.put(targetVertex, distance);
@@ -121,5 +121,13 @@ public class PathManager {
     public void addTarget(Vertex target) {
         this.targetVertexes.add(target);
         this.vertexList.add(target);
+    }
+
+    public void clearAll() {
+        vertexList.clear();
+        obstacleEdges.clear();
+        settledNodes.clear();
+        nodes.clear();
+        targetVertexes.clear();
     }
 }

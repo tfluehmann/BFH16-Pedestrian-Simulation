@@ -34,13 +34,9 @@ public class ObstacleManager extends AreaManager {
     }
 
     public void add(Obstacle o) {
+        super.add(o);
         this.getObstacles().add(o);
-        System.out.println("added new obstacle " + this.getObstacles().size());
-        int edgeCount = 0;
-        for (Obstacle ob : getObstacles())
-            edgeCount += ob.getEdgePoints().size();
-        System.out.println("edges: " + edgeCount);
-
-        getRoom().getChildren().add(o);
     }
+
+
 }
