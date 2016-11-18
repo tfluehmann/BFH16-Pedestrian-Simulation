@@ -33,14 +33,20 @@ public abstract class Area extends Polygon {
     private double originX;
     private double originY;
 
+    private double mouseX;
+    private double mouseY;
+
     public Area(double... points) {
         super(points);
         createControlAnchors();
-        currentCenter = calculateCentroid();
         this.initDragAndDrop();
     }
 
     private void initDragAndDrop() {
+        this.setOnMouseClicked((e) -> {
+            mouseX = e.getSceneX();
+            mouseY = e.getSceneY();
+        });
         this.setOnMousePressed((e) -> {
             this.setCursor(Cursor.CLOSED_HAND);
             this.originX = e.getSceneX();
@@ -55,7 +61,6 @@ public abstract class Area extends Polygon {
                 obst.getCorners().clear();
                 obst.calculateCornersAndVertices();
             }
-            this.currentCenter = this.calculateCentroid();
             this.setCursor(Cursor.HAND);
             e.consume();
         });
@@ -69,27 +74,27 @@ public abstract class Area extends Polygon {
             this.edges.clear();
             this.calculateEdges();
             translatePoints(offsetX, offsetY);
-            this.currentCenter = this.calculateCentroid();
             event.consume();
         });
 
         this.setOnScroll((e) -> {
             double factor = 1.01;
             if (e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
+            double pivotX = e.getX();
+            double pivotY = e.getY();
             if (e.isShiftDown()) {
-                this.rotatePoints(this.getRotate() + factor);
+                this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
             } else {
                 System.out.println("factor x " + factor + " factor y " + factor);
-                this.scalePoints((factor), (factor));
+                this.scalePoints((factor), (factor), pivotX, pivotY);
             }
             e.consume();
         });
     }
 
-    private void scalePoints(double x, double y) {
-        movePoints(new Scale(x, y, currentCenter.getXValue(), currentCenter.getYValue()));
+    private void scalePoints(double x, double y, double pivotX, double pivotY) {
+        movePoints(new Scale(x, y, pivotX, pivotY));
         createControlAnchors();
-
     }
 
     private void translatePoints(double translateX, double translateY) {
@@ -101,8 +106,8 @@ public abstract class Area extends Polygon {
      * Translate back to origin, Rotate, translate back
      * https://de.wikipedia.org/wiki/Drehmatrix
      */
-    private void rotatePoints(double angle) {
-        movePoints(new Rotate(angle, currentCenter.getXValue(), currentCenter.getYValue()));
+    private void rotatePoints(double angle, double pivotX, double pivotY) {
+        movePoints(new Rotate(angle, pivotX, pivotY));
         this.createControlAnchors();
     }
 
@@ -118,26 +123,12 @@ public abstract class Area extends Polygon {
             getPoints().add(d);
     }
 
-    private Position calculateCentroid() {
-        double x = 0.;
-        double y = 0.;
-        int pointCount = getPoints().size() / 2;
-//        for(Double point : getPoints())
-//            System.out.println("point is: "+point);
-        for (int i = 0; i < pointCount; i += 2) {
-            x += getPoints().get(i);
-            y += getPoints().get(i + 1);
-        }
-        Position center = new Position(x / pointCount, y / pointCount);
-        return center;
-    }
-
     public abstract List<Position> getCorners();
 
     /**
      * from each point to next point-> create gvector --> edge
      */
-    public void calculateEdges() {
+    private void calculateEdges() {
         this.edges.clear();
         for (int x = 0; x < this.getPoints().size(); x += 2) {
             int y = x + 1;
@@ -154,21 +145,21 @@ public abstract class Area extends Polygon {
     /**
      * returns a new object with the given edges or corners
      *
-     * @param edges
+     * @param edges, type of object
      *
-     * @return
+     * @return Any kind of area
      */
     public static <T extends Area> T createWithNEdges(int edges, Class<T> type) {
-        double[] points = new double[edges * 2];
+        double[] newAreaPoints = new double[edges * 2];
         int radius = 30;
         double phi = 360 / edges;
         double rad = phi / 180 * Math.PI;
         for (int i = 0, counter = 0; i < edges; i++, counter += 2) {
-            points[counter] = Math.cos(i * rad) * radius; //x value
-            points[counter + 1] = Math.sin(i * rad) * radius; //y value
+            newAreaPoints[counter] = Math.cos(i * rad) * radius; //x value
+            newAreaPoints[counter + 1] = Math.sin(i * rad) * radius; //y value
         }
         try {
-            return type.getDeclaredConstructor(double[].class).newInstance(points);
+            return type.getDeclaredConstructor(double[].class).newInstance(newAreaPoints);
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
             System.exit(0);
