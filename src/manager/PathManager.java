@@ -123,7 +123,7 @@ public class PathManager {
         this.vertexList.add(target);
     }
 
-    public void clearAll() {
+    public void clear() {
         vertexList.clear();
         obstacleEdges.clear();
         settledNodes.clear();

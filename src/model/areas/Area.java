@@ -54,13 +54,6 @@ public abstract class Area extends Polygon {
             e.consume();
         });
         this.setOnMouseReleased((e) -> {
-            this.calculateEdges();
-            if (this instanceof Obstacle) {
-                Obstacle obst = (Obstacle) this;
-                obst.getEdgePoints().clear();
-                obst.getCorners().clear();
-                obst.calculateCornersAndVertices();
-            }
             this.setCursor(Cursor.HAND);
             e.consume();
         });
@@ -117,6 +110,14 @@ public abstract class Area extends Polygon {
         getPoints().clear();
         for (double d : newPoints)
             getPoints().add(d);
+
+        this.calculateEdges();
+        if (this instanceof Obstacle) {
+            Obstacle obst = (Obstacle) this;
+            obst.getEdgePoints().clear();
+            obst.getCorners().clear();
+            obst.calculateCornersAndVertices();
+        }
     }
 
     public abstract List<Position> getCorners();

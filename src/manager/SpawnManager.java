@@ -109,4 +109,10 @@ public class SpawnManager {
                 newPersons.add(p);
         this.persons = newPersons;
     }
+
+    public void clear() {
+        this.passivePersons.clear();
+        this.persons.clear();
+        this.pathManager.clear();
+    }
 }

@@ -218,7 +218,7 @@ public class MainController implements Initializable {
 //	        implement a reset.
 			simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
 			SpawnManager spawnManager = SpawnManager.getInstance();
-			spawnManager.getPathManager().clearAll();
+			spawnManager.clear();
 			spawnButton.setDisable(false);
 			startButton.setText("Start");
 			startButton.setDisable(true);

@@ -60,13 +60,11 @@ public abstract class Person extends Circle {
             this.targetX = this.getCurrentPosition().getXValue();
             this.targetY = this.getCurrentPosition().getYValue();
         });
-        this.setOnMouseReleased((e) -> {
-            this.setCursor(Cursor.HAND);
-        });
-        this.setOnMouseDragged((event) -> {
-            double offsetX = event.getSceneX() - this.originX;
-            double offsetY = event.getSceneY() - this.originY;
-            double newTranslateX = this.targetX + offsetX;
+		this.setOnMouseReleased((e) -> this.setCursor(Cursor.HAND));
+		this.setOnMouseDragged((e) -> {
+			double offsetX = e.getSceneX() - this.originX;
+			double offsetY = e.getSceneY() - this.originY;
+			double newTranslateX = this.targetX + offsetX;
             double newTranslateY = this.targetY + offsetY;
             this.setPosition(new Position(newTranslateX, newTranslateY));
         });
@@ -102,12 +100,9 @@ public abstract class Person extends Circle {
 				Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
 				Position rightPos = vToNextTarget.moveParallelRight(newPosition).getEndPosition();
 				if (this.isNewPositionAllowed(leftPos)) {
-					System.out.println("second try left: " + tries);
 					return leftPos;
 				}
 				if (this.isNewPositionAllowed(rightPos)) {
-					System.out.println("second try right: " + tries);
-
 					return rightPos;
 				}
 			} else if (tries == 5) {
