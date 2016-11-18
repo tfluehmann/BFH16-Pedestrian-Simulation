@@ -82,12 +82,8 @@ public abstract class Area extends Polygon {
             if (e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
             double pivotX = e.getX();
             double pivotY = e.getY();
-            if (e.isAltDown()) {
-                this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
-            } else {
-                System.out.println("factor x " + factor + " factor y " + factor);
-                this.scalePoints((factor), (factor), pivotX, pivotY);
-            }
+            if (e.isAltDown()) this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
+            else this.scalePoints((factor), (factor), pivotX, pivotY);
             e.consume();
         });
     }
