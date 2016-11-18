@@ -71,16 +71,6 @@ public class ConfigWindowController implements Initializable {
 			cfg.calculateRoomSize();
 
 			/**
-			 * Set positions and sizes of goal and spawn areas.
-			 */
-			cfg.setSpawnHeight(getSpawnHeight());
-			cfg.setSpawnWidth(getSpawnWidth());
-			cfg.setSpawnPosition(getSpawnAreaPosition());
-			cfg.setGoalHeight(getGoalHeight());
-			cfg.setGoalWidth(getGoalWidth());
-			cfg.setGoalPosition(getGoalAreaPosition());
-
-			/**
 			 * Close the config window to start the simulation.
 			 */
 			buttonOK.getScene().getWindow().hide();
@@ -127,53 +117,4 @@ public class ConfigWindowController implements Initializable {
 		this.roomHeight = doubleToTextfield(roomHeight);
 	}
 
-
-	public String getSpawnAreaPosition() {
-		return (String) this.spawnAreaPosition.getValue();
-	}
-
-
-	public double getSpawnWidth() {
-		return textFieldToDouble(this.spawnWidth);
-	}
-
-
-	public void setSpawnWidth(double spawnWidth) {
-		this.spawnWidth = doubleToTextfield(spawnWidth);
-	}
-
-
-	public double getSpawnHeight() {
-		return textFieldToDouble(this.spawnHeight);
-	}
-
-
-	public void setSpawnHeight(double spawnHeight) {
-		this.spawnHeight = doubleToTextfield(spawnHeight);
-	}
-
-
-	public String getGoalAreaPosition() {
-		return (String) this.goalAreaPosition.getValue();
-	}
-
-
-	public double getGoalWidth() {
-		return textFieldToDouble(this.goalWidth);
-	}
-
-
-	public void setGoalWidth(double goalWidth) {
-		this.goalWidth = doubleToTextfield(goalWidth);
-	}
-
-
-	public double getGoalHeight() {
-		return textFieldToDouble(this.goalHeight);
-	}
-
-
-	public void setGoalHeight(double goalHeight) {
-		this.goalHeight = doubleToTextfield(goalHeight);
-	}
 }

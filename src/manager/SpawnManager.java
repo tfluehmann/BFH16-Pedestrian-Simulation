@@ -1,19 +1,22 @@
 package manager;
 
+import manager.areamanagers.SpawnAreaManager;
 import model.ConfigModel;
 import model.Position;
+import model.areas.SpawnArea;
 import model.persons.Person;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by suter1 on 21.10.2016.
  */
 public class SpawnManager {
-
+	private SpawnAreaManager spawnAreaManager = SpawnAreaManager.getInstance();
     private static SpawnManager instance = null;
     private ConfigModel config = ConfigModel.getInstance();
     private Random rnd = new Random();
@@ -79,7 +82,8 @@ public class SpawnManager {
             partypes[1] = Double.TYPE;
             partypes[2] = Position.class;
             Constructor ct = klass.getConstructor(partypes);
-            newPerson = (Person) ct.newInstance(this.config.getSpawnHeight(), this.config.getSpawnWidth(), this.config.getSpawnPosition());
+	        SpawnArea spawnArea = spawnAreaManager.getObstacles().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getObstacles().size()));
+            newPerson = (Person) ct.newInstance(spawnArea.getPoints().get(1)- spawnArea.getPoints().get(0), spawnArea.getPoints().get(2)-spawnArea.getPoints().get(1), spawnArea.getPosition()); // TODO width, heigth, position
             this.persons.add(newPerson);
             newPerson.setNextVertex(pathManager.getNearestVertex(newPerson.getCurrentPosition()));
             newPerson.setTarget(pathManager.getTargetVertexes().get(0));

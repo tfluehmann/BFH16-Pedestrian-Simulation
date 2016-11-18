@@ -73,7 +73,7 @@ public abstract class Area extends Polygon {
 		});
 	}
 
-	private void translatePoints(double translateX, double translateY) {
+	protected void translatePoints(double translateX, double translateY) {
 		List<Double> newPoints = new ArrayList<>();
 		for (int i = 0; i < getPoints().size(); i += 2) {
 			newPoints.add(getPoints().get(i) + translateX);

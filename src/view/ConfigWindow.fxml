@@ -1,66 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
-<?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="400.0" styleClass="background" stylesheets="@default.css" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigWindowController">
+<AnchorPane styleClass="background" stylesheets="@default.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigWindowController">
     <children>
-        <VBox prefHeight="450.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
-                <AnchorPane prefHeight="400.0" prefWidth="400.0">
-                    <children>
-                        <Label layoutX="11.0" layoutY="20.0" text="Room Width" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="20.0" />
-                        <TextField fx:id="roomWidth" alignment="CENTER" layoutX="126.0" layoutY="16.0" prefHeight="25.0" prefWidth="40.0" promptText="Room width in meters" text="108" />
-                        <Label layoutX="174.0" layoutY="20.0" text="meters" />
-                        <Label layoutX="11.0" layoutY="59.0" text="Room Height" AnchorPane.leftAnchor="11.0" />
-                        <TextField fx:id="roomHeight" alignment="CENTER" layoutX="126.0" layoutY="55.0" prefHeight="25.0" prefWidth="40.0" promptText="Room height in meters" text="72" />
-                        <Label layoutX="174.0" layoutY="59.0" text="meters" />
-                        <Separator layoutX="11.0" layoutY="90.0" prefHeight="0.0" prefWidth="376.0" />
-                        <Label layoutX="13.0" layoutY="108.0" text="Spawn area" />
-                        <ComboBox fx:id="spawnAreaPosition" layoutX="126.0" layoutY="105.0" prefWidth="150.0" promptText="Select Position">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="TOP_LEFT" />
-                                    <String fx:value="TOP_CENTER" />
-                                    <String fx:value="TOP_RIGHT" />
-                                </FXCollections>
-                            </items>
-                            <value>TOP_LEFT</value>
-                        </ComboBox>
-                        <Label layoutX="13.0" layoutY="146.0" text="Width" />
-                        <TextField fx:id="spawnWidth" alignment="CENTER" layoutX="126.0" layoutY="143.0" prefHeight="25.0" prefWidth="40.0" text="16" />
-                        <Label layoutX="183.0" layoutY="147.0" text="meters" />
-                        <Label layoutX="13.0" layoutY="186.0" text="Height" />
-                        <TextField fx:id="spawnHeight" alignment="CENTER" layoutX="126.0" layoutY="183.0" prefHeight="25.0" prefWidth="40.0" text="10" />
-                        <Label layoutX="183.0" layoutY="187.0" text="meters" />
-                        <Separator layoutX="13.0" layoutY="226.0" prefHeight="0.0" prefWidth="376.0" />
-                        <Label layoutX="10.0" layoutY="245.0" text="Goal area" />
-                        <ComboBox fx:id="goalAreaPosition" layoutX="128.0" layoutY="241.0" prefWidth="150.0" promptText="Select Position">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="BOTTOM_LEFT" />
-                                    <String fx:value="BOTTOM_CENTER" />
-                                    <String fx:value="BOTTOM_RIGHT" />
-                                </FXCollections>
-                            </items>
-                            <value>BOTTOM_LEFT</value>
-                        </ComboBox>
-                        <Label layoutX="10.0" layoutY="283.0" text="Width" />
-                        <TextField fx:id="goalWidth" alignment="CENTER" layoutX="128.0" layoutY="279.0" prefHeight="25.0" prefWidth="40.0" text="5" />
-                        <Label layoutX="185.0" layoutY="283.0" text="meters" />
-                        <Label layoutX="10.0" layoutY="323.0" text="Height" />
-                        <TextField fx:id="goalHeight" alignment="CENTER" layoutX="128.0" layoutY="319.0" prefHeight="25.0" prefWidth="40.0" text="5" />
-                        <Label layoutX="185.0" layoutY="323.0" text="meters" />
-                        <Separator layoutX="11.0" layoutY="357.0" prefHeight="0.0" prefWidth="376.0" />
-                    </children>
-                </AnchorPane>
-                <Button fx:id="buttonOK" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="OK">
+                <Label alignment="TOP_LEFT" styleClass="label-header" stylesheets="@default.css" text="Please enter the room size">
                     <VBox.margin>
-                        <Insets bottom="10.0" left="320.0" right="5.0" />
+                        <Insets left="5.0" right="80.0" top="10.0" />
                     </VBox.margin>
-                </Button>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+                </Label>
+                <HBox>
+                    <children>
+                        <Label prefWidth="80.0" text="Room Width">
+                            <HBox.margin>
+                                <Insets left="5.0" right="5.0" top="3.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="roomWidth" alignment="CENTER" prefHeight="25.0" prefWidth="40.0" promptText="Room width in meters" text="108">
+                            <HBox.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <Label text="meters">
+                            <HBox.margin>
+                                <Insets left="5.0" right="5.0" top="3.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox>
+                    <children>
+                        <Label prefWidth="80.0" text="Room Height">
+                            <HBox.margin>
+                                <Insets left="5.0" right="5.0" top="3.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="roomHeight" alignment="CENTER" prefHeight="25.0" prefWidth="40.0" promptText="Room height in meters" text="72">
+                            <HBox.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <Label text="meters">
+                            <HBox.margin>
+                                <Insets left="5.0" right="5.0" top="3.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+            <ButtonBar prefHeight="40.0" prefWidth="200.0">
+              <buttons>
+                              <Button fx:id="buttonOK" alignment="CENTER" defaultButton="true" mnemonicParsing="false" stylesheets="@default.css" text="OK" textAlignment="CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                  </Button>
+              </buttons>
+               <padding>
+                  <Insets bottom="10.0" right="10.0" top="10.0" />
+               </padding>
+            </ButtonBar>
             </children>
         </VBox>
     </children>
