@@ -1,6 +1,5 @@
 package model.areas;
 
-import javafx.scene.transform.Rotate;
 import model.Position;
 
 import java.util.List;
@@ -21,14 +20,6 @@ public class SpawnArea extends Area {
 
     public SpawnArea(double... points) {
         super(points);
-
-	    for(Double d :getPoints())
-		    System.out.println("before "+d);
-	    this.getTransforms().add(new Rotate(135, 0, 0));
-
-	    for(Double d : getPoints())
-		    System.out.println("after " +d);
-	    System.out.println();
 	    this.position = new Position(points[0], points[1]);
         getStyleClass().add("spawn-area");
     }
