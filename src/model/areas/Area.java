@@ -45,6 +45,7 @@ public abstract class Area extends Polygon {
             this.setCursor(Cursor.CLOSED_HAND);
             this.originX = e.getSceneX();
             this.originY = e.getSceneY();
+            e.consume();
         });
         this.setOnMouseReleased((e) -> {
             this.calculateEdges();
@@ -54,7 +55,9 @@ public abstract class Area extends Polygon {
                 obst.getCorners().clear();
                 obst.calculateCornersAndVertices();
             }
+            this.currentCenter = this.calculateCentroid();
             this.setCursor(Cursor.HAND);
+            e.consume();
         });
         this.setOnMouseDragged((event) -> {
             double offsetX = event.getSceneX() - this.originX;
@@ -67,15 +70,17 @@ public abstract class Area extends Polygon {
             this.calculateEdges();
             translatePoints(offsetX, offsetY);
             this.currentCenter = this.calculateCentroid();
+            event.consume();
         });
 
         this.setOnScroll((e) -> {
             double factor = 1.01;
-            if (e.getDeltaX() < 0 || e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
+            if (e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
             if (e.isShiftDown()) {
                 this.rotatePoints(this.getRotate() + factor);
             } else {
-                this.scalePoints(this.getScaleX() * (factor), this.getScaleY() * (factor));
+                System.out.println("factor x " + factor + " factor y " + factor);
+                this.scalePoints((factor), (factor));
             }
             e.consume();
         });
@@ -113,16 +118,17 @@ public abstract class Area extends Polygon {
             getPoints().add(d);
     }
 
-    public Position calculateCentroid() {
+    private Position calculateCentroid() {
         double x = 0.;
         double y = 0.;
-        int pointCount = getPoints().size();
+        int pointCount = getPoints().size() / 2;
+//        for(Double point : getPoints())
+//            System.out.println("point is: "+point);
         for (int i = 0; i < pointCount; i += 2) {
             x += getPoints().get(i);
             y += getPoints().get(i + 1);
         }
         Position center = new Position(x / pointCount, y / pointCount);
-        System.out.println("center position " + center);
         return center;
     }
 
