@@ -82,7 +82,7 @@ public abstract class Area extends Polygon {
             if (e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
             double pivotX = e.getX();
             double pivotY = e.getY();
-            if (e.isShiftDown()) {
+            if (e.isAltDown()) {
                 this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
             } else {
                 System.out.println("factor x " + factor + " factor y " + factor);
