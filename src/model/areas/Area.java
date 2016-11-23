@@ -6,7 +6,6 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import model.Anchor;
-import model.DraggablePolygon;
 import model.GVector;
 import model.Position;
 

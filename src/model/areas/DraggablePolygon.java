@@ -1,4 +1,4 @@
-package model;
+package model.areas;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import manager.areamanagers.SpawnAreaManager;
-import model.areas.Area;
+import model.Anchor;
 
 import java.util.List;
 
