@@ -53,7 +53,6 @@ public class Anchor extends Circle {
         });
         setOnMouseExited((event) -> {
             if (!event.isPrimaryButtonDown()) getScene().setCursor(Cursor.DEFAULT);
-
         });
     }
 

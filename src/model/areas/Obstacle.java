@@ -27,11 +27,10 @@ public class Obstacle extends Area {
     }
 
     public void calculateCornersAndVertices() {
+        corners.clear();
         for (int i = 0; i < getPoints().size(); i += 2) {
             Position pos = new Position(getPoints().get(i), getPoints().get(i + 1));
-            System.out.println("position: " + pos.toString());
             this.corners.add(pos);
-
         }
         this.calculateVertices();
     }
@@ -41,6 +40,7 @@ public class Obstacle extends Area {
      * Created by suter1 on 06.10.2016.
      */
     private void calculateVertices() {
+        edgePoints.clear();
         Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
             if (i + 1 >= this.corners.size()) {

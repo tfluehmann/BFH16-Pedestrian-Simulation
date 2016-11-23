@@ -105,7 +105,6 @@ public abstract class Area extends DraggablePolygon {
             Obstacle obst = (Obstacle) this;
             obst.getEdgePoints().clear();
             obst.getCorners().clear();
-            obst.calculateCornersAndVertices();
         }
         moveControlAnchors();
     }

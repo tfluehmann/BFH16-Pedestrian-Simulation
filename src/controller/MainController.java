@@ -169,8 +169,8 @@ public class MainController implements Initializable {
 			}
 			System.out.println(obstacleManager.getObstacles().size());
 			for (Obstacle obstacle : obstacleManager.getObstacles()) {
-				//FIXME TO BE CONTINUED -> calculate stuff on spawn, or on redraw
-				for (Position p : obstacle.getEdgePoints())
+                obstacle.calculateCornersAndVertices();
+                for (Position p : obstacle.getEdgePoints())
 					pathManager.getVertexList().add(new Vertex(p));
 				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 			}
