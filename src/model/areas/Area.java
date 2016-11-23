@@ -114,7 +114,7 @@ public abstract class Area extends DraggablePolygon {
     /**
      * from each point to next point-> create gvector --> edge
      */
-    private void calculateEdges() {
+    public void calculateEdges() {
         this.edges.clear();
         for (int x = 0; x < this.getPoints().size(); x += 2) {
             int y = x + 1;

@@ -5,6 +5,7 @@ import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
+import model.areas.Area;
 
 
 /**
@@ -12,9 +13,11 @@ import javafx.scene.shape.StrokeType;
  */
 public class Anchor extends Circle {
     private final DoubleProperty x, y;
+    private Area area;
 
-    public Anchor(Color color, DoubleProperty x, DoubleProperty y) {
+    public Anchor(Color color, DoubleProperty x, DoubleProperty y, Area area) {
         super(x.get(), y.get(), 2);
+        this.area = area;
         setFill(color.deriveColor(1, 1, 1, 0.3));
         setStroke(color);
         setStrokeWidth(2);
@@ -39,6 +42,7 @@ public class Anchor extends Circle {
 
         setOnMouseReleased((event) -> {
             getScene().setCursor(Cursor.HAND);
+            area.calculateEdges();
         });
         setOnMouseDragged((event) -> {
             double newX = event.getX() + dragDelta.x;

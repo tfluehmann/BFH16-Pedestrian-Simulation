@@ -7,13 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import manager.areamanagers.SpawnAreaManager;
+import model.areas.Area;
 
 import java.util.List;
 
 /**
  * Created by tgdflto1 on 23/11/16.
  */
-public class DraggablePolygon extends Polygon {
+public abstract class DraggablePolygon extends Polygon {
     protected List<Anchor> anchors;
     protected SpawnAreaManager spawnAreaManager = SpawnAreaManager.getInstance();
 
@@ -35,7 +36,7 @@ public class DraggablePolygon extends Polygon {
             xProperty.addListener((ov, oldX, x) -> getPoints().set(idx, (double) x));
             yProperty.addListener((ov, oldY, y) -> getPoints().set(idx + 1, (double) y));
 
-            anchors.add(new Anchor(Color.GOLD, xProperty, yProperty));
+            anchors.add(new Anchor(Color.GOLD, xProperty, yProperty, (Area) this));
         }
         this.anchors = anchors;
     }
