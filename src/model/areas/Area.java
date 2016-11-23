@@ -1,17 +1,12 @@
 package model.areas;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import model.Anchor;
+import model.DraggablePolygon;
 import model.GVector;
 import model.Position;
 
@@ -24,11 +19,9 @@ import java.util.Set;
 /**
  * Created by fluth1 on 30/09/16.
  */
-public abstract class Area extends Polygon {
+public abstract class Area extends DraggablePolygon {
     protected Position position;
-    protected Position currentCenter;
     protected Set<GVector> edges = new HashSet<>();
-    protected Collection<Anchor> anchors;
 
     private double originX;
     private double originY;
@@ -38,7 +31,6 @@ public abstract class Area extends Polygon {
 
     public Area(double... points) {
         super(points);
-        createControlAnchors();
         this.initDragAndDrop();
     }
 
@@ -83,12 +75,10 @@ public abstract class Area extends Polygon {
 
     private void scalePoints(double x, double y, double pivotX, double pivotY) {
         movePoints(new Scale(x, y, pivotX, pivotY));
-        createControlAnchors();
     }
 
     private void translatePoints(double translateX, double translateY) {
         movePoints(new Translate(translateX, translateY));
-        this.createControlAnchors();
     }
 
     /**
@@ -97,7 +87,6 @@ public abstract class Area extends Polygon {
      */
     private void rotatePoints(double angle, double pivotX, double pivotY) {
         movePoints(new Rotate(angle, pivotX, pivotY));
-        this.createControlAnchors();
     }
 
     private void movePoints(Transform t) {
@@ -118,6 +107,7 @@ public abstract class Area extends Polygon {
             obst.getCorners().clear();
             obst.calculateCornersAndVertices();
         }
+        moveControlAnchors();
     }
 
     public abstract List<Position> getCorners();
@@ -162,24 +152,6 @@ public abstract class Area extends Polygon {
             System.exit(0);
         }
         return null;
-    }
-
-    // @return a list of anchors which can be dragged around to modify points in the format [x1, y1, x2, y2...]
-    private void createControlAnchors() {
-        ObservableList<Anchor> anchors = FXCollections.observableArrayList();
-
-        for (int i = 0; i < getPoints().size(); i += 2) {
-            final int idx = i;
-
-            DoubleProperty xProperty = new SimpleDoubleProperty(getPoints().get(i));
-            DoubleProperty yProperty = new SimpleDoubleProperty(getPoints().get(i + 1));
-
-            xProperty.addListener((ov, oldX, x) -> getPoints().set(idx, (double) x));
-            yProperty.addListener((ov, oldY, y) -> getPoints().set(idx + 1, (double) y));
-
-            anchors.add(new Anchor(Color.GOLD, xProperty, yProperty));
-        }
-        this.anchors = anchors;
     }
 
     public Set<GVector> getEdges() {

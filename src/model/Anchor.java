@@ -6,13 +6,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 
-// a draggable anchor displayed around a point.
+
+/**
+ * Class copied from here: https://gist.github.com/jewelsea/5375786
+ */
 public class Anchor extends Circle {
     private final DoubleProperty x, y;
 
     public Anchor(Color color, DoubleProperty x, DoubleProperty y) {
-        super(x.get(), y.get(), 10);
-        setFill(color.deriveColor(1, 1, 1, 0.5));
+        super(x.get(), y.get(), 2);
+        setFill(color.deriveColor(1, 1, 1, 0.3));
         setStroke(color);
         setStrokeWidth(2);
         setStrokeType(StrokeType.OUTSIDE);

@@ -37,6 +37,4 @@ public class ObstacleManager extends AreaManager {
         super.add(o);
         this.getObstacles().add(o);
     }
-
-
 }

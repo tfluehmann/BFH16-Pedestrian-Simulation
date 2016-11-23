@@ -51,16 +51,14 @@ public class SimulationManager {
             }
         };
         time.textProperty().bind(task.messageProperty());
-
         simulation = new Thread(task);
         simulation.start();
     }
 
     private static boolean isSimulationFinished() {
-        for (Person p : spawnManager.getPersons()) {
+        for (Person p : spawnManager.getPersons())
             if (!p.isInGoalArea())
                 return false;
-        }
         return true;
     }
 

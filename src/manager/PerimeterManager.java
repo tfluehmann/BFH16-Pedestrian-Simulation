@@ -31,14 +31,12 @@ public class PerimeterManager {
         return PerimeterManager.instance;
     }
 
-
     /**
      * create a grid layout from perimeters on the the room
      */
     public void initializeAll() {
         Double height = config.getRoomHeight();
         Double width = config.getRoomWidth();
-
         this.numberOfPerimetersY = Math.round(height.intValue() / perimeterSize);
         this.numberOfPerimetersX = Math.round(width.intValue() / perimeterSize);
         this.perimeters = new Vector<>();
@@ -102,7 +100,6 @@ public class PerimeterManager {
         int perimeterI = (int) Math.floor(position.getXValue() / perimeterSize);
         int perimeterJ = (int) Math.floor(position.getYValue() / perimeterSize);
         return perimeters.get(perimeterI).get(perimeterJ);
-
     }
 
     /**

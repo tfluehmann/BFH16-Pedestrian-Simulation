@@ -12,7 +12,6 @@ public class GoalAreaManager extends AreaManager {
     private static GoalAreaManager instance;
     private List<GoalArea> goalAreas = new ArrayList<>();
 
-
     private GoalAreaManager() {
     }
 

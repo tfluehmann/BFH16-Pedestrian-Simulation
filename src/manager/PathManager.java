@@ -86,11 +86,9 @@ public class PathManager {
                     z.setTarget(target, candidate, newDist);
                     distances.put(z, newDist);
                     pq.offer(new Node(z, distances.get(z)));//Adding element to PriorityQueue
-
                 }
             }
         }
-
     }
 
     public List<Vertex> getVertexList() {
