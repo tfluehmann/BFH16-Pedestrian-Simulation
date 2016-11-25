@@ -24,3 +24,4 @@ Datum | Zeitaufwand | Wer | Was
 11.11.2016 | 4 h | fluht1, suter1 | Further working on movable obstacles and more CSS-Styling.
 16.11.2016 | 4 h | fluht1, suter1 | Asked stackoverflow question about translating, rotating and scaling polygons in java fx, points are not moved but the polygon is and further investigation. Redesigned config window.
 18.11.2016 | 4 h | fluht1, suter1 | Statistics improved, rotating and scaling Obstacle moves points too
+25.11.2016 | 4 h | fluht1, suter1 | Pie chart implemented and designed, final rotation of spawn and goal area, begin DOV
