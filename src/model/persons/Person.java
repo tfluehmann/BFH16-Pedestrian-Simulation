@@ -32,6 +32,8 @@ public abstract class Person extends Circle {
 
     private double targetX;
     private double targetY;
+
+    private int time;
     // protected Character character;
 
 	public Person() {
@@ -76,7 +78,10 @@ public abstract class Person extends Circle {
 	 */
 	public void calculateStep() {
 		Position newPos = this.calculateNextPossiblePosition();
-		if (newPos != null) this.setPosition(newPos);
+		if (newPos != null) {
+			this.setPosition(newPos);
+			this.time++;
+		}
 	}
 
     /**

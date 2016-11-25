@@ -25,19 +25,12 @@ public abstract class Area extends DraggablePolygon {
     private double originX;
     private double originY;
 
-    private double mouseX;
-    private double mouseY;
-
     public Area(double... points) {
         super(points);
         this.initDragAndDrop();
     }
 
     private void initDragAndDrop() {
-        this.setOnMouseClicked((e) -> {
-            mouseX = e.getSceneX();
-            mouseY = e.getSceneY();
-        });
         this.setOnMousePressed((e) -> {
             this.setCursor(Cursor.CLOSED_HAND);
             this.originX = e.getSceneX();

@@ -3,11 +3,15 @@ package controller;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 import manager.PathManager;
 import manager.SimulationManager;
 import manager.SpawnManager;
@@ -23,6 +27,7 @@ import model.areas.Obstacle;
 import model.areas.SpawnArea;
 import model.persons.Person;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -85,10 +90,13 @@ public class MainController implements Initializable {
 	private AnchorPane basePane;
 
 	@FXML
-	private Label time;
+	private Label statTime;
 
 	@FXML
 	private Slider simulationSpeed;
+
+	@FXML
+	private Button showStats;
 
 	private SimulationManager simulationManager = SimulationManager.getInstance();
 	private SpawnManager spMgr = SpawnManager.getInstance();
@@ -106,6 +114,7 @@ public class MainController implements Initializable {
         basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		startButton.setDisable(true);
 		resetButton.setDisable(true);
+		showStats.setDisable(true);
 
 		weightYoung.textProperty().bindBidirectional(sliderYoung.valueProperty(), NumberFormat.getNumberInstance());
 		weightMidage.textProperty().bindBidirectional(sliderMidage.valueProperty(), NumberFormat.getNumberInstance());
@@ -204,12 +213,12 @@ public class MainController implements Initializable {
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
 				startButton.setText("Pause");
-				System.out.println("Persons: " + spMgr.getPersons());
-				System.out.println("simulationRoom: " + simulationRoom);
-				simulationManager.start(time);
+				showStats.setDisable(true);
+				simulationManager.start(statTime);
 			} else {
 				startButton.setText("Start");
 				simulationManager.getSimulationThread().interrupt();
+				enableStatsButton();
 			}
 			startButton.setDisable(false);
 		});
@@ -222,7 +231,24 @@ public class MainController implements Initializable {
 			spawnButton.setDisable(false);
 			startButton.setText("Start");
 			startButton.setDisable(true);
+			showStats.setDisable(true);
 		}));
+
+		showStats.setOnAction(event -> {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/view/Statistics.fxml"));
+				AnchorPane page = (AnchorPane) loader.load();
+				Stage dialogStage = new Stage();
+				dialogStage.setTitle("Statistics");
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+				Scene scene = new Scene(page);
+				dialogStage.setScene(scene);
+				dialogStage.show();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+		});
 	}
 
 	private int sliderSum() {
@@ -339,6 +365,10 @@ public class MainController implements Initializable {
 
 	public Button getSpawnButton() {
 		return this.spawnButton;
+	}
+
+	public void enableStatsButton() {
+		this.showStats.setDisable(false);
 	}
 
 }
