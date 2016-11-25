@@ -36,10 +36,6 @@ public abstract class Person extends Circle {
     private int time;
     // protected Character character;
 
-	public Person() {
-		super(ConfigModel.getInstance().getPersonRadius());
-	}
-
 	public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
 		super(ConfigModel.getInstance().getPersonRadius());
 		getStyleClass().add("person");
@@ -160,11 +156,9 @@ public abstract class Person extends Circle {
 
 	public boolean isColliding(double x, double y, Person otherPerson) {
 		double minimalDistance = config.getPersonRadius() * 2;
-		boolean collision = (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
+		return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
 				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < minimalDistance &&
 				!otherPerson.isInGoalArea());
-		return collision;
-
 	}
 
 	public boolean isInNextPathArea() {

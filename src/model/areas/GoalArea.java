@@ -9,18 +9,9 @@ import java.util.List;
  */
 public class GoalArea extends Area {
 
-	public GoalArea(double width, double height, Position position) {
-		super(position.getXValue(), position.getYValue(),
-				position.getXValue() + width, position.getYValue(),
-				position.getXValue() + width, position.getYValue() + height,
-				position.getXValue(), position.getYValue() + height);
-		this.position = position;
-		getStyleClass().add("goal-area");
-	}
-
 	public GoalArea(double... points) {
 		super(points);
-		this.position = new Position(points[0], points[1]);
+		super.rotatePoints(-135, points[0], points[1]);
 		getStyleClass().add("goal-area");
 	}
 

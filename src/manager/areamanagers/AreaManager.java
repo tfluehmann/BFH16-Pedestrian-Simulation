@@ -13,7 +13,7 @@ public abstract class AreaManager {
     protected Room simulationRoom;
 
     public void add(Area a) {
-        getRoom().getChildren().addAll(a.getAnchors());
+        if (!getRoom().getChildren().containsAll(a.getAnchors())) getRoom().getChildren().addAll(a.getAnchors());
         getRoom().getChildren().add(a);
     }
 
