@@ -24,8 +24,15 @@ public abstract class Person extends Circle {
     protected ObstacleManager obstacleManager = ObstacleManager.getInstance();
 
 	protected ConfigModel config = ConfigModel.getInstance();
-	private Vertex nextVertex;
-	private Vertex target;
+
+    /**
+     * Current Target Vertex
+     */
+    private Vertex nextVertex;
+    /**
+     * End Goal
+     */
+    private Vertex target;
 
     private double originX;
     private double originY;
@@ -39,9 +46,9 @@ public abstract class Person extends Circle {
 		getStyleClass().add("person");
 		this.speed = speed*config.getPixelPerMeter();
 		Random r = new Random();
-		double randomWidth = (maxWidth - 2 * this.config.getPersonRadius()) * r.nextDouble();
-		double randomHeight = (maxHeight - 2 * this.config.getPersonRadius()) * r.nextDouble();
-		this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
+        double randomWidth = (maxWidth - getDiameter()) * r.nextDouble();
+        double randomHeight = (maxHeight - getDiameter()) * r.nextDouble();
+        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
 		this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
 		this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
         this.setCursor(Cursor.HAND);
@@ -150,22 +157,22 @@ public abstract class Person extends Circle {
 	}
 
 	public boolean isColliding(double x, double y, Person otherPerson) {
-		double minimalDistance = config.getPersonRadius() * 2;
-		return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
+        double minimalDistance = getDiameter();
+        return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
 				Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < minimalDistance &&
 				!otherPerson.isInGoalArea());
 	}
 
 	public boolean isInNextPathArea() {
 		Position nextPosition = nextVertex.getPosition();
-        return nextPosition.isInRange(this.currentPosition, this.config.getPersonRadius() * 2);
+        return nextPosition.isInRange(this.currentPosition, getDiameter());
     }
 
 	public boolean isInGoalArea() {
 		Vertex targetVertex = nextVertex.getNextHopForTarget(this.target);
 		if (targetVertex != null) return false;
-		return nextVertex.getPosition().isInRange(this.currentPosition, this.config.getPersonRadius()*2);
-	}
+        return nextVertex.getPosition().isInRange(this.currentPosition, getDiameter());
+    }
 
 	public LinkedList<Position> getOldPositions() {
 		return this.oldPositions;
@@ -199,7 +206,11 @@ public abstract class Person extends Circle {
 		this.nextVertex = nextVertex;
 	}
 
-	public void setTarget(Vertex target) {
-		this.target = target;
-	}
+    public void setTarget(Vertex target) {
+        this.target = target;
+    }
+
+    public double getDiameter() {
+        return 2 * this.config.getPersonRadius();
+    }
 }

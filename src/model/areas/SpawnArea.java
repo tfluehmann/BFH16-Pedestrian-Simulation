@@ -21,7 +21,6 @@ public class SpawnArea extends Area {
 
 	public double getWidth() {
 		return Math.abs(getPoints().get(2) - getPoints().get(0));
-
 	}
 
 	public List<Position> getCorners() {
