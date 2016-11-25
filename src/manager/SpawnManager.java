@@ -44,7 +44,7 @@ public class SpawnManager {
 
             if (!config.isWeighted()) {
                 for (int i = 0; i < this.config.getTotalPersons(); i++) {
-                    int type = rnd.nextInt(3);
+                    int type = rnd.nextInt(personTypes.length);
                     this.spawnPerson(pathManager, personTypes[type]);
                 }
             } else {
@@ -82,8 +82,7 @@ public class SpawnManager {
             partypes[1] = Double.TYPE;
             partypes[2] = Position.class;
             Constructor ct = klass.getConstructor(partypes);
-	        SpawnArea spawnArea = spawnAreaManager.getObstacles().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getObstacles().size()));
-            System.out.println("spawn width: " + spawnArea.getWidth() + " heigth: " + spawnArea.getHeight());
+            SpawnArea spawnArea = spawnAreaManager.getSpawnAreas().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getSpawnAreas().size()));
             newPerson = (Person) ct.newInstance(spawnArea.getWidth(), spawnArea.getHeight(), spawnArea.getPosition()); // TODO width, heigth, position
             this.persons.add(newPerson);
             newPerson.setNextVertex(pathManager.getNearestVertex(newPerson.getCurrentPosition()));

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class SpawnAreaManager extends AreaManager {
     private static SpawnAreaManager instance;
-    private List<SpawnArea> obstacles = new ArrayList<>();
+    private List<SpawnArea> spawnAreas = new ArrayList<>();
     private Room simulationRoom;
 
     public void setRoom(Room room) {
@@ -30,12 +30,12 @@ public class SpawnAreaManager extends AreaManager {
         return instance;
     }
 
-    public List<SpawnArea> getObstacles() {
-        return obstacles;
+    public List<SpawnArea> getSpawnAreas() {
+        return spawnAreas;
     }
 
     public void add(SpawnArea o) {
         super.add(o);
-        this.getObstacles().add(o);
+        this.getSpawnAreas().add(o);
     }
 }
