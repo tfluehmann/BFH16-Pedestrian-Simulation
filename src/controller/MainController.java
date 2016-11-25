@@ -238,9 +238,10 @@ public class MainController implements Initializable {
 			try {
 				FXMLLoader ldr = new FXMLLoader();
 				ldr.setLocation(getClass().getResource("/view/Statistics.fxml"));
-				AnchorPane page = (AnchorPane) ldr.load();
-				Stage dialogStage = new Stage();
-				dialogStage.setTitle("Statistics");
+                AnchorPane page = ldr.load();
+                Stage dialogStage = new Stage();
+                dialogStage.initOwner(this.basePane.getScene().getWindow());
+                dialogStage.setTitle("Statistics");
 				dialogStage.initModality(Modality.WINDOW_MODAL);
 				Scene scene = new Scene(page);
 				dialogStage.setScene(scene);
