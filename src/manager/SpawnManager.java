@@ -83,7 +83,8 @@ public class SpawnManager {
             partypes[2] = Position.class;
             Constructor ct = klass.getConstructor(partypes);
 	        SpawnArea spawnArea = spawnAreaManager.getObstacles().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getObstacles().size()));
-            newPerson = (Person) ct.newInstance(spawnArea.getPoints().get(1)- spawnArea.getPoints().get(0), spawnArea.getPoints().get(2)-spawnArea.getPoints().get(1), spawnArea.getPosition()); // TODO width, heigth, position
+            System.out.println("spawn width: " + spawnArea.getWidth() + " heigth: " + spawnArea.getHeight());
+            newPerson = (Person) ct.newInstance(spawnArea.getWidth(), spawnArea.getHeight(), spawnArea.getPosition()); // TODO width, heigth, position
             this.persons.add(newPerson);
             newPerson.setNextVertex(pathManager.getNearestVertex(newPerson.getCurrentPosition()));
             newPerson.setTarget(pathManager.getTargetVertexes().get(0));

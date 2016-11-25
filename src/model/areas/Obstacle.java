@@ -22,7 +22,6 @@ public class Obstacle extends Area {
         super(points);
         corners = new ArrayList<>();
         edgePoints = new ArrayList<>();
-        position = new Position(points[0], points[1]);
         getStyleClass().add("obstacle");
     }
 

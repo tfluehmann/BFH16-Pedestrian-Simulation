@@ -9,21 +9,20 @@ import java.util.List;
  */
 public class SpawnArea extends Area {
 
-	public SpawnArea(double width, double height, Position position) {
-        super(position.getXValue(), position.getYValue(),
-                position.getXValue() + width, position.getYValue(),
-                position.getXValue() + width, position.getYValue() + height,
-                position.getXValue(), position.getYValue() + height);
-		this.position = position;
+    public SpawnArea(double... points) {
+        super(points);
+		super.rotatePoints(-135, points[0], points[1]);
 		getStyleClass().add("spawn-area");
 	}
 
-    public SpawnArea(double... points) {
-        super(points);
-	    this.position = new Position(points[0], points[1]);
-        getStyleClass().add("spawn-area");
-    }
+	public double getHeight() {
+		return Math.abs(getPoints().get(getPoints().size() - 1) - getPoints().get(1));
+	}
 
+	public double getWidth() {
+		return Math.abs(getPoints().get(2) - getPoints().get(0));
+
+	}
 
 	public List<Position> getCorners() {
 		return null;

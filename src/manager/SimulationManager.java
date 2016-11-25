@@ -57,8 +57,7 @@ public class SimulationManager {
 
     private static boolean isSimulationFinished() {
         for (Person p : spawnManager.getPersons())
-            if (!p.isInGoalArea())
-                return false;
+            if (!p.isInGoalArea()) return false;
         return true;
     }
 

@@ -5,12 +5,10 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
-import model.Anchor;
 import model.GVector;
 import model.Position;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,7 +17,6 @@ import java.util.Set;
  * Created by fluth1 on 30/09/16.
  */
 public abstract class Area extends DraggablePolygon {
-    protected Position position;
     protected Set<GVector> edges = new HashSet<>();
 
     private double originX;
@@ -53,8 +50,6 @@ public abstract class Area extends DraggablePolygon {
             double offsetY = event.getSceneY() - this.originY;
             this.originX = event.getSceneX();
             this.originY = event.getSceneY();
-            this.position.setX(this.getPosition().getXValue() + offsetX);
-            this.position.setY(this.getPosition().getYValue() + offsetY);
             this.edges.clear();
             this.calculateEdges();
             translatePoints(offsetX, offsetY);
@@ -72,11 +67,11 @@ public abstract class Area extends DraggablePolygon {
         });
     }
 
-    private void scalePoints(double x, double y, double pivotX, double pivotY) {
+    protected void scalePoints(double x, double y, double pivotX, double pivotY) {
         movePoints(new Scale(x, y, pivotX, pivotY));
     }
 
-    private void translatePoints(double translateX, double translateY) {
+    protected void translatePoints(double translateX, double translateY) {
         movePoints(new Translate(translateX, translateY));
     }
 
@@ -84,7 +79,7 @@ public abstract class Area extends DraggablePolygon {
      * Translate back to origin, Rotate, translate back
      * https://de.wikipedia.org/wiki/Drehmatrix
      */
-    private void rotatePoints(double angle, double pivotX, double pivotY) {
+    protected void rotatePoints(double angle, double pivotX, double pivotY) {
         movePoints(new Rotate(angle, pivotX, pivotY));
     }
 
@@ -157,10 +152,6 @@ public abstract class Area extends DraggablePolygon {
     }
 
     public Position getPosition() {
-        return position;
-    }
-
-    public Collection<Anchor> getAnchors() {
-        return anchors;
+        return new Position(getPoints().get(0), getPoints().get(1));
     }
 }

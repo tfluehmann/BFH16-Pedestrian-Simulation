@@ -47,4 +47,9 @@ public abstract class DraggablePolygon extends Polygon {
         createControlAnchors();
         spawnAreaManager.addAnchors(anchors);
     }
+
+    public List<Anchor> getAnchors() {
+        return anchors;
+    }
+
 }
