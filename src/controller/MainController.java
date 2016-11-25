@@ -170,6 +170,16 @@ public class MainController implements Initializable {
 		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
 
 		spawnButton.setOnAction((event) -> {
+            if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Check your stuff");
+                alert.setHeaderText("No curse words please.");
+                alert.setContentText("You have not created at least a spawn and a goal area.\nPress right click and create them.");
+                alert.initOwner(this.basePane.getScene().getWindow());
+                alert.showAndWait();
+                return;
+            }
+
 			PathManager pathManager = spMgr.getPathManager();
 			Vertex goal = null;
 			for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
