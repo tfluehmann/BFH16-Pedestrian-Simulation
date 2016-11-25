@@ -116,4 +116,9 @@ public class SpawnManager {
         this.persons.clear();
         this.pathManager.clear();
     }
+
+
+	public Vector<Person> getPassivePersons() {
+		return this.passivePersons;
+	}
 }
