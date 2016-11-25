@@ -236,9 +236,9 @@ public class MainController implements Initializable {
 
 		showStats.setOnAction(event -> {
 			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/view/Statistics.fxml"));
-				AnchorPane page = (AnchorPane) loader.load();
+				FXMLLoader ldr = new FXMLLoader();
+				ldr.setLocation(getClass().getResource("/view/Statistics.fxml"));
+				AnchorPane page = (AnchorPane) ldr.load();
 				Stage dialogStage = new Stage();
 				dialogStage.setTitle("Statistics");
 				dialogStage.initModality(Modality.WINDOW_MODAL);

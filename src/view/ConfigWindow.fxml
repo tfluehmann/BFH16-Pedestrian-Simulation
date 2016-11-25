@@ -4,74 +4,80 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
-<AnchorPane styleClass="background" stylesheets="@default.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigWindowController">
+<AnchorPane styleClass="background" stylesheets="@default.css" xmlns="http://javafx.com/javafx/8.0.60"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigWindowController">
     <children>
-        <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+              AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
-                <Label alignment="TOP_LEFT" styleClass="label-header" stylesheets="@default.css" text="Please enter the room size">
+                <Label alignment="TOP_LEFT" styleClass="label-header" stylesheets="@default.css"
+                       text="Please enter the room size">
                     <VBox.margin>
-                        <Insets left="5.0" right="80.0" top="10.0" />
+                        <Insets left="5.0" right="80.0" top="10.0"/>
                     </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" top="10.0" />
-               </padding>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0"/>
+                    </padding>
                 </Label>
                 <HBox>
                     <children>
                         <Label prefWidth="80.0" text="Room Width">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0" top="3.0" />
+                                <Insets left="5.0" right="5.0" top="3.0"/>
                             </HBox.margin>
                         </Label>
-                        <TextField fx:id="roomWidth" alignment="CENTER" prefHeight="25.0" prefWidth="40.0" promptText="Room width in meters" text="108">
+                        <TextField fx:id="roomWidth" alignment="CENTER" prefHeight="25.0" prefWidth="40.0"
+                                   promptText="Room width in meters" text="108">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0" />
+                                <Insets left="5.0" right="5.0"/>
                             </HBox.margin>
                         </TextField>
                         <Label text="meters">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0" top="3.0" />
+                                <Insets left="5.0" right="5.0" top="3.0"/>
                             </HBox.margin>
                         </Label>
                     </children>
                     <padding>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="10.0" top="10.0"/>
                     </padding>
                 </HBox>
                 <HBox>
                     <children>
                         <Label prefWidth="80.0" text="Room Height">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0" top="3.0" />
+                                <Insets left="5.0" right="5.0" top="3.0"/>
                             </HBox.margin>
                         </Label>
-                        <TextField fx:id="roomHeight" alignment="CENTER" prefHeight="25.0" prefWidth="40.0" promptText="Room height in meters" text="72">
+                        <TextField fx:id="roomHeight" alignment="CENTER" prefHeight="25.0" prefWidth="40.0"
+                                   promptText="Room height in meters" text="72">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0" />
+                                <Insets left="5.0" right="5.0"/>
                             </HBox.margin>
                         </TextField>
                         <Label text="meters">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0" top="3.0" />
+                                <Insets left="5.0" right="5.0" top="3.0"/>
                             </HBox.margin>
                         </Label>
                     </children>
                     <padding>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="10.0" top="10.0"/>
                     </padding>
                 </HBox>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0">
-              <buttons>
-                              <Button fx:id="buttonOK" alignment="CENTER" defaultButton="true" mnemonicParsing="false" stylesheets="@default.css" text="OK" textAlignment="CENTER">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                  </Button>
-              </buttons>
-               <padding>
-                  <Insets bottom="10.0" right="10.0" top="10.0" />
-               </padding>
-            </ButtonBar>
+                <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                    <buttons>
+                        <Button fx:id="buttonOK" alignment="CENTER" defaultButton="true" mnemonicParsing="false"
+                                stylesheets="@default.css" text="OK" textAlignment="CENTER">
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                        </Button>
+                    </buttons>
+                    <padding>
+                        <Insets bottom="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </ButtonBar>
             </children>
         </VBox>
     </children>

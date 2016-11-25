@@ -15,7 +15,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <PieChart prefHeight="371.0" prefWidth="600.0" legendSide="RIGHT"
+                                <PieChart fx:id="personsByType" prefHeight="371.0" prefWidth="600.0" legendSide="BOTTOM"
                                           title="persons by type" AnchorPane.bottomAnchor="0.0"
                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                           AnchorPane.topAnchor="0.0"/>
@@ -27,7 +27,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <StackedBarChart prefHeight="371.0" prefWidth="600.0" title="avg speed by persontype"
+                                <StackedBarChart fx:id="speedByType" prefHeight="371.0" prefWidth="600.0" title="avg speed by persontype"
                                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <xAxis>
@@ -45,7 +45,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <ScatterChart prefHeight="371.0" prefWidth="600.0" title="avg speed by person"
+                                <ScatterChart fx:id="speedByPerson" prefHeight="371.0" prefWidth="600.0" title="avg speed by person"
                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <xAxis>

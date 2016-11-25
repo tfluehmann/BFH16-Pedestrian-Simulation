@@ -6,6 +6,10 @@ package model;
 public class Statistic {
 
 	private static Statistic instance = null;
+	private int numberYoungPersons;
+	private int numberMidagePersons;
+	private int numberOldPersons;
+	private int numberHandicappedPersons;
 
 	private Statistic(){
 	}
@@ -15,6 +19,26 @@ public class Statistic {
 			instance = new Statistic();
 		}
 		return instance;
+	}
+
+
+	public void setNumberYoungPersons(int numberYoungPersons) {
+		this.numberYoungPersons = numberYoungPersons;
+	}
+
+
+	public void setNumberMidagePersons(int numberMidagePersons) {
+		this.numberMidagePersons = numberMidagePersons;
+	}
+
+
+	public void setNumberOldPersons(int numberOldPersons) {
+		this.numberOldPersons = numberOldPersons;
+	}
+
+
+	public void setNumberHandicappedPersons(int numberHandicappedPersons) {
+		this.numberHandicappedPersons = numberHandicappedPersons;
 	}
 
 }
