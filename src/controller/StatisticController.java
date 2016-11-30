@@ -1,19 +1,18 @@
 package controller;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ScatterChart;
-import javafx.scene.chart.StackedBarChart;
-import manager.SpawnManager;
+import javafx.scene.chart.XYChart;
 import model.Statistic;
-import model.persons.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 /**
  * Created by suter1 on 25.11.2016.
@@ -24,47 +23,66 @@ public class StatisticController implements Initializable {
 	private PieChart personsByType;
 
 	@FXML
-	private StackedBarChart speedByType;
+	private BarChart speedByType;
 
 	@FXML
 	private ScatterChart speedByPerson;
 
 	private Statistic stats;
-	private int young = 0;
-	private int midage = 0;
-	private int old = 0;
-	private int handicap = 0;
 
 
 	public void initialize(URL location, ResourceBundle resources) {
 		stats = Statistic.getInstance();
-		Vector<Person> activePersons = SpawnManager.getInstance().getPersons();
-		Vector<Person> passivePersons = SpawnManager.getInstance().getPassivePersons();
-
-		for (Person p : activePersons) {
-			definePersonType(p);
-		}
-
-		for (Person p : passivePersons) {
-			definePersonType(p);
-		}
+		stats.getPersons();
 
 		ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-				new PieChart.Data("Persons under 30 years", young),
-				new PieChart.Data("Persons between 30 and 50 years", midage),
-				new PieChart.Data("Persons over 50 years", old),
-				new PieChart.Data("Handicapped persons", handicap)
+				new PieChart.Data("Persons under 30 years", stats.getNumberYoungPersons()),
+				new PieChart.Data("Persons between 30 and 50 years", stats.getNumberMidagePersons()),
+				new PieChart.Data("Persons over 50 years", stats.getNumberOldPersons()),
+				new PieChart.Data("Handicapped persons", stats.getNumberHandicappedPersons())
+		);
+
+		pieData.forEach(data ->
+				data.nameProperty().bind(
+						Bindings.concat(
+								data.getName(), ": ", data.pieValueProperty()
+						)
+				)
 		);
 
 		personsByType.setData(pieData);
-	}
 
-	private void definePersonType(Person p){
+		double val = 0.0;
 
-		if (p instanceof YoungPerson) young++;
-		else if (p instanceof MidAgePerson) midage++;
-		else if (p instanceof OldPerson) old++;
-		else if (p instanceof HandicappedPerson) handicap++;
+		XYChart.Series<String,Double> avgSpeedByTypeData = new XYChart.Series<>();
+		if (stats.getNumberYoungPersons() > 0){
+			val = stats.getYoungSpeedAvg();
+		} else {
+			val = 0.0;
+		}
+		avgSpeedByTypeData.getData().add(new XYChart.Data<>("persons under 30 years", val));
+		if (stats.getNumberMidagePersons() > 0){
+			val = stats.getMidageSpeedAvg();
+		} else {
+			val = 0.0;
+		}
+		avgSpeedByTypeData.getData().add(new XYChart.Data<>("persons between 30 and 50 years", val));
+		if (stats.getNumberOldPersons() > 0){
+			val = stats.getOldSpeedAvg();
+		} else {
+			val = 0.0;
+		}
+		avgSpeedByTypeData.getData().add(new XYChart.Data<>("persons over 50 years", val));
+		if (stats.getNumberHandicappedPersons() > 0){
+			val = stats.getHandicappedSpeedAvg();
+		} else {
+			val = 0.0;
+		}
+		avgSpeedByTypeData.getData().add(new XYChart.Data<>("handicapped persons", val));
+
+		this.speedByType.legendVisibleProperty().setValue(false);
+
+		this.speedByType.getData().add(avgSpeedByTypeData);
 	}
 
 }
