@@ -18,10 +18,7 @@ import manager.SpawnManager;
 import manager.areamanagers.GoalAreaManager;
 import manager.areamanagers.ObstacleManager;
 import manager.areamanagers.SpawnAreaManager;
-import model.ConfigModel;
-import model.Position;
-import model.Room;
-import model.Vertex;
+import model.*;
 import model.areas.GoalArea;
 import model.areas.Obstacle;
 import model.areas.SpawnArea;
@@ -94,6 +91,21 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Slider simulationSpeed;
+
+	@FXML
+	private Label statTotalPersons;
+
+	@FXML
+	private Label statYoungPersons;
+
+	@FXML
+	private Label statMidagePersons;
+
+	@FXML
+	private Label statOldPersons;
+
+	@FXML
+	private Label statHandicappedPersons;
 
 	@FXML
 	private Button showStats;
@@ -209,6 +221,14 @@ public class MainController implements Initializable {
 
 			spMgr.createPersons();
 			this.simulationRoom.getChildren().addAll(spMgr.getPersons());
+
+			Statistic stats = Statistic.getInstance();
+			stats.getPersons();
+			statTotalPersons.textProperty().set(""+stats.getTotalPersons());
+			statYoungPersons.textProperty().set(""+stats.getNumberYoungPersons());
+			statMidagePersons.textProperty().set(""+stats.getNumberMidagePersons());
+			statOldPersons.textProperty().set(""+stats.getNumberOldPersons());
+			statHandicappedPersons.textProperty().set(""+stats.getNumberHandicappedPersons());
 
 			spawnButton.setDisable(true);
 			startButton.setDisable(false);

@@ -1,5 +1,59 @@
-.background {
+.background, .tab, .tab-pane {
     -fx-background-color: #1d1d1d;
+}
+
+.tab .tab-label .text {
+    -fx-fill: white;
+    -fx-font-size: 10pt;
+}
+
+.tab-pane .tab:selected {
+    -fx-border-color: white;
+}
+
+.tab:selected .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.chart, .chart-plot-background  {
+    -fx-title-side: top;
+    -fx-background-color: #1d1d1d;
+}
+
+.chart-title {
+    -fx-font-size: 20pt !important;
+    -fx-font-family: "Segoe UI Semibold" !important;
+}
+
+.chart label{
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.chart-content {
+    -fx-padding: 10px;
+}
+
+.chart-legend {
+    -fx-fill: white;
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-background-color: #1d1d1d;
+}
+
+.chart-pie-label {
+    -fx-fill: white;
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: white;
 }
 
 .room {

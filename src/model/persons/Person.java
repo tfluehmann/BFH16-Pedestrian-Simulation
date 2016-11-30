@@ -41,6 +41,7 @@ public abstract class Person extends Circle {
     private double targetY;
 
     private int time;
+    private double travelledDistance;
     // protected Character character;
 
 	public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
@@ -82,6 +83,10 @@ public abstract class Person extends Circle {
 	public void calculateStep() {
 		Position newPos = this.calculateNextPossiblePosition();
 		if (newPos != null) {
+			double x,y;
+			x = Math.abs(Math.abs(newPos.getXValue())-Math.abs(getCurrentPosition().getXValue()));
+			y = Math.abs(Math.abs(newPos.getYValue())-Math.abs(getCurrentPosition().getYValue()));
+			this.travelledDistance = Math.abs(x+y);
 			this.setPosition(newPos);
 			this.time++;
 		}
@@ -218,4 +223,12 @@ public abstract class Person extends Circle {
     public double getDiameter() {
         return 2 * this.config.getPersonRadius();
     }
+
+	public int getTime() {
+		return this.time;
+	}
+
+	public double getTravelledDistance() {
+		return this.travelledDistance;
+	}
 }

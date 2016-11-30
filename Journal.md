@@ -25,3 +25,4 @@ Datum | Zeitaufwand | Wer | Was
 16.11.2016 | 4 h | fluht1, suter1 | Asked stackoverflow question about translating, rotating and scaling polygons in java fx, points are not moved but the polygon is and further investigation. Redesigned config window.
 18.11.2016 | 4 h | fluht1, suter1 | Statistics improved, rotating and scaling Obstacle moves points too
 25.11.2016 | 4 h | fluht1, suter1 | Pie chart implemented and designed, final rotation of spawn and goal area, begin DOV
+30.11.2016 | 4 h | fluht1, suter1 | Direction of View DOV (Vector rotation), Stats: Pie chart finished, Bar chart started
