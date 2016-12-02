@@ -85,7 +85,7 @@ public class SpawnManager {
             SpawnArea spawnArea = spawnAreaManager.getSpawnAreas().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getSpawnAreas().size()));
             newPerson = (Person) ct.newInstance(spawnArea.getWidth(), spawnArea.getHeight(), spawnArea.getPosition()); // TODO width, heigth, position
             this.persons.add(newPerson);
-            newPerson.setNextVertex(pathManager.getNearestVertex(newPerson.getCurrentPosition()));
+            newPerson.setNextVertex(pathManager.getClosestVertex(newPerson.getCurrentPosition()));
             newPerson.setTarget(pathManager.getTargetVertexes().get(0));
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class SpawnManager {
     }
 
 
-	public Vector<Person> getPassivePersons() {
+    public Vector<Person> getPassivePersons() {
 		return this.passivePersons;
 	}
 }

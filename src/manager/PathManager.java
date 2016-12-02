@@ -95,7 +95,7 @@ public class PathManager {
         return vertexList;
     }
 
-    public Vertex getNearestVertex(Position currentPosition) {
+    public Vertex getClosestVertex(Position currentPosition) {
         Vertex smallestDist = null;
         double smallestDistTOVect = Double.MAX_VALUE;
         for (Vertex v : vertexList) {

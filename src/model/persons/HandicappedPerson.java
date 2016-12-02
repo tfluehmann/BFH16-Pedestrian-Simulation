@@ -1,5 +1,6 @@
 package model.persons;
 
+import model.ConfigModel;
 import model.Position;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,11 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class HandicappedPerson extends Person {
 
-    private static final double MIN_SPEED = 0.46;
-    private static final double MAX_SPEED = 0.77;
-
-
-    public HandicappedPerson(double maxHeigth, double maxWidth, Position spawnPosition) {
-        super(maxHeigth, maxWidth, ThreadLocalRandom.current().nextDouble(MIN_SPEED, MAX_SPEED), spawnPosition);
+    public HandicappedPerson(double maxHeight, double maxWidth, Position spawnPosition) {
+        super(maxHeight, maxWidth,
+                ThreadLocalRandom.current().nextDouble(
+                        ConfigModel.getInstance().getHandicappedPersonMinSpeed(),
+                        ConfigModel.getInstance().getHandicappedPersonMaxSpeed()),
+                spawnPosition);
     }
 }

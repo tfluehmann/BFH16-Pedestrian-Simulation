@@ -20,7 +20,7 @@ public class PerimeterManager {
     private long numberOfPerimetersY;
     private long numberOfPerimetersX;
     private ConfigModel config = ConfigModel.getInstance();
-    private double perimeterSize = config.getPersonRadius() * 10;
+    private double perimeterSize = config.getPerimeterSize();
 
     private PerimeterManager() {
     }
