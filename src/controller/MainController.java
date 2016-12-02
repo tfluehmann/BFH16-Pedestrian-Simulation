@@ -221,6 +221,9 @@ public class MainController implements Initializable {
 
 			spMgr.createPersons();
 			this.simulationRoom.getChildren().addAll(spMgr.getPersons());
+//			for(Person p : spMgr.getPersons())
+//				this.simulationRoom.getChildren().add(p.getOrientation().getView());
+
 
 			Statistic stats = Statistic.getInstance();
 			stats.getPersons();

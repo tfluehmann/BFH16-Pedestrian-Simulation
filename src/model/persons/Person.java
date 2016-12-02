@@ -106,7 +106,7 @@ public abstract class Person extends Circle {
         System.out.println("JAM is: " + isJam);
         if (isJam) {
             Vertex nonJamVertex = this.orientation.getDifferentTargetVertex();
-            if (nextVertex != null) {
+            if (nonJamVertex != null) {
                 System.out.println("reset target");
                 this.nextVertex = nonJamVertex;
                 nextTarget = nonJamVertex.getPosition();
@@ -130,39 +130,12 @@ public abstract class Person extends Circle {
         if (this.isNewPositionAllowed(rightPos)) {
             return rightPos;
         }
-
-
-//        while (tries <= 5) {
-//            GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
-//                    this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
-//            double lambda = (this.speed / tries) / vToNextTarget.length();
-//            Position newPosition = vToNextTarget.getLambdaPosition(lambda);
-//            if (this.isNewPositionAllowed(newPosition)) {
-//				return newPosition;
-//			} else if (tries >= 2) {
-//				/**
-//				 * Try to walk into the left or right hand position
-//				 */
-//				Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
-//				Position rightPos = vToNextTarget.moveParallelRight(newPosition).getEndPosition();
-//				if (this.isNewPositionAllowed(leftPos)) {
-//					return leftPos;
-//				}
-//				if (this.isNewPositionAllowed(rightPos)) {
-//					return rightPos;
-//				}
-//			} else if (tries == 5) {
-//				System.out.println("step back");
-//				//TODO probably implement a better solution
-//				Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda);
-//				if (this.isNewPositionAllowed(stepBack)) return stepBack;
-//			}
-//			tries++;
-//		}
+        Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda);
+        if (this.isNewPositionAllowed(stepBack)) return stepBack;
         return null;
     }
 
-    private boolean isNewPositionAllowed(Position position) {
+    public boolean isNewPositionAllowed(Position position) {
         if (position == null || position.isEmpty()) return false;
         Set<Perimeter> neighPerimeters = perimeterManager.getNeighbors(position);
         for (Perimeter perimeter : neighPerimeters) {
@@ -269,5 +242,9 @@ public abstract class Person extends Circle {
 
     public Position getNextVertexPosition() {
         return nextVertex.getPosition();
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 }

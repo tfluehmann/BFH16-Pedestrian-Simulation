@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import manager.PathManager;
 import manager.PerimeterManager;
 import manager.SpawnManager;
@@ -19,6 +20,7 @@ public class Orientation extends Line implements Observer {
     private Person person;
     private ConfigModel configModel = ConfigModel.getInstance();
     private GVector direction;
+    private Polygon view;
     private Position p1;
     private Position p2;
     private Position p3;
@@ -44,6 +46,12 @@ public class Orientation extends Line implements Observer {
         p1 = direction.getStartPosition();
         p2 = leftHand.getEndPosition();
         p3 = rightHand.getEndPosition();
+
+        this.view = new Polygon(
+                p1.getXValue(), p1.getYValue(),
+                p2.getXValue(), p2.getYValue(),
+                p3.getXValue(), p3.getYValue());
+
     }
 
 
@@ -85,11 +93,15 @@ public class Orientation extends Line implements Observer {
         for (Vertex vertex : possibleVertices) {
             if (possibleVertex == null) possibleVertex = vertex;
             else {
-                if (possibleVertex.distanceToTarget() > vertex.distanceToTarget())
+                if (possibleVertex.distanceToTarget() > vertex.distanceToTarget() && person.isNewPositionAllowed(vertex.getPosition()))
                     possibleVertex = vertex;
             }
         }
         if (possibleVertex == null) System.out.println("possible vertex null");
         return possibleVertex;
+    }
+
+    public Polygon getView() {
+        return view;
     }
 }
