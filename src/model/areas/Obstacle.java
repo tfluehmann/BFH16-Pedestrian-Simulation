@@ -11,7 +11,6 @@ import java.util.List;
  * Created by suter1 on 06.10.2016.
  */
 public class Obstacle extends Area {
-    private static final double EDGE_EXTENDER = 20.0;
     private final ArrayList<Position> corners;
     private ArrayList<Position> edgePoints = new ArrayList<>();
 
@@ -34,11 +33,11 @@ public class Obstacle extends Area {
         this.calculateVertices();
     }
 
-
     /**
      * Created by suter1 on 06.10.2016.
      */
     private void calculateVertices() {
+        double edgeExtender = ConfigModel.getInstance().getEdgeExtender();
         edgePoints.clear();
         Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
@@ -50,8 +49,8 @@ public class Obstacle extends Area {
             a = this.corners.get(i);
             GVector c = new GVector(a.getXValue(), a.getYValue(), b.getXValue(), b.getYValue());
             GVector unitVector = c.norm();
-            a = unitVector.invert().getEndPosition().multiply(EDGE_EXTENDER).add(a);
-            b = unitVector.getEndPosition().multiply(EDGE_EXTENDER).add(b);
+            a = unitVector.invert().getEndPosition().multiply(edgeExtender).add(a);
+            b = unitVector.getEndPosition().multiply(edgeExtender).add(b);
 
             if (this.includes(a) && !this.contains(a.getXValue(), a.getYValue())) this.edgePoints.add(a);
             if (this.includes(b) && !this.contains(b.getXValue(), b.getYValue())) this.edgePoints.add(b);

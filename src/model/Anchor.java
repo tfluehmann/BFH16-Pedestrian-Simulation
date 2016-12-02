@@ -14,13 +14,15 @@ import model.areas.Area;
 public class Anchor extends Circle {
     private final DoubleProperty x, y;
     private Area area;
+    private ConfigModel configModel = ConfigModel.getInstance();
 
     public Anchor(Color color, DoubleProperty x, DoubleProperty y, Area area) {
-        super(x.get(), y.get(), 2);
+        super(x.get(), y.get(), ConfigModel.getInstance().getAnchorRadius());
         this.area = area;
-        setFill(color.deriveColor(1, 1, 1, 0.3));
+        setFill(color.deriveColor(configModel.getAnchorColorRed(), configModel.getAnchorColorGreen(),
+                configModel.getAnchorColorBlue(), configModel.getAnchorColorOpacity()));
         setStroke(color);
-        setStrokeWidth(2);
+        setStrokeWidth(configModel.getAnchorStrokeWidth());
         setStrokeType(StrokeType.OUTSIDE);
 
         this.x = x;

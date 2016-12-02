@@ -42,10 +42,12 @@ public class ConfigModel {
     private double weightedMidAgePersons;
     private double weightedOldPersons;
     private double weightedHandicappedPersons;
+    private double personViewAngle;
     private boolean isWeighted;
     private double epsilon;
 
     private Properties props;
+    private int jamLevel;
 
 
     private ConfigModel() {
@@ -83,15 +85,17 @@ public class ConfigModel {
         anchorColorBlue = Integer.parseInt(props.getProperty("Anchor.color.blue"));
         anchorColorOpacity = Double.parseDouble(props.getProperty("Anchor.color.opacity"));
         anchorStrokeWidth = Integer.parseInt(props.getProperty("Anchor.stroke.width"));
-        handicappedPersonMaxSpeed = Integer.parseInt(props.getProperty("Person.handicapped.speed.max"));
-        handicappedPersonMinSpeed = Integer.parseInt(props.getProperty("Person.handicapped.speed.min"));
-        midAgePersonMaxSpeed = Integer.parseInt(props.getProperty("Person.midAge.speed.max"));
-        midAgePersonMinSpeed = Integer.parseInt(props.getProperty("Person.midAge.speed.min"));
-        oldPersonMaxSpeed = Integer.parseInt(props.getProperty("Person.old.speed.max"));
-        oldPersonMinSpeed = Integer.parseInt(props.getProperty("Person.old.speed.min"));
-        youngPersonMaxSpeed = Integer.parseInt(props.getProperty("Person.young.speed.max"));
-        youngPersonMinSpeed = Integer.parseInt(props.getProperty("Person.young.speed.min"));
+        handicappedPersonMaxSpeed = Double.parseDouble(props.getProperty("Person.handicapped.speed.max"));
+        handicappedPersonMinSpeed = Double.parseDouble(props.getProperty("Person.handicapped.speed.min"));
+        midAgePersonMaxSpeed = Double.parseDouble(props.getProperty("Person.midAge.speed.max"));
+        midAgePersonMinSpeed = Double.parseDouble(props.getProperty("Person.midAge.speed.min"));
+        oldPersonMaxSpeed = Double.parseDouble(props.getProperty("Person.old.speed.max"));
+        oldPersonMinSpeed = Double.parseDouble(props.getProperty("Person.old.speed.min"));
+        youngPersonMaxSpeed = Double.parseDouble(props.getProperty("Person.young.speed.max"));
+        youngPersonMinSpeed = Double.parseDouble(props.getProperty("Person.young.speed.min"));
+        personViewAngle = Double.parseDouble(props.getProperty("Person.view.angle"));
         epsilon = Double.parseDouble(props.getProperty("Math.epsilon"));
+        jamLevel = Integer.parseInt(props.getProperty("Simulation.jam.level"));
     }
 
     public static ConfigModel getInstance() {
@@ -282,5 +286,13 @@ public class ConfigModel {
 
     public double getEpsilon() {
         return epsilon;
+    }
+
+    public double getPersonViewAngle() {
+        return personViewAngle;
+    }
+
+    public int getJamLevel() {
+        return jamLevel;
     }
 }

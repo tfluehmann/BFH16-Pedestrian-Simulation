@@ -1,9 +1,13 @@
 package model;
 
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
+import manager.PathManager;
+import manager.PerimeterManager;
+import manager.SpawnManager;
 import model.persons.Person;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,9 +16,12 @@ import java.util.Observer;
  * @apiNote Middle from a person until the radius in the direction of the target
  */
 public class Orientation extends Line implements Observer {
-    public static double CENTER_ANGLE = 30;
     private Person person;
-    private Rectangle view;
+    private ConfigModel configModel = ConfigModel.getInstance();
+    private GVector direction;
+    private Position p1;
+    private Position p2;
+    private Position p3;
 
     /**
      * _ _ _
@@ -31,17 +38,56 @@ public class Orientation extends Line implements Observer {
     }
 
     public void updateView() {
-        GVector direction = new GVector(person.getCurrentPosition(), person.getNextVertexPosition());
-        ConfigModel conf = ConfigModel.getInstance();
-        view = new Rectangle(person.getCurrentPosition().getXValue(), person.getCurrentPosition().getYValue(), conf.getPersonRadius() * 10, conf.getPersonRadius() * 30);
-//        30 deg +, 30 deg minus, check if is in triangle...
-        //        view.
-//        direction is the vector, rotate the rectangle in this direction
+        this.direction = new GVector(person.getCurrentPosition(), person.getNextVertexPosition());
+        GVector leftHand = GVector.newAfterRotation(direction, configModel.getPersonViewAngle());
+        GVector rightHand = GVector.newAfterRotation(direction, -configModel.getPersonViewAngle());
+        p1 = direction.getStartPosition();
+        p2 = leftHand.getEndPosition();
+        p3 = rightHand.getEndPosition();
     }
+
 
     @Override
     public void update(Observable o, Object arg) {
 
     }
 
+    /**
+     * if the next vertex is in the view area, calculate persons and determine jam based on jam level in properties
+     *
+     * @return if more people are in the range than allowed
+     */
+    public boolean isJam() {
+        Position target = person.getNextVertexPosition();
+        if (Position.inTriangle(target, p1, p2, p3)) {
+            List<Perimeter> perimeters = new ArrayList<>();
+            perimeters.add(PerimeterManager.getInstance().getCurrentPerimeter(target));
+            perimeters.addAll(PerimeterManager.getInstance().getNeighbors(target));
+            int peopleCount = 0;
+            for (Perimeter perimeter : perimeters)
+                peopleCount += perimeter.getRegisteredPersons().size();
+            return ConfigModel.getInstance().getJamLevel() <= peopleCount;
+        } else
+            return false;
+    }
+
+    public Vertex getDifferentTargetVertex() {
+        List<Vertex> possibleVertices = new ArrayList<>();
+        PathManager pathManager = SpawnManager.getInstance().getPathManager();
+        for (Vertex vertex : pathManager.getVertexList()) {
+            if (Position.inTriangle(vertex.getPosition(), p1, p2, p3) && !vertex.getPosition().equals(person.getNextVertexPosition()))
+                possibleVertices.add(vertex);
+        }
+
+        Vertex possibleVertex = null;
+        for (Vertex vertex : possibleVertices) {
+            if (possibleVertex == null) possibleVertex = vertex;
+            else {
+                if (possibleVertex.distanceToTarget() > vertex.distanceToTarget())
+                    possibleVertex = vertex;
+            }
+        }
+        if (possibleVertex == null) System.out.println("possible vertex null");
+        return possibleVertex;
+    }
 }
