@@ -24,7 +24,7 @@ public class Statistic {
 		midage = new Vector<>();
 		old = new Vector<>();
 		handicapped = new Vector<>();
-		getPersons();
+		calculatePersons();
 	}
 
 
@@ -35,7 +35,7 @@ public class Statistic {
 		return instance;
 	}
 
-	public void getPersons() {
+	public void calculatePersons() {
 		this.personList.clear();
 		this.young.clear();
 		this.midage.clear();
@@ -105,5 +105,7 @@ public class Statistic {
 	public int getTotalPersons() {
 		return this.personList.size();
 	}
+
+	public Vector<Person> getPersonList(){ return this.personList;}
 
 }

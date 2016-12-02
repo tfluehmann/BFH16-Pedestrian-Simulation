@@ -223,7 +223,7 @@ public class MainController implements Initializable {
 			this.simulationRoom.getChildren().addAll(spMgr.getPersons());
 
 			Statistic stats = Statistic.getInstance();
-			stats.getPersons();
+			stats.calculatePersons();
 			statTotalPersons.textProperty().set(""+stats.getTotalPersons());
 			statYoungPersons.textProperty().set(""+stats.getNumberYoungPersons());
 			statMidagePersons.textProperty().set(""+stats.getNumberMidagePersons());
@@ -276,6 +276,7 @@ public class MainController implements Initializable {
 				Scene scene = new Scene(page);
 				dialogStage.setScene(scene);
 				dialogStage.show();
+
 			} catch (IOException e){
 				e.printStackTrace();
 			}
