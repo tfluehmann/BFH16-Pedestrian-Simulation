@@ -59,6 +59,7 @@ public class Orientation extends Line implements Observer {
      */
     public boolean isJam() {
         Position target = person.getNextVertexPosition();
+        updateView();
         if (Position.inTriangle(target, p1, p2, p3)) {
             List<Perimeter> perimeters = new ArrayList<>();
             perimeters.add(PerimeterManager.getInstance().getCurrentPerimeter(target));
@@ -73,6 +74,7 @@ public class Orientation extends Line implements Observer {
 
     public Vertex getDifferentTargetVertex() {
         List<Vertex> possibleVertices = new ArrayList<>();
+        updateView();
         PathManager pathManager = SpawnManager.getInstance().getPathManager();
         for (Vertex vertex : pathManager.getVertexList()) {
             if (Position.inTriangle(vertex.getPosition(), p1, p2, p3) && !vertex.getPosition().equals(person.getNextVertexPosition()))
