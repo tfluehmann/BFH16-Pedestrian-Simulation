@@ -269,6 +269,7 @@ public class MainController implements Initializable {
 
 		showStats.setOnAction(event -> {
 			try {
+				Statistic.getInstance();
 				FXMLLoader ldr = new FXMLLoader();
 				ldr.setLocation(getClass().getResource("/view/Statistics.fxml"));
                 AnchorPane page = ldr.load();

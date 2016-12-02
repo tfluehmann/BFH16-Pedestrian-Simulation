@@ -35,6 +35,7 @@ public class Statistic {
 		return instance;
 	}
 
+
 	public void calculatePersons() {
 		this.personList.clear();
 		this.young.clear();
@@ -53,6 +54,7 @@ public class Statistic {
 		}
 	}
 
+
 	private double calculateAvgSpeed(Vector<Person> persons) {
 		double speedSum = 0.0;
 		for (Person p : persons) {
@@ -66,21 +68,26 @@ public class Statistic {
 		return calculateAvgSpeed(this.young);
 	}
 
-	public double getMidageSpeedAvg(){
+
+	public double getMidageSpeedAvg() {
 		return calculateAvgSpeed(this.midage);
 	}
 
-	public double getOldSpeedAvg(){
+
+	public double getOldSpeedAvg() {
 		return calculateAvgSpeed(this.old);
 	}
 
-	public double getHandicappedSpeedAvg(){
+
+	public double getHandicappedSpeedAvg() {
 		return calculateAvgSpeed(this.handicapped);
 	}
 
-	public double getOverallSpeedAvg(){
+
+	public double getOverallSpeedAvg() {
 		return calculateAvgSpeed(this.personList);
 	}
+
 
 	public int getNumberYoungPersons() {
 		return this.young.size();
@@ -106,6 +113,9 @@ public class Statistic {
 		return this.personList.size();
 	}
 
-	public Vector<Person> getPersonList(){ return this.personList;}
+
+	public Vector<Person> getPersonList() {
+		return this.personList;
+	}
 
 }
