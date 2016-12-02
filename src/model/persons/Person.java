@@ -130,8 +130,8 @@ public abstract class Person extends Circle {
         if (this.isNewPositionAllowed(rightPos)) {
             return rightPos;
         }
-        Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda);
-        if (this.isNewPositionAllowed(stepBack)) return stepBack;
+//        Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda/2);
+//        if (this.isNewPositionAllowed(stepBack)) return stepBack;
         return null;
     }
 
