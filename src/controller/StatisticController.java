@@ -8,11 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ScatterChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.layout.AnchorPane;
 import model.Statistic;
+import model.persons.Person;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 /**
  * Created by suter1 on 25.11.2016.
@@ -28,12 +30,15 @@ public class StatisticController implements Initializable {
 	@FXML
 	private ScatterChart speedByPerson;
 
+	@FXML
+	private AnchorPane paneSpeedByType;
+
 	private Statistic stats;
 
 
 	public void initialize(URL location, ResourceBundle resources) {
 		stats = Statistic.getInstance();
-		stats.getPersons();
+		stats.calculatePersons();
 
 		ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
 				new PieChart.Data("Persons under 30 years", stats.getNumberYoungPersons()),
@@ -41,7 +46,6 @@ public class StatisticController implements Initializable {
 				new PieChart.Data("Persons over 50 years", stats.getNumberOldPersons()),
 				new PieChart.Data("Handicapped persons", stats.getNumberHandicappedPersons())
 		);
-
 		pieData.forEach(data ->
 				data.nameProperty().bind(
 						Bindings.concat(
@@ -49,40 +53,34 @@ public class StatisticController implements Initializable {
 						)
 				)
 		);
-
 		personsByType.setData(pieData);
 
 		double val = 0.0;
+		double young = 0.0;
+		double midage = 0.0;
+		double old = 0.0;
+		double handicap = 0.0;
+		if (stats.getYoungSpeedAvg() > 0.0) young = stats.getYoungSpeedAvg();
+		if (stats.getMidageSpeedAvg() > 0.0) midage = stats.getMidageSpeedAvg();
+		if (stats.getOldSpeedAvg() > 0.0) old = stats.getOldSpeedAvg();
+		if (stats.getHandicappedSpeedAvg() > 0.0) handicap = stats.getHandicappedSpeedAvg();
+		BarChart.Series typeValues = new BarChart.Series<>();
+		typeValues.getData().add(new BarChart.Data<>("persons under 30 years", young));
+		typeValues.getData().add(new BarChart.Data<>("persons between 30 and 50 years", midage));
+		typeValues.getData().add(new BarChart.Data<>("persons over 50 years", old));
+		typeValues.getData().add(new BarChart.Data<>("handicapped persons", handicap));
+		speedByType.getData().addAll(typeValues);
 
-		XYChart.Series<String,Double> avgSpeedByTypeData = new XYChart.Series<>();
-		if (stats.getNumberYoungPersons() > 0){
-			val = stats.getYoungSpeedAvg();
-		} else {
-			val = 0.0;
+		Vector<Person> personlist = stats.getPersonList();
+		ScatterChart.Series personValues = new ScatterChart.Series<>();
+		ScatterChart.Series avgValues = new ScatterChart.Series<>();
+		int i = 0;
+		for (Person p: personlist){
+			personValues.getData().add(new ScatterChart.Data<>(""+ (++i), p.getSpeed()/p.getTime()));
+			avgValues.getData().add(new ScatterChart.Data<>(""+i, stats.getOverallSpeedAvg()));
 		}
-		avgSpeedByTypeData.getData().add(new XYChart.Data<>("persons under 30 years", val));
-		if (stats.getNumberMidagePersons() > 0){
-			val = stats.getMidageSpeedAvg();
-		} else {
-			val = 0.0;
-		}
-		avgSpeedByTypeData.getData().add(new XYChart.Data<>("persons between 30 and 50 years", val));
-		if (stats.getNumberOldPersons() > 0){
-			val = stats.getOldSpeedAvg();
-		} else {
-			val = 0.0;
-		}
-		avgSpeedByTypeData.getData().add(new XYChart.Data<>("persons over 50 years", val));
-		if (stats.getNumberHandicappedPersons() > 0){
-			val = stats.getHandicappedSpeedAvg();
-		} else {
-			val = 0.0;
-		}
-		avgSpeedByTypeData.getData().add(new XYChart.Data<>("handicapped persons", val));
 
-		this.speedByType.legendVisibleProperty().setValue(false);
-
-		this.speedByType.getData().add(avgSpeedByTypeData);
+		speedByPerson.getData().addAll(personValues, avgValues);
 	}
 
 }
