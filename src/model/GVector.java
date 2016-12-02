@@ -160,6 +160,20 @@ public class GVector extends Line {
         return new Position(this.startPointX + this.x * lambda, this.startPointY + this.y * lambda);
     }
 
+    /**
+     * https://en.wikipedia.org/wiki/Rotation_(mathematics)
+     *
+     * @param vector
+     * @param angle
+     *
+     * @return
+     */
+    public static GVector newAfterRotation(GVector vector, double angle) {
+        double newEndX = vector.getEndPointX() * Math.cos(angle) - vector.getEndPointY() * Math.sin(angle);
+        double newEndY = vector.getEndPointX() * Math.sin(angle) + vector.getEndPointY() * Math.cos(angle);
+        return new GVector(vector.getStartPosition(), new Position(newEndX, newEndY));
+    }
+
     public double getStartPointX() {
         return this.startPointX;
     }
