@@ -60,26 +60,35 @@ public class StatisticController implements Initializable {
 		double midage = 0.0;
 		double old = 0.0;
 		double handicap = 0.0;
-		if (stats.getYoungSpeedAvg() > 0.0) young = stats.getYoungSpeedAvg();
-		if (stats.getMidageSpeedAvg() > 0.0) midage = stats.getMidageSpeedAvg();
-		if (stats.getOldSpeedAvg() > 0.0) old = stats.getOldSpeedAvg();
-		if (stats.getHandicappedSpeedAvg() > 0.0) handicap = stats.getHandicappedSpeedAvg();
+		double youngStat = stats.getYoungSpeedAvg();
+		double midageStat = stats.getMidageSpeedAvg();
+		double oldStat = stats.getOldSpeedAvg();
+		double handicapStat = stats.getHandicappedSpeedAvg();
+
+		if (youngStat > 0.0) young = youngStat;
+		if (midageStat > 0.0) midage = midageStat;
+		if (oldStat > 0.0) old = oldStat;
+		if (handicapStat > 0.0) handicap = handicapStat;
 		BarChart.Series typeValues = new BarChart.Series<>();
 		typeValues.getData().add(new BarChart.Data<>("persons under 30 years", young));
 		typeValues.getData().add(new BarChart.Data<>("persons between 30 and 50 years", midage));
 		typeValues.getData().add(new BarChart.Data<>("persons over 50 years", old));
 		typeValues.getData().add(new BarChart.Data<>("handicapped persons", handicap));
+		typeValues.setName("average speed by group of persontype");
+		speedByType.getYAxis().setLabel("speed [m/s]");
 		speedByType.getData().addAll(typeValues);
 
 		Vector<Person> personlist = stats.getPersonList();
 		ScatterChart.Series personValues = new ScatterChart.Series<>();
 		ScatterChart.Series avgValues = new ScatterChart.Series<>();
 		int i = 0;
-		for (Person p: personlist){
-			personValues.getData().add(new ScatterChart.Data<>(""+ (++i), p.getSpeed()/p.getTime()));
-			avgValues.getData().add(new ScatterChart.Data<>(""+i, stats.getOverallSpeedAvg()));
+		for (Person p : personlist) {
+			personValues.getData().add(new ScatterChart.Data<>("" + (++i), stats.getPersonSpeedAvg(p)));
+			avgValues.getData().add(new ScatterChart.Data<>("" + i, stats.getOverallSpeedAvg()));
 		}
-
+		personValues.setName("average speed by person");
+		avgValues.setName("overall average speed of all persons");
+		speedByPerson.getYAxis().setLabel("speed [m/s]");
 		speedByPerson.getData().addAll(personValues, avgValues);
 	}
 

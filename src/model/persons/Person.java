@@ -41,10 +41,6 @@ public abstract class Person extends Circle {
 	private double targetX;
 	private double targetY;
 
-	private int time;
-	private double travelledDistance;
-	// protected Character character;
-
 
 	public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
 		super(ConfigModel.getInstance().getPersonRadius());
@@ -89,11 +85,9 @@ public abstract class Person extends Circle {
 		Position newPos = this.calculateNextPossiblePosition();
 		if (newPos != null) {
 			double x, y;
-			x = Math.max(newPos.getXValue(), getCurrentPosition().getXValue()) - Math.min(newPos.getXValue(), getCurrentPosition().getXValue());
-			y = Math.max(newPos.getYValue(), getCurrentPosition().getYValue()) - Math.min(newPos.getYValue(), getCurrentPosition().getYValue());
-			this.travelledDistance += x + y;
+			x = newPos.getXValue() - getCurrentPosition().getXValue();
+			y = newPos.getYValue() - getCurrentPosition().getYValue();
 			this.setPosition(newPos);
-			this.time++;
 		}
 	}
 
@@ -126,14 +120,14 @@ public abstract class Person extends Circle {
 		/**
 		 * Try to walk into the left or right hand position
 		 */
-		Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
-		Position rightPos = vToNextTarget.moveParallelRight(newPosition).getEndPosition();
-		if (this.isNewPositionAllowed(leftPos)) {
-			return leftPos;
-		}
-		if (this.isNewPositionAllowed(rightPos)) {
-			return rightPos;
-		}
+//		Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
+//		Position rightPos = vToNextTarget.moveParallelRight(newPosition).getEndPosition();
+//		if (this.isNewPositionAllowed(leftPos)) {
+//			return leftPos;
+//		}
+//		if (this.isNewPositionAllowed(rightPos)) {
+//			return rightPos;
+//		}
 //        Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda/2);
 //        if (this.isNewPositionAllowed(stepBack)) return stepBack;
 		return null;
@@ -250,16 +244,6 @@ public abstract class Person extends Circle {
 
 	public double getDiameter() {
 		return 2 * this.config.getPersonRadius();
-	}
-
-
-	public int getTime() {
-		return this.time;
-	}
-
-
-	public double getTravelledDistance() {
-		return this.travelledDistance;
 	}
 
 

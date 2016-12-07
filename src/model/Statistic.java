@@ -58,9 +58,25 @@ public class Statistic {
 	private double calculateAvgSpeed(Vector<Person> persons) {
 		double speedSum = 0.0;
 		for (Person p : persons) {
-			speedSum += (p.getTravelledDistance() / p.getTime());
+			double distance = 0.0;
+			for (int i = 1; i < p.getOldPositions().size(); i++) {
+				distance += calculateDistance(p.getOldPositions().get(i - 1), p.getOldPositions().get(i));
+			}
+			speedSum += distance / p.getOldPositions().size();
 		}
 		return speedSum / persons.size();
+	}
+
+
+	private double calculateDistance(Position start, Position end) {
+		return new GVector(start, end).length() / ConfigModel.getInstance().getPixelPerMeter();
+	}
+
+
+	public double getPersonSpeedAvg(Person p) {
+		Vector<Person> person = new Vector<>();
+		person.add(p);
+		return calculateAvgSpeed(person);
 	}
 
 
