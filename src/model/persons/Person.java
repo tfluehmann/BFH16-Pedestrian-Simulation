@@ -11,35 +11,33 @@ import java.util.*;
 
 /**
  * Created by fluth1 on 30/09/16.
- * A person has an orientation in the room, has a speed depending on the age
- * In here the next step is calculated for a person
  */
 public abstract class Person extends Circle {
     protected Orientation orientation;
     protected LinkedList<Position> oldPositions = new LinkedList<>();
     protected Position currentPosition;
     protected int age;
-    //Pixels per second
     protected double speed;
     protected PerimeterManager pm = PerimeterManager.getInstance();
     protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
     protected ObstacleManager obstacleManager = ObstacleManager.getInstance();
 
-    protected ConfigModel config = ConfigModel.getInstance();
+	protected ConfigModel config = ConfigModel.getInstance();
 
-    /**
-     * Current Target Vertex
-     */
-    private Vertex nextVertex;
-    /**
-     * End Goal
-     */
-    private Vertex target;
-    private double originX, originY;
-    private double targetX, targetY;
-    private int time;
-    private double travelledDistance;
-    // protected Character character;
+	/**
+	 * Current Target Vertex
+	 */
+	private Vertex nextVertex;
+	/**
+	 * End Goal
+	 */
+	private Vertex target;
+
+	private double originX;
+	private double originY;
+
+	private double targetX;
+	private double targetY;
 
     public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
         super(ConfigModel.getInstance().getPersonRadius());
@@ -48,8 +46,7 @@ public abstract class Person extends Circle {
         Random r = new Random();
         double randomWidth = (maxWidth - getDiameter()) * r.nextDouble();
         double randomHeight = (maxHeight - getDiameter()) * r.nextDouble();
-        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(),
-                randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
+        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
         this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
         this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
         this.setCursor(Cursor.HAND);
@@ -74,22 +71,20 @@ public abstract class Person extends Circle {
         });
     }
 
-    /**
-     * Calculates the vector and the next position depending on the step size
-     *
-     * @return next Position
-     */
-    public void calculateStep() {
-        Position newPos = this.calculateNextPossiblePosition();
-        if (newPos != null) {
-            double x, y;
-            x = Math.abs(Math.abs(newPos.getXValue()) - Math.abs(getCurrentPosition().getXValue()));
-            y = Math.abs(Math.abs(newPos.getYValue()) - Math.abs(getCurrentPosition().getYValue()));
-            this.travelledDistance = Math.abs(x + y);
-            this.setPosition(newPos);
-            this.time++;
-        }
-    }
+	/**
+	 * Calculates the vector and the next position depending on the step size
+	 *
+	 * @return next Position
+	 */
+	public void calculateStep() {
+		Position newPos = this.calculateNextPossiblePosition();
+		if (newPos != null) {
+			double x, y;
+			x = newPos.getXValue() - getCurrentPosition().getXValue();
+			y = newPos.getYValue() - getCurrentPosition().getYValue();
+			this.setPosition(newPos);
+		}
+	}
 
     /**
      * calculate the next position by reducing the speed if needed
@@ -234,6 +229,10 @@ public abstract class Person extends Circle {
         return this.speed;
     }
 
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
     public void setNextVertex(Vertex nextVertex) {
         this.nextVertex = nextVertex;
         orientation = new Orientation(this);
@@ -250,13 +249,6 @@ public abstract class Person extends Circle {
         return 2 * this.config.getPersonRadius();
     }
 
-    public int getTime() {
-        return this.time;
-    }
-
-    public double getTravelledDistance() {
-        return this.travelledDistance;
-    }
 
     public Position getNextVertexPosition() {
         return nextVertex.getPosition();

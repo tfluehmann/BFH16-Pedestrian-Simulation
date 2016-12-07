@@ -46,7 +46,6 @@ public class SimulationManager {
                     this.updateMessage(++i + " seconds");
                     Thread.sleep(speedProperty.getValue());
                 }
-                System.out.println("finished simulation");
                 return null;
             }
         };
