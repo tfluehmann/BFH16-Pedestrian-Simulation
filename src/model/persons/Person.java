@@ -7,18 +7,19 @@ import manager.areamanagers.ObstacleManager;
 import model.*;
 import model.areas.Obstacle;
 
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * A person has an orientation in the room, has a speed depending on the age
+ * In here the next step is calculated for a person
  */
 public abstract class Person extends Circle {
     protected Orientation orientation;
     protected LinkedList<Position> oldPositions = new LinkedList<>();
     protected Position currentPosition;
     protected int age;
+    //Pixels per second
     protected double speed;
     protected PerimeterManager pm = PerimeterManager.getInstance();
     protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
@@ -34,13 +35,8 @@ public abstract class Person extends Circle {
      * End Goal
      */
     private Vertex target;
-
-    private double originX;
-    private double originY;
-
-    private double targetX;
-    private double targetY;
-
+    private double originX, originY;
+    private double targetX, targetY;
     private int time;
     private double travelledDistance;
     // protected Character character;
@@ -52,7 +48,8 @@ public abstract class Person extends Circle {
         Random r = new Random();
         double randomWidth = (maxWidth - getDiameter()) * r.nextDouble();
         double randomHeight = (maxHeight - getDiameter()) * r.nextDouble();
-        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
+        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(),
+                randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
         this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
         this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
         this.setCursor(Cursor.HAND);
@@ -104,14 +101,14 @@ public abstract class Person extends Circle {
         Position nextTarget = nextVertex.getPosition();
         boolean isJam = this.orientation.isJam();
         System.out.println("JAM is: " + isJam);
-        if (isJam) {
+        System.out.println("next dist: " + nextVertex.distanceToTarget());
+        if (isJam && nextVertex.distanceToTarget() != 0) {
             Vertex nonJamVertex = this.orientation.getDifferentTargetVertex();
             if (nonJamVertex != null) {
                 System.out.println("reset target");
                 this.nextVertex = nonJamVertex;
                 nextTarget = nonJamVertex.getPosition();
             }
-
         }
         GVector vToNextTarget = new GVector(this.currentPosition.getXValue(),
                 this.currentPosition.getYValue(), nextTarget.getXValue(), nextTarget.getYValue());
@@ -130,19 +127,21 @@ public abstract class Person extends Circle {
         if (this.isNewPositionAllowed(rightPos)) {
             return rightPos;
         }
-//        Position stepBack = vToNextTarget.invert().getLambdaPosition(lambda/2);
-//        if (this.isNewPositionAllowed(stepBack)) return stepBack;
+        Position stepBack = vToNextTarget.getLambdaPosition(-lambda / 2);
+        if (this.isNewPositionAllowed(stepBack)) return stepBack;
         return null;
     }
 
     public boolean isNewPositionAllowed(Position position) {
         if (position == null || position.isEmpty()) return false;
+        GVector reachable = new GVector(this.currentPosition, position);
+        if (ObstacleManager.getInstance().isCrossingAnyObstacle(reachable)) return false;
         Set<Perimeter> neighPerimeters = perimeterManager.getNeighbors(position);
         for (Perimeter perimeter : neighPerimeters) {
             for (Person person : perimeter.getRegisteredPersons()) {
                 if (person.equals(this)) continue;
-                boolean personCollision = this.isColliding(position.getXValue(), position.getYValue(), person);
                 boolean obstacleCollision = this.isCollidingWithObstacle(position);
+                boolean personCollision = this.isColliding(position.getXValue(), position.getYValue(), person);
                 if (personCollision || obstacleCollision) return false;
             }
         }
@@ -150,9 +149,29 @@ public abstract class Person extends Circle {
     }
 
     private boolean isCollidingWithObstacle(Position p) {
+        List<Position> positions = getPointsOnRadius(p);
         for (Obstacle o : obstacleManager.getObstacles())
-            if (o.contains(p.getXValue(), p.getYValue())) return true;
+            for (Position pos : positions)
+                if (o.contains(pos.getXValue(), pos.getYValue())) return true;
         return false;
+    }
+
+    /**
+     * x = cx + r * cos(a)
+     * y = cy + r * sin(a)
+     *
+     * @return
+     */
+    private List<Position> getPointsOnRadius(Position pos) {
+        double numberOfPoints = 7;
+        double angle = 360 / numberOfPoints;
+        List<Position> positions = new ArrayList<>();
+        for (int i = 0; i < numberOfPoints; i++) {
+            double x = pos.getXValue() + config.getPersonRadius() * Math.cos(i * angle);
+            double y = pos.getYValue() + config.getPersonRadius() * Math.sin(i * angle);
+            positions.add(new Position(x, y));
+        }
+        return positions;
     }
 
     /**
@@ -215,10 +234,6 @@ public abstract class Person extends Circle {
         return this.speed;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
     public void setNextVertex(Vertex nextVertex) {
         this.nextVertex = nextVertex;
         orientation = new Orientation(this);
@@ -228,6 +243,9 @@ public abstract class Person extends Circle {
         this.target = target;
     }
 
+    /**
+     * @return Twice the radius
+     */
     public double getDiameter() {
         return 2 * this.config.getPersonRadius();
     }

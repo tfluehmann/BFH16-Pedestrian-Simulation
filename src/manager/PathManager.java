@@ -1,5 +1,6 @@
 package manager;
 
+import manager.areamanagers.ObstacleManager;
 import model.*;
 
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.*;
  */
 public class PathManager {
     private final List<Vertex> vertexList = new ArrayList<>();
-    private final Collection<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
+    private final List<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
     private final Set<Vertex> settledNodes = new HashSet<>();
     private Map<Vertex, Double> nodes = new HashMap<>();
     private List<Vertex> targetVertexes = new ArrayList<>();
@@ -38,7 +39,7 @@ public class PathManager {
                 Vertex targetVertex = this.vertexList.get(j);
                 if (vertex.equals(targetVertex)) continue;
                 GVector v = new GVector(vertex.getPosition(), targetVertex.getPosition());
-                boolean isCrossing = this.checkAgainstObstacles(v);
+                boolean isCrossing = ObstacleManager.getInstance().isCrossingAnyObstacle(v);
                 if (!isCrossing) {
                     v.setStyle("-fx-stroke: green;");
                     room.getChildren().add(v);
@@ -54,15 +55,6 @@ public class PathManager {
         }
     }
 
-    private boolean checkAgainstObstacles(GVector v) {
-        boolean isCrossing = false;
-        for (GVector obstacleVector : this.obstacleEdges)
-            if (v.isCrossedWith(obstacleVector)) {
-                isCrossing = true;
-                break;
-            }
-        return isCrossing;
-    }
 
     public void crapFindAlgorithm(Vertex target) {
         Queue<Node> pq = new PriorityQueue<>(new Node());//Heap to extract value
@@ -96,16 +88,16 @@ public class PathManager {
     }
 
     public Vertex getClosestVertex(Position currentPosition) {
-        Vertex smallestDist = null;
-        double smallestDistTOVect = Double.MAX_VALUE;
-        for (Vertex v : vertexList) {
-            GVector vect = new GVector(v.getPosition(), currentPosition);
-            if (vect.length() < smallestDistTOVect) {
-                smallestDistTOVect = vect.length();
-                smallestDist = v;
-            }
+        Vertex possibleVertex = null;
+        for (Vertex vertex : getVertexList()) {
+            GVector vect = new GVector(vertex.getPosition(), currentPosition);
+            if (ObstacleManager.getInstance().isCrossingAnyObstacle(vect)) continue;
+            if (possibleVertex == null) possibleVertex = vertex;
+            else if (possibleVertex.distanceToTarget() > vertex.distanceToTarget())
+                possibleVertex = vertex;
         }
-        return smallestDist;
+        if (possibleVertex == null) System.out.println("possible vertex null");
+        return possibleVertex;
     }
 
     public Collection<GVector> getObstacleEdges() {

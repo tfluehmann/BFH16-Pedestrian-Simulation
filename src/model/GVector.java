@@ -205,4 +205,10 @@ public class GVector extends Line {
     public Position getEndPosition() {
         return this.endPosition;
     }
+
+    public double dotProductWith(GVector vector) {
+        double xProduct = this.getX() * vector.getX();
+        double yProduct = this.getY() * vector.getY();
+        return Math.acos((xProduct + yProduct) / (this.length() * vector.length()));
+    }
 }

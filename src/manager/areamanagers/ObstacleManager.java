@@ -1,5 +1,7 @@
 package manager.areamanagers;
 
+import manager.SpawnManager;
+import model.GVector;
 import model.Room;
 import model.areas.Obstacle;
 
@@ -36,5 +38,15 @@ public class ObstacleManager extends AreaManager {
     public void add(Obstacle o) {
         super.add(o);
         this.getObstacles().add(o);
+    }
+
+    public boolean isCrossingAnyObstacle(GVector v) {
+        boolean isCrossing = false;
+        for (GVector obstacleVector : SpawnManager.getInstance().getPathManager().getObstacleEdges())
+            if (v.isCrossedWith(obstacleVector)) {
+                isCrossing = true;
+                break;
+            }
+        return isCrossing;
     }
 }
