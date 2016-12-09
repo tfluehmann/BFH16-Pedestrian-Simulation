@@ -26,3 +26,5 @@ Datum | Zeitaufwand | Wer | Was
 18.11.2016 | 4 h | fluht1, suter1 | Statistics improved, rotating and scaling Obstacle moves points too
 25.11.2016 | 4 h | fluht1, suter1 | Pie chart implemented and designed, final rotation of spawn and goal area, begin DOV
 30.11.2016 | 4 h | fluht1, suter1 | Direction of View DOV (Vector rotation), Stats: Pie chart finished, Bar chart started
+07.12.2016 | 3 h | fluht1, suter1 | DOV refactor, stats completed.
+09.12.2016 | 3 h | suter1 | Fixed spawn position, fixed problem on zoom out areas, styled alert dialog.
