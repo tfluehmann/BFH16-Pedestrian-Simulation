@@ -7,7 +7,10 @@ import manager.areamanagers.ObstacleManager;
 import model.*;
 import model.areas.Obstacle;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fluth1 on 30/09/16.
@@ -39,14 +42,15 @@ public abstract class Person extends Circle {
 	private double targetX;
 	private double targetY;
 
-    public Person(double maxHeight, double maxWidth, double speed, Position spawnPosition) {
+    public Person(Position pos, double speed) {
         super(ConfigModel.getInstance().getPersonRadius());
         getStyleClass().add("person");
         this.speed = speed * config.getPixelPerMeter();
-        Random r = new Random();
-        double randomWidth = (maxWidth - getDiameter()) * r.nextDouble();
-        double randomHeight = (maxHeight - getDiameter()) * r.nextDouble();
-        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
+//        Random r = new Random();
+//        double randomWidth = (maxWidth - getDiameter()) * r.nextDouble();
+//        double randomHeight = (maxHeight - getDiameter()) * r.nextDouble();
+//        this.setCurrentPosition(new Position(randomWidth + spawnPosition.getXValue() + this.config.getPersonRadius(), randomHeight + spawnPosition.getYValue() + this.config.getPersonRadius()));
+	    this.setCurrentPosition(pos);
         this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
         this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
         this.setCursor(Cursor.HAND);

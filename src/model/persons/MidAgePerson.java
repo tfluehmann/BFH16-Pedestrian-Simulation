@@ -10,11 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MidAgePerson extends Person {
 
-    public MidAgePerson(double maxHeight, double maxWidth, Position spawnPosition) {
-        super(maxHeight, maxWidth,
-                ThreadLocalRandom.current().nextDouble(
-                        ConfigModel.getInstance().getMidAgePersonMinSpeed(),
-                        ConfigModel.getInstance().getMidAgePersonMaxSpeed()),
-                spawnPosition);
+    public MidAgePerson(Position pos) {
+        super(pos, ThreadLocalRandom.current().nextDouble(ConfigModel.getInstance().getMidAgePersonMinSpeed(), ConfigModel.getInstance().getMidAgePersonMaxSpeed()));
     }
 }

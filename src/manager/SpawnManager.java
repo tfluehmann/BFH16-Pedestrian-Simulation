@@ -82,13 +82,13 @@ public class SpawnManager {
 	private void spawnPerson(PathManager pathManager, Class<? extends Person> klass) {
 		Person newPerson;
 		try {
-			Class partypes[] = new Class[3];
-			partypes[0] = Double.TYPE;
-			partypes[1] = Double.TYPE;
-			partypes[2] = Position.class;
+			Class partypes[] = new Class[1];
+//			partypes[0] = Double.TYPE;
+//			partypes[1] = Double.TYPE;
+			partypes[0] = Position.class;
 			Constructor ct = klass.getConstructor(partypes);
 			SpawnArea spawnArea = spawnAreaManager.getSpawnAreas().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getSpawnAreas().size()));
-			newPerson = (Person) ct.newInstance(spawnArea.getWidth(), spawnArea.getHeight(), spawnArea.getPosition()); // TODO width, heigth, position
+			newPerson = (Person) ct.newInstance(getSpawnPosition(spawnArea)); // TODO width, heigth, position
 			this.persons.add(newPerson);
 			newPerson.setNextVertex(pathManager.getClosestVertex(newPerson.getCurrentPosition()));
 			newPerson.setTarget(pathManager.getTargetVertexes().get(0));
@@ -97,6 +97,21 @@ public class SpawnManager {
 		}
 	}
 
+
+	private Position getSpawnPosition(SpawnArea spawn) {
+		Random r = new Random();
+		double x, y;
+		double randomWidth, randomHeight;
+		do {
+			randomWidth = (spawn.getBoundsInLocal().getWidth() - (config.getPersonRadius() * 2)) * r.nextDouble();
+			randomHeight = (spawn.getBoundsInLocal().getHeight() - (config.getPersonRadius() * 2)) * r.nextDouble();
+			x = spawn.getPosition().getXValue() + randomWidth;
+			y = spawn.getPosition().getYValue() + randomHeight;
+		}
+		while (!spawn.contains(x + config.getPersonRadius(), y + config.getPersonRadius()) || !spawn.contains(x - config.getPersonRadius(), y - config.getPersonRadius())
+				|| !spawn.contains(x + config.getPersonRadius(), y - config.getPersonRadius()) || !spawn.contains(x - config.getPersonRadius(), y + config.getPersonRadius()));
+		return new Position(x, y);
+	}
 
 	public Vector<Person> getPersons() {
 		return this.persons;

@@ -51,7 +51,7 @@ public abstract class Area extends DraggablePolygon {
 
         this.setOnScroll((e) -> {
             double factor = 1.01;
-            if (e.getDeltaY() < 0) factor = (2.0 - factor) * -1;
+            if (e.getDeltaY() < 0) factor = (2.0 - factor);
             double pivotX = e.getX();
             double pivotY = e.getY();
             if (e.isAltDown()) this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);

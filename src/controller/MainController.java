@@ -198,7 +198,7 @@ public class MainController implements Initializable {
 				goal = new Vertex(ga.getPosition());
 				pathManager.addTarget(goal);
 			}
-			System.out.println(obstacleManager.getObstacles().size());
+//			System.out.println(obstacleManager.getObstacles().size());
 			for (Obstacle obstacle : obstacleManager.getObstacles()) {
                 obstacle.calculateCornersAndVertices();
                 for (Position p : obstacle.getEdgePoints())

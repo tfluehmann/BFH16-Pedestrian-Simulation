@@ -10,11 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class HandicappedPerson extends Person {
 
-    public HandicappedPerson(double maxHeight, double maxWidth, Position spawnPosition) {
-        super(maxHeight, maxWidth,
-                ThreadLocalRandom.current().nextDouble(
-                        ConfigModel.getInstance().getHandicappedPersonMinSpeed(),
-                        ConfigModel.getInstance().getHandicappedPersonMaxSpeed()),
-                spawnPosition);
+    public HandicappedPerson(Position pos) {
+        super(pos, ThreadLocalRandom.current().nextDouble(ConfigModel.getInstance().getHandicappedPersonMinSpeed(), ConfigModel.getInstance().getHandicappedPersonMaxSpeed()));
     }
 }
