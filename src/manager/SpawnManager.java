@@ -28,12 +28,10 @@ public class SpawnManager {
 	private SpawnManager() {
 	}
 
-
 	public static SpawnManager getInstance() {
 		if (instance == null) instance = new SpawnManager();
 		return instance;
 	}
-
 
 	public void createPersons() {
 		/**
@@ -68,12 +66,10 @@ public class SpawnManager {
 		}
 	}
 
-
 	private void createPersons(Class klass, int count, PathManager pathManager) {
 		for (int i = 0; i < count; i++)
 			this.spawnPerson(pathManager, klass);
 	}
-
 
 	/**
 	 * Generating different aged persons randomly
@@ -83,12 +79,10 @@ public class SpawnManager {
 		Person newPerson;
 		try {
 			Class partypes[] = new Class[1];
-//			partypes[0] = Double.TYPE;
-//			partypes[1] = Double.TYPE;
 			partypes[0] = Position.class;
 			Constructor ct = klass.getConstructor(partypes);
 			SpawnArea spawnArea = spawnAreaManager.getSpawnAreas().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getSpawnAreas().size()));
-			newPerson = (Person) ct.newInstance(getSpawnPosition(spawnArea)); // TODO width, heigth, position
+			newPerson = (Person) ct.newInstance(getSpawnPosition(spawnArea));
 			this.persons.add(newPerson);
 			newPerson.setNextVertex(pathManager.getClosestVertex(newPerson.getCurrentPosition()));
 			newPerson.setTarget(pathManager.getTargetVertexes().get(0));
@@ -97,7 +91,11 @@ public class SpawnManager {
 		}
 	}
 
-
+	/**
+	 * calculate possible spawn position in a selected SpawnArea
+	 * @param spawn
+	 * @return Position
+	 */
 	private Position getSpawnPosition(SpawnArea spawn) {
 		Random r = new Random();
 		double x, y;
@@ -108,8 +106,10 @@ public class SpawnManager {
 			x = spawn.getPosition().getXValue() + randomWidth;
 			y = spawn.getPosition().getYValue() + randomHeight;
 		}
-		while (!spawn.contains(x + config.getPersonRadius(), y + config.getPersonRadius()) || !spawn.contains(x - config.getPersonRadius(), y - config.getPersonRadius())
-				|| !spawn.contains(x + config.getPersonRadius(), y - config.getPersonRadius()) || !spawn.contains(x - config.getPersonRadius(), y + config.getPersonRadius()));
+		while (!spawn.contains(x + config.getPersonRadius(), y + config.getPersonRadius())
+				|| !spawn.contains(x - config.getPersonRadius(), y - config.getPersonRadius())
+				|| !spawn.contains(x + config.getPersonRadius(), y - config.getPersonRadius())
+				|| !spawn.contains(x - config.getPersonRadius(), y + config.getPersonRadius()));
 		return new Position(x, y);
 	}
 
@@ -117,11 +117,9 @@ public class SpawnManager {
 		return this.persons;
 	}
 
-
 	public PathManager getPathManager() {
 		return this.pathManager;
 	}
-
 
 	public void handlePersonsInTargetRange() {
 		Vector<Person> newPersons = new Vector<>();
@@ -133,13 +131,11 @@ public class SpawnManager {
 		this.persons = newPersons;
 	}
 
-
 	public void clear() {
 		this.passivePersons.clear();
 		this.persons.clear();
 		this.pathManager.clear();
 	}
-
 
 	public Vector<Person> getPassivePersons() {
 		return this.passivePersons;

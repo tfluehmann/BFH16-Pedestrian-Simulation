@@ -37,9 +37,9 @@ import java.util.ResourceBundle;
  */
 public class MainController implements Initializable {
 
-    private ObstacleManager obstacleManager = ObstacleManager.getInstance();
-    private SpawnAreaManager spawnAreaManger = SpawnAreaManager.getInstance();
-    private GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
+	private ObstacleManager obstacleManager = ObstacleManager.getInstance();
+	private SpawnAreaManager spawnAreaManger = SpawnAreaManager.getInstance();
+	private GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
 
 	@FXML
 	private Room simulationRoom;
@@ -122,8 +122,8 @@ public class MainController implements Initializable {
 		goalAreaManager.setRoom(simulationRoom);
 		spawnAreaManger.setRoom(simulationRoom);
 
-        basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
-        basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
+		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
+		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		startButton.setDisable(true);
 		resetButton.setDisable(true);
 		showStats.setDisable(true);
@@ -142,28 +142,28 @@ public class MainController implements Initializable {
 			});
 		}
 
-        ContextMenu cm = new ContextMenu();
-        MenuItem goalItem = new MenuItem("Goal area");
-        MenuItem spawnItem = new MenuItem("Spawn area");
-        Menu obstacleMenu = new Menu("Obstacles");
+		ContextMenu cm = new ContextMenu();
+		MenuItem goalItem = new MenuItem("Goal area");
+		MenuItem spawnItem = new MenuItem("Spawn area");
+		Menu obstacleMenu = new Menu("Obstacles");
 
 		goalItem.setOnAction((e) -> goalAreaManager.add(GoalArea.createWithNEdges(4, GoalArea.class)));
 		spawnItem.setOnAction((e) -> spawnAreaManger.add(SpawnArea.createWithNEdges(4, SpawnArea.class)));
 
-        String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
-        for (int corners = 3, i = 0; corners <= 8; corners++, i++) {
-            MenuItem item = new MenuItem(polygonNames[i]);
-            final int cornerCount = corners;
+		String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
+		for (int corners = 3, i = 0; corners <= 8; corners++, i++) {
+			MenuItem item = new MenuItem(polygonNames[i]);
+			final int cornerCount = corners;
 			item.setOnAction((e) -> obstacleManager.add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));
 			obstacleMenu.getItems().add(item);
-        }
+		}
 
-        cm.getItems().addAll(goalItem, spawnItem, obstacleMenu);
+		cm.getItems().addAll(goalItem, spawnItem, obstacleMenu);
 
-        simulationRoom.setOnMouseClicked((event) -> {
-            if (event.getButton().toString().equals("SECONDARY"))
-                cm.show(simulationRoom, event.getScreenX(), event.getSceneY());
-        });
+		simulationRoom.setOnMouseClicked((event) -> {
+			if (event.getButton().toString().equals("SECONDARY"))
+				cm.show(simulationRoom, event.getScreenX(), event.getSceneY());
+		});
 
 		/**
 		 * Numberlistener from user "javasuns"
@@ -182,15 +182,17 @@ public class MainController implements Initializable {
 		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
 
 		spawnButton.setOnAction((event) -> {
-            if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Check your stuff");
-                alert.setHeaderText("No curse words please.");
-                alert.setContentText("You have not created at least a spawn and a goal area.\nPress right click and create them.");
-                alert.initOwner(this.basePane.getScene().getWindow());
-                alert.showAndWait();
-                return;
-            }
+			if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("Check your stuff");
+				alert.setHeaderText("No curse words please.");
+				alert.setContentText("You have not created at least one spawn and one goal area.\nPress right click to create them.");
+				alert.initOwner(this.basePane.getScene().getWindow());
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("/view/default.css").toExternalForm());
+				alert.getDialogPane().getStyleClass().add("myDialog");
+				alert.showAndWait();
+				return;
+			}
 
 			PathManager pathManager = spMgr.getPathManager();
 			Vertex goal = null;
@@ -200,14 +202,13 @@ public class MainController implements Initializable {
 			}
 //			System.out.println(obstacleManager.getObstacles().size());
 			for (Obstacle obstacle : obstacleManager.getObstacles()) {
-                obstacle.calculateCornersAndVertices();
-                for (Position p : obstacle.getEdgePoints())
+				obstacle.calculateCornersAndVertices();
+				for (Position p : obstacle.getEdgePoints())
 					pathManager.getVertexList().add(new Vertex(p));
 				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 			}
 			pathManager.findValidEdges(simulationRoom);
 			pathManager.crapFindAlgorithm(goal);
-
 
 			/**
 			 * Save data form the config window for usage in simulation.
@@ -224,11 +225,11 @@ public class MainController implements Initializable {
 
 			Statistic stats = Statistic.getInstance();
 			stats.calculatePersons();
-			statTotalPersons.textProperty().set(""+stats.getTotalPersons());
-			statYoungPersons.textProperty().set(""+stats.getNumberYoungPersons());
-			statMidagePersons.textProperty().set(""+stats.getNumberMidagePersons());
-			statOldPersons.textProperty().set(""+stats.getNumberOldPersons());
-			statHandicappedPersons.textProperty().set(""+stats.getNumberHandicappedPersons());
+			statTotalPersons.textProperty().set("" + stats.getTotalPersons());
+			statYoungPersons.textProperty().set("" + stats.getNumberYoungPersons());
+			statMidagePersons.textProperty().set("" + stats.getNumberMidagePersons());
+			statOldPersons.textProperty().set("" + stats.getNumberOldPersons());
+			statHandicappedPersons.textProperty().set("" + stats.getNumberHandicappedPersons());
 
 			spawnButton.setDisable(true);
 			startButton.setDisable(false);
@@ -269,16 +270,16 @@ public class MainController implements Initializable {
 				Statistic.getInstance();
 				FXMLLoader ldr = new FXMLLoader();
 				ldr.setLocation(getClass().getResource("/view/Statistics.fxml"));
-                AnchorPane page = ldr.load();
-                Stage dialogStage = new Stage();
-                dialogStage.initOwner(this.basePane.getScene().getWindow());
-                dialogStage.setTitle("Statistics");
+				AnchorPane page = ldr.load();
+				Stage dialogStage = new Stage();
+				dialogStage.initOwner(this.basePane.getScene().getWindow());
+				dialogStage.setTitle("Statistics");
 				dialogStage.initModality(Modality.WINDOW_MODAL);
 				Scene scene = new Scene(page);
 				dialogStage.setScene(scene);
 				dialogStage.show();
 
-			} catch (IOException e){
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		});
