@@ -121,6 +121,7 @@ public class MainController implements Initializable {
 		obstacleManager.setRoom(simulationRoom);
 		goalAreaManager.setRoom(simulationRoom);
 		spawnAreaManger.setRoom(simulationRoom);
+		ConfigModel configModel = ConfigModel.getInstance();
 
 		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
 		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
@@ -151,7 +152,8 @@ public class MainController implements Initializable {
 		spawnItem.setOnAction((e) -> spawnAreaManger.add(SpawnArea.createWithNEdges(4, SpawnArea.class)));
 
 		String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
-		for (int corners = 3, i = 0; corners <= 8; corners++, i++) {
+		for (int corners = configModel.getMinObstacleCorners(), i = 0;
+			 corners <= configModel.getMaxObstacleCorners(); corners++, i++) {
 			MenuItem item = new MenuItem(polygonNames[i]);
 			final int cornerCount = corners;
 			item.setOnAction((e) -> obstacleManager.add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));

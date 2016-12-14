@@ -48,7 +48,9 @@ public class ConfigModel {
 
     private Properties props;
     private int jamLevel;
-    private double personViewLengthMultiplicator;
+    private double personViewLengthFactor;
+    private int minObstacleCorners;
+    private int maxObstacleCorners;
 
 
     private ConfigModel() {
@@ -97,10 +99,12 @@ public class ConfigModel {
         youngPersonMaxSpeed = Double.parseDouble(props.getProperty("Person.young.speed.max"));
         youngPersonMinSpeed = Double.parseDouble(props.getProperty("Person.young.speed.min"));
         personViewAngle = Double.parseDouble(props.getProperty("Person.view.angle"));
-        personViewLengthMultiplicator = Double.parseDouble(props.getProperty("Person.view.length.factor",
+        personViewLengthFactor = Double.parseDouble(props.getProperty("Person.view.length.factor",
                 "3.0"));
         epsilon = Double.parseDouble(props.getProperty("Math.epsilon"));
         jamLevel = Integer.parseInt(props.getProperty("Simulation.jam.level"));
+        minObstacleCorners = Integer.parseInt(props.getProperty("Obstacle.corners.min"));
+        maxObstacleCorners = Integer.parseInt(props.getProperty("Obstacle.corners.max"));
     }
 
     public static ConfigModel getInstance() {
@@ -300,6 +304,14 @@ public class ConfigModel {
     }
 
     public double getPersonViewLengthFactor() {
-        return personViewLengthMultiplicator;
+        return personViewLengthFactor;
+    }
+
+    public int getMinObstacleCorners() {
+        return minObstacleCorners;
+    }
+
+    public int getMaxObstacleCorners() {
+        return maxObstacleCorners;
     }
 }

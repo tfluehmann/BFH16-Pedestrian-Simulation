@@ -65,7 +65,6 @@ public class Orientation extends Line {
             if (vertex.getPosition().equals(person.getNextVertexPosition())) continue;
             GVector vector = new GVector(direction.getStartPosition(), vertex.getPosition());
             double angle = Math.toDegrees(direction.dotProductWith(vector));
-            System.out.println("Angle to vertex: " + angle);
             if (angle <= configModel.getPersonViewAngle() && angle >= -configModel.getPersonViewAngle() &&
                     person.isNewPositionAllowed(vertex.getPosition())) {
                 if (possibleVertex == null) possibleVertex = vertex;

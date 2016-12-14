@@ -51,7 +51,6 @@ public class Obstacle extends Area {
             GVector unitVector = c.norm();
             a = unitVector.invert().getEndPosition().multiply(edgeExtender).add(a);
             b = unitVector.getEndPosition().multiply(edgeExtender).add(b);
-
             if (this.includes(a) && !this.contains(a.getXValue(), a.getYValue())) this.edgePoints.add(a);
             if (this.includes(b) && !this.contains(b.getXValue(), b.getYValue())) this.edgePoints.add(b);
         }
@@ -62,6 +61,10 @@ public class Obstacle extends Area {
      */
     public boolean includes(Position position) {
         ConfigModel config = ConfigModel.getInstance();
+        System.out.println(position);
+        System.out.println(config.getRoomWidth());
+        System.out.println(config.getRoomHeight());
+        System.out.println();
         return position.getXValue() > 0 &&
                 position.getXValue() < config.getRoomWidth() &&
                 position.getYValue() > 0 &&
