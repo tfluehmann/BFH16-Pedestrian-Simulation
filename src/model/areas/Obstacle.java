@@ -41,11 +41,8 @@ public class Obstacle extends Area {
         edgePoints.clear();
         Position a, b;
         for (int i = 0; i < this.corners.size(); i++) {
-            if (i + 1 >= this.corners.size()) {
-                b = this.corners.get(0);
-            } else {
-                b = this.corners.get(i + 1);
-            }
+            // once around the obstacle, last is first
+            b = (i + 1 >= this.corners.size()) ? this.corners.get(0) : this.corners.get(i + 1);
             a = this.corners.get(i);
             GVector c = new GVector(a.getXValue(), a.getYValue(), b.getXValue(), b.getYValue());
             GVector unitVector = c.norm();
