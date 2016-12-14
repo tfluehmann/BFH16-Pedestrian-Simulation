@@ -185,23 +185,14 @@ public class MainController implements Initializable {
 
 		spawnButton.setOnAction((event) -> {
 			if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
-				Alert alert = new Alert(Alert.AlertType.ERROR);
-				alert.setTitle("Check your stuff");
-				alert.setHeaderText("No curse words please.");
-				alert.setContentText("You have not created at least one spawn and one goal area.\nPress right click to create them.");
-				alert.initOwner(this.basePane.getScene().getWindow());
-				alert.getDialogPane().getStylesheets().add(getClass().getResource("/view/default.css").toExternalForm());
-				alert.getDialogPane().getStyleClass().add("myDialog");
-				alert.showAndWait();
-				return;
+                new MissingAreasAlert(this.basePane);
+                return;
 			}
 
 			PathManager pathManager = spMgr.getPathManager();
-			Vertex goal = null;
 			for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
-				goal = new Vertex(ga.getPosition());
-				pathManager.addTarget(goal);
-			}
+                pathManager.addTarget(new TargetVertex(ga.getPosition()));
+            }
 			for (Obstacle obstacle : obstacleManager.getObstacles()) {
 				obstacle.calculateCornersAndVertices();
 				for (Position p : obstacle.getEdgePoints())
@@ -209,7 +200,7 @@ public class MainController implements Initializable {
 				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 			}
 			pathManager.findValidEdges(simulationRoom);
-            pathManager.dijkstra(goal);
+            pathManager.calculatePaths();
 
 			/**
 			 * Save data form the config window for usage in simulation.
