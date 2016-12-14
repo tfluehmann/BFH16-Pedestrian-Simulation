@@ -56,7 +56,7 @@ public class PathManager {
     }
 
 
-    public void crapFindAlgorithm(Vertex target) {
+    public void dijkstra(Vertex target) {
         Queue<Node> pq = new PriorityQueue<>(new Node());//Heap to extract value
         Map<Vertex, Double> distances = new HashMap<>();
         for (Vertex v : vertexList)

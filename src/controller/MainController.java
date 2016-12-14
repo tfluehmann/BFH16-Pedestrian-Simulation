@@ -210,7 +210,7 @@ public class MainController implements Initializable {
 				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 			}
 			pathManager.findValidEdges(simulationRoom);
-			pathManager.crapFindAlgorithm(goal);
+            pathManager.dijkstra(goal);
 
 			/**
 			 * Save data form the config window for usage in simulation.
