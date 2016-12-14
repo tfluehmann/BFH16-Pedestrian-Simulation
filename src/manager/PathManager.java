@@ -15,9 +15,9 @@ public class PathManager {
     private final List<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
     private final Set<Vertex> settledNodes = new HashSet<>();
     private Map<Vertex, Double> nodes = new HashMap<>();
-    private List<Vertex> targetVertexes = new ArrayList<>();
+    private List<TargetVertex> targetVertexes = new ArrayList<>();
 
-    public PathManager(Vertex... targetVertexes) {
+    public PathManager(TargetVertex... targetVertexes) {
         this.targetVertexes.addAll(Arrays.asList(targetVertexes));
         this.vertexList.addAll(this.targetVertexes);
     }
@@ -55,8 +55,12 @@ public class PathManager {
         }
     }
 
+    public void calculatePaths() {
+        for (TargetVertex target : targetVertexes)
+            dijkstra(target);
+    }
 
-    public void dijkstra(Vertex target) {
+    private void dijkstra(TargetVertex target) {
         Queue<Node> pq = new PriorityQueue<>(new Node());//Heap to extract value
         Map<Vertex, Double> distances = new HashMap<>();
         for (Vertex v : vertexList)
@@ -72,9 +76,10 @@ public class PathManager {
             candidate.setVisited(true);
             settledNodes.add(candidate);
             for (Vertex z : candidate.getNeighbors().keySet()) {
+                if (z instanceof TargetVertex && candidate instanceof TargetVertex) continue;
                 GVector vector = new GVector(z.getPosition(), candidate.getPosition());
                 double newDist = cost + vector.length();
-                if (distances.get(z) > newDist) {                        //Checking for min weight
+                if (distances.get(z) > newDist) { //Checking for min weight
                     z.setTarget(target, candidate, newDist);
                     distances.put(z, newDist);
                     pq.offer(new Node(z, distances.get(z)));//Adding element to PriorityQueue
@@ -104,11 +109,11 @@ public class PathManager {
         return obstacleEdges;
     }
 
-    public List<Vertex> getTargetVertexes() {
+    public List<TargetVertex> getTargetVertexes() {
         return this.targetVertexes;
     }
 
-    public void addTarget(Vertex target) {
+    public void addTarget(TargetVertex target) {
         this.targetVertexes.add(target);
         this.vertexList.add(target);
     }
