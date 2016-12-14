@@ -12,7 +12,7 @@ public class Vertex extends Observable {
     private Position position;
     private Map<Vertex, Double> neighbors = new HashMap<>();
     //Target -> nexthop
-    private Map<Vertex, Vertex> nextHopsToTarget = new HashMap<>();
+    private Map<TargetVertex, Vertex> nextHopsToTarget = new HashMap<>();
     //nexthop -> distance
     private Map<Vertex, Double> nextHopDistance = new HashMap<>();
     private boolean isVisited = false;
@@ -43,7 +43,8 @@ public class Vertex extends Observable {
         return neighbors;
     }
 
-    public void setTarget(Vertex target, Vertex nextHop, double newDist) {
+    public void setTarget(TargetVertex target, Vertex nextHop, double newDist) {
+        System.out.println("added targetvertex " + target);
         nextHopsToTarget.put(target, nextHop);
         nextHopDistance.put(nextHop, newDist);
         for (double distToNextVertex : nextHopDistance.values())
@@ -60,6 +61,27 @@ public class Vertex extends Observable {
 
     public double distanceToTarget() {
         return distanceToTarget;
+    }
+
+    public TargetVertex getShortestTarget() {
+        TargetVertex shortestTarget = null;
+        double shortestDistance = 0.0;
+        System.out.println("Targets available: " + nextHopsToTarget.keySet().size());
+        for (TargetVertex candidateTarget : nextHopsToTarget.keySet()) {
+            Vertex nextHop = nextHopsToTarget.get(candidateTarget);
+            double candidateDistance = nextHopDistance.get(nextHop);
+            if (shortestTarget == null) {
+                shortestTarget = candidateTarget;
+                shortestDistance = candidateDistance;
+                continue;
+            }
+
+            if (shortestDistance >= candidateDistance) {
+                shortestTarget = candidateTarget;
+                shortestDistance = candidateDistance;
+            }
+        }
+        return shortestTarget;
     }
 
 }
