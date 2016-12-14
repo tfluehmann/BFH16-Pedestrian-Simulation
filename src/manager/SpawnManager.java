@@ -103,8 +103,8 @@ public class SpawnManager {
 		do {
 			randomWidth = (spawn.getBoundsInLocal().getWidth() - (config.getPersonRadius() * 2)) * r.nextDouble();
 			randomHeight = (spawn.getBoundsInLocal().getHeight() - (config.getPersonRadius() * 2)) * r.nextDouble();
-			x = spawn.getPosition().getXValue() + randomWidth;
-			y = spawn.getPosition().getYValue() + randomHeight;
+			x = spawn.getBoundsInLocal().getMinX() + randomWidth;
+			y = spawn.getBoundsInLocal().getMinY() + randomHeight;
 		}
 		while (!spawn.contains(x + config.getPersonRadius(), y + config.getPersonRadius())
 				|| !spawn.contains(x - config.getPersonRadius(), y - config.getPersonRadius())
