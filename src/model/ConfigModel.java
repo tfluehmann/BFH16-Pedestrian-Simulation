@@ -48,6 +48,7 @@ public class ConfigModel {
 
     private Properties props;
     private int jamLevel;
+    private double personViewLengthMultiplicator;
 
 
     private ConfigModel() {
@@ -74,8 +75,10 @@ public class ConfigModel {
     }
 
     private void setDefaults() {
-        roomWidthOrigin = Screen.getPrimary().getVisualBounds().getWidth() + Double.parseDouble(props.getProperty("Room.origin.padding.width", "-570"));
-        roomHeightOrigin = Screen.getPrimary().getVisualBounds().getHeight() + Double.parseDouble(props.getProperty("Room.origin.padding.height", "-40"));
+        roomWidthOrigin = Screen.getPrimary().getVisualBounds().getWidth() +
+                Double.parseDouble(props.getProperty("Room.origin.padding.width", "-570"));
+        roomHeightOrigin = Screen.getPrimary().getVisualBounds().getHeight() +
+                Double.parseDouble(props.getProperty("Room.origin.padding.height", "-40"));
         personRadius = Double.parseDouble(props.getProperty("Person.radius"));
         perimeterSize = Double.parseDouble(props.getProperty("Perimeter.size"));
         edgeExtender = Double.parseDouble(props.getProperty("Edge.extender"));
@@ -94,14 +97,14 @@ public class ConfigModel {
         youngPersonMaxSpeed = Double.parseDouble(props.getProperty("Person.young.speed.max"));
         youngPersonMinSpeed = Double.parseDouble(props.getProperty("Person.young.speed.min"));
         personViewAngle = Double.parseDouble(props.getProperty("Person.view.angle"));
+        personViewLengthMultiplicator = Double.parseDouble(props.getProperty("Person.view.length.factor",
+                "3.0"));
         epsilon = Double.parseDouble(props.getProperty("Math.epsilon"));
         jamLevel = Integer.parseInt(props.getProperty("Simulation.jam.level"));
     }
 
     public static ConfigModel getInstance() {
-        if (instance == null) {
-            instance = new ConfigModel();
-        }
+        if (instance == null) instance = new ConfigModel();
         return instance;
     }
 
@@ -294,5 +297,9 @@ public class ConfigModel {
 
     public int getJamLevel() {
         return jamLevel;
+    }
+
+    public double getPersonViewLengthFactor() {
+        return personViewLengthMultiplicator;
     }
 }

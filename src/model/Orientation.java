@@ -46,7 +46,8 @@ public class Orientation extends Line {
     public boolean isJam() {
         Position target = person.getNextVertexPosition();
         updateView();
-        if (direction.length() > configModel.getPerimeterSize() * 3) return false;
+        if (direction.length() > configModel.getPerimeterSize() *
+                configModel.getPersonViewLengthFactor()) return false;
         List<Perimeter> perimeters = new ArrayList<>();
         perimeters.add(PerimeterManager.getInstance().getCurrentPerimeter(target));
         perimeters.addAll(PerimeterManager.getInstance().getNeighbors(target));
@@ -61,8 +62,10 @@ public class Orientation extends Line {
         Vertex possibleVertex = null;
         PathManager pathManager = SpawnManager.getInstance().getPathManager();
         for (Vertex vertex : pathManager.getVertexList()) {
+            if (vertex.getPosition().equals(person.getNextVertexPosition())) continue;
             GVector vector = new GVector(direction.getStartPosition(), vertex.getPosition());
-            double angle = direction.dotProductWith(vector);
+            double angle = Math.toDegrees(direction.dotProductWith(vector));
+            System.out.println("Angle to vertex: " + angle);
             if (angle <= configModel.getPersonViewAngle() && angle >= -configModel.getPersonViewAngle() &&
                     person.isNewPositionAllowed(vertex.getPosition())) {
                 if (possibleVertex == null) possibleVertex = vertex;
