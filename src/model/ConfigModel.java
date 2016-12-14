@@ -78,7 +78,7 @@ public class ConfigModel {
 
     private void setDefaults() {
         roomWidthOrigin = Screen.getPrimary().getVisualBounds().getWidth() +
-                Double.parseDouble(props.getProperty("Room.origin.padding.width", "-570"));
+                Double.parseDouble(props.getProperty("Room.origin.padding.width", "-600"));
         roomHeightOrigin = Screen.getPrimary().getVisualBounds().getHeight() +
                 Double.parseDouble(props.getProperty("Room.origin.padding.height", "-40"));
         personRadius = Double.parseDouble(props.getProperty("Person.radius"));
