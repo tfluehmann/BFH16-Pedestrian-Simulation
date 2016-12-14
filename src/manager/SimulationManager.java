@@ -31,11 +31,12 @@ public class SimulationManager {
      * shuffle before every run because there might be
      * unsolvable issues if it is always the same order
      */
-    public static void start(Label time) {
+    public static void start(Label time, int oldTime) {
         Task task = new Task<Void>() {
             @Override
             public Void call() throws Exception {
-                int i = 0;
+            	String t = time.getText();
+            	int i = oldTime;
                 while (!isSimulationFinished()) {
                     Collections.shuffle(spawnManager.getPersons());
                     spawnManager.handlePersonsInTargetRange();
@@ -43,7 +44,7 @@ public class SimulationManager {
                         for (Person p : spawnManager.getPersons())
                             p.calculateStep();
                     });
-                    this.updateMessage(++i + " seconds");
+                    this.updateMessage(++i + " s");
                     Thread.sleep(speedProperty.getValue());
                 }
                 return null;

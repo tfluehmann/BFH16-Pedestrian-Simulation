@@ -202,7 +202,6 @@ public class MainController implements Initializable {
 				goal = new Vertex(ga.getPosition());
 				pathManager.addTarget(goal);
 			}
-//			System.out.println(obstacleManager.getObstacles().size());
 			for (Obstacle obstacle : obstacleManager.getObstacles()) {
 				obstacle.calculateCornersAndVertices();
 				for (Position p : obstacle.getEdgePoints())
@@ -233,21 +232,19 @@ public class MainController implements Initializable {
 			statOldPersons.textProperty().set("" + stats.getNumberOldPersons());
 			statHandicappedPersons.textProperty().set("" + stats.getNumberHandicappedPersons());
 
+			statTime.textProperty().setValue("0 s");
+
 			spawnButton.setDisable(true);
 			startButton.setDisable(false);
 			resetButton.setDisable(false);
-
-			/**
-			 * Merge meter from the config to pixel for the view.
-			 */
-//			cfg.calculateRoomSize();
 		});
 
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
 				startButton.setText("Pause");
 				showStats.setDisable(true);
-				simulationManager.start(statTime);
+				String time = statTime.getText();
+				simulationManager.start(statTime, Integer.parseInt(time.replace(" s", "")));
 			} else {
 				startButton.setText("Start");
 				simulationManager.getSimulationThread().interrupt();
@@ -257,7 +254,6 @@ public class MainController implements Initializable {
 		});
 
 		resetButton.setOnAction((event -> {
-//	        implement a reset.
 			simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
 			SpawnManager spawnManager = SpawnManager.getInstance();
 			spawnManager.clear();
@@ -265,6 +261,8 @@ public class MainController implements Initializable {
 			startButton.setText("Start");
 			startButton.setDisable(true);
 			showStats.setDisable(true);
+			statTime.textProperty().unbind();
+			statTime.textProperty().setValue("0 s");
 		}));
 
 		showStats.setOnAction(event -> {
