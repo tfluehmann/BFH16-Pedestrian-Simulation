@@ -15,11 +15,11 @@ public class PathManager {
     private final List<GVector> obstacleEdges = new ArrayList<>(); // edges that are not possible to cross
     private final Set<Vertex> settledNodes = new HashSet<>();
     private Map<Vertex, Double> nodes = new HashMap<>();
-    private List<TargetVertex> targetVertexes = new ArrayList<>();
+    private List<TargetVertex> targetVertices = new ArrayList<>();
 
-    public PathManager(TargetVertex... targetVertexes) {
-        this.targetVertexes.addAll(Arrays.asList(targetVertexes));
-        this.vertexList.addAll(this.targetVertexes);
+    public PathManager(TargetVertex... targetVertices) {
+        this.targetVertices.addAll(Arrays.asList(targetVertices));
+        this.vertexList.addAll(this.targetVertices);
     }
 
     /**
@@ -56,8 +56,8 @@ public class PathManager {
     }
 
     public void calculatePaths() {
-        for (TargetVertex target : targetVertexes)
-            dijkstra(target);
+        for (TargetVertex target : targetVertices)
+	    dijkstra(target);
     }
 
     private void dijkstra(TargetVertex target) {
@@ -105,7 +105,7 @@ public class PathManager {
      */
     public Vertex getClosestVertex(Position currentPosition) {
         Vertex possibleVertex = null;
-        for (TargetVertex targetVertex : targetVertexes) {
+        for (TargetVertex targetVertex : targetVertices) {
             double possibleDist = 0;
             for (Vertex vertex : getVertexList()) {
                 GVector vect = new GVector(vertex.getPosition(), currentPosition);
@@ -125,19 +125,19 @@ public class PathManager {
         return obstacleEdges;
     }
 
-    public List<TargetVertex> getTargetVertexes() {
-        return this.targetVertexes;
+    public List<TargetVertex> getTargetVertices() {
+        return this.targetVertices;
     }
 
     public void addTarget(TargetVertex target) {
-        this.targetVertexes.add(target);
+        this.targetVertices.add(target);
         this.vertexList.add(target);
     }
 
     public void clear() {
         vertexList.clear();
         obstacleEdges.clear();
-        targetVertexes.clear();
+        targetVertices.clear();
         afterDijkstraCleanup();
     }
 }
