@@ -68,7 +68,7 @@ public class Orientation extends Line {
             if (angle <= configModel.getPersonViewAngle() && angle >= -configModel.getPersonViewAngle() &&
                     person.isNewPositionAllowed(vertex.getPosition())) {
                 if (possibleVertex == null) possibleVertex = vertex;
-                if (possibleVertex.distanceToTarget() > vertex.distanceToTarget())
+                if (possibleVertex.getDistance(person.getTarget()) > vertex.getDistance(person.getTarget()))
                     possibleVertex = vertex;
             }
         }

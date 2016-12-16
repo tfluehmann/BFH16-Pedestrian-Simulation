@@ -3,6 +3,7 @@ package manager;
 import manager.areamanagers.SpawnAreaManager;
 import model.ConfigModel;
 import model.Position;
+import model.Vertex;
 import model.areas.SpawnArea;
 import model.persons.Person;
 
@@ -84,8 +85,9 @@ public class SpawnManager {
 			SpawnArea spawnArea = spawnAreaManager.getSpawnAreas().get(ThreadLocalRandom.current().nextInt(0, spawnAreaManager.getSpawnAreas().size()));
 			newPerson = (Person) ct.newInstance(getSpawnPosition(spawnArea));
 			this.persons.add(newPerson);
-			newPerson.setNextVertex(pathManager.getClosestVertex(newPerson.getCurrentPosition()));
-			newPerson.setTarget(pathManager.getTargetVertexes().get(0));
+			Vertex nextHop = pathManager.getClosestVertex(newPerson.getCurrentPosition());
+			newPerson.setNextVertex(nextHop);
+			newPerson.setTarget(nextHop.getShortestTarget());
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			e.printStackTrace();
 		}

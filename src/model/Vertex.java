@@ -14,21 +14,25 @@ public class Vertex extends Observable {
     //Target -> nexthop
     private Map<TargetVertex, Vertex> nextHopsToTarget = new HashMap<>();
     //nexthop -> distance
-    private Map<Vertex, Double> nextHopDistance = new HashMap<>();
-    private boolean isVisited = false;
-    private double distanceToTarget;
+    private Map<TargetVertex, Double> distanceToTarget = new HashMap<>();
+    private Map<TargetVertex, Boolean> visitedForTarget = new HashMap<>();
 
     public Vertex(Position position) {
         neighbors = new HashMap<>();
         this.position = position;
     }
 
-    public Vertex getNextHopForTarget(Vertex target) {
+    public Vertex getNextHopForTarget(TargetVertex target) {
         return nextHopsToTarget.get(target);
     }
 
-    public Double getDistance(Vertex target) {
-        return nextHopDistance.get(nextHopsToTarget.get(target));
+    public Double getDistance(TargetVertex target) {
+        //in case there are no obstacles, set target is never called
+        if (distanceToTarget.get(target) == null) {
+            return new GVector(this.position, target.getPosition()).length();
+        } else {
+            return distanceToTarget.get(target);
+        }
     }
 
     public void addNeighbor(Vertex v, double distance) {
@@ -44,41 +48,28 @@ public class Vertex extends Observable {
     }
 
     public void setTarget(TargetVertex target, Vertex nextHop, double newDist) {
-        System.out.println("added targetvertex " + target);
         nextHopsToTarget.put(target, nextHop);
-        nextHopDistance.put(nextHop, newDist);
-        for (double distToNextVertex : nextHopDistance.values())
-            distanceToTarget += distToNextVertex;
+        distanceToTarget.put(target, newDist);
     }
 
-    public void setVisited(boolean visited) {
-        isVisited = visited;
+    public void setVisited(TargetVertex targetVertex, boolean visited) {
+        visitedForTarget.put(targetVertex, visited);
     }
 
-    public boolean isVisited() {
-        return isVisited;
-    }
-
-    public double distanceToTarget() {
-        return distanceToTarget;
+    public boolean isVisited(TargetVertex target) {
+        return visitedForTarget.get(target);
     }
 
     public TargetVertex getShortestTarget() {
         TargetVertex shortestTarget = null;
         double shortestDistance = 0.0;
-        System.out.println("Targets available: " + nextHopsToTarget.keySet().size());
         for (TargetVertex candidateTarget : nextHopsToTarget.keySet()) {
-            Vertex nextHop = nextHopsToTarget.get(candidateTarget);
-            double candidateDistance = nextHopDistance.get(nextHop);
             if (shortestTarget == null) {
                 shortestTarget = candidateTarget;
-                shortestDistance = candidateDistance;
-                continue;
-            }
-
-            if (shortestDistance >= candidateDistance) {
+                shortestDistance = distanceToTarget.get(candidateTarget);
+            } else if (shortestDistance > distanceToTarget.get(candidateTarget)) {
+                shortestDistance = distanceToTarget.get(candidateTarget);
                 shortestTarget = candidateTarget;
-                shortestDistance = candidateDistance;
             }
         }
         return shortestTarget;

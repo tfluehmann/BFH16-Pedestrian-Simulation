@@ -61,6 +61,7 @@ public class PathManager {
     }
 
     private void dijkstra(TargetVertex target) {
+        afterDijkstraCleanup();
         Queue<Node> pq = new PriorityQueue<>(new Node());//Heap to extract value
         Map<Vertex, Double> distances = new HashMap<>();
         for (Vertex v : vertexList)
@@ -73,10 +74,10 @@ public class PathManager {
             Node element = pq.poll();
             Vertex candidate = element.getVertex();//Getting next node from heap
             double cost = element.getWeight();
-            candidate.setVisited(true);
+            candidate.setVisited(target, true);
             settledNodes.add(candidate);
             for (Vertex z : candidate.getNeighbors().keySet()) {
-                if (z instanceof TargetVertex && candidate instanceof TargetVertex) continue;
+                if (candidate.equals(z)) continue;
                 GVector vector = new GVector(z.getPosition(), candidate.getPosition());
                 double newDist = cost + vector.length();
                 if (distances.get(z) > newDist) { //Checking for min weight
@@ -88,18 +89,33 @@ public class PathManager {
         }
     }
 
+    private void afterDijkstraCleanup() {
+        settledNodes.clear();
+        nodes.clear();
+    }
+
     public List<Vertex> getVertexList() {
         return vertexList;
     }
 
+    /**
+     * @param currentPosition
+     *
+     * @return
+     */
     public Vertex getClosestVertex(Position currentPosition) {
         Vertex possibleVertex = null;
-        for (Vertex vertex : getVertexList()) {
-            GVector vect = new GVector(vertex.getPosition(), currentPosition);
-            if (ObstacleManager.getInstance().isCrossingAnyObstacle(vect)) continue;
-            if (possibleVertex == null) possibleVertex = vertex;
-            else if (possibleVertex.distanceToTarget() > vertex.distanceToTarget())
-                possibleVertex = vertex;
+        for (TargetVertex targetVertex : targetVertexes) {
+            double possibleDist = 0;
+            for (Vertex vertex : getVertexList()) {
+                GVector vect = new GVector(vertex.getPosition(), currentPosition);
+                if (ObstacleManager.getInstance().isCrossingAnyObstacle(vect)) continue;
+                if (possibleVertex == null) {
+                    possibleVertex = vertex;
+                    possibleDist = possibleVertex.getDistance(targetVertex);
+                } else if (possibleDist > vertex.getDistance(targetVertex))
+                    possibleVertex = vertex;
+            }
         }
         if (possibleVertex == null) System.out.println("possible vertex null");
         return possibleVertex;
@@ -121,8 +137,7 @@ public class PathManager {
     public void clear() {
         vertexList.clear();
         obstacleEdges.clear();
-        settledNodes.clear();
-        nodes.clear();
         targetVertexes.clear();
+        afterDijkstraCleanup();
     }
 }
