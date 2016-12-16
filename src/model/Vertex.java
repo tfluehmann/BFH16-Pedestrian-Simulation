@@ -63,7 +63,7 @@ public class Vertex extends Observable {
     public TargetVertex getShortestTarget() {
         TargetVertex shortestTarget = null;
         double shortestDistance = 0.0;
-        for (TargetVertex candidateTarget : nextHopsToTarget.keySet()) {
+        for (TargetVertex candidateTarget : distanceToTarget.keySet()) {
             if (shortestTarget == null) {
                 shortestTarget = candidateTarget;
                 shortestDistance = distanceToTarget.get(candidateTarget);

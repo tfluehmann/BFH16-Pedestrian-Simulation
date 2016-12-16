@@ -92,10 +92,10 @@ public abstract class Person extends Circle {
         Position nextTarget = nextVertex.getPosition();
         boolean isJam = this.orientation.isJam();
         if (isJam && !(nextVertex instanceof TargetVertex)) {
-            System.out.println("JAM detected and target is not goal");
+            // System.out.println("JAM detected and target is not goal");
             Vertex nonJamVertex = this.orientation.getDifferentTargetVertex();
             if (nonJamVertex != null) {
-                System.out.println("reset target");
+                //System.out.println("reset target");
                 this.nextVertex = nonJamVertex;
                 nextTarget = nonJamVertex.getPosition();
             }
@@ -130,7 +130,9 @@ public abstract class Person extends Circle {
     public boolean isNewPositionAllowed(Position position) {
         if (position == null || position.isEmpty()) return false;
         GVector reachable = new GVector(this.currentPosition, position);
-        if (ObstacleManager.getInstance().isCrossingAnyObstacle(reachable)) return false;
+        GVector targetInView = new GVector(position, this.getNextVertexPosition());
+        if (ObstacleManager.getInstance().isCrossingAnyObstacle(reachable) ||
+                ObstacleManager.getInstance().isCrossingAnyObstacle(targetInView)) return false;
         Set<Perimeter> neighPerimeters = perimeterManager.getNeighbors(position);
         for (Perimeter perimeter : neighPerimeters) {
             for (Person person : perimeter.getRegisteredPersons()) {

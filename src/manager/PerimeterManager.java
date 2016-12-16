@@ -99,6 +99,11 @@ public class PerimeterManager {
     public Perimeter getCurrentPerimeter(Position position) {
         int perimeterI = (int) Math.floor(position.getXValue() / perimeterSize);
         int perimeterJ = (int) Math.floor(position.getYValue() / perimeterSize);
+        if (perimeterI >= perimeters.size()) perimeterI = perimeters.size() - 1; // obstacles close to the edge
+        if (perimeterJ >= perimeters.get(perimeterI).size()) perimeterJ = perimeters.get(perimeterI).size() - 1;
+        if (perimeterI < 0) perimeterI = 0;
+        if (perimeterJ < 0) perimeterJ = 0;
+
         return perimeters.get(perimeterI).get(perimeterJ);
     }
 

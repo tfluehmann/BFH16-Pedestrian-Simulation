@@ -58,10 +58,6 @@ public class Obstacle extends Area {
      */
     public boolean includes(Position position) {
         ConfigModel config = ConfigModel.getInstance();
-        System.out.println(position);
-        System.out.println(config.getRoomWidth());
-        System.out.println(config.getRoomHeight());
-        System.out.println();
         return position.getXValue() > 0 &&
                 position.getXValue() < config.getRoomWidth() &&
                 position.getYValue() > 0 &&

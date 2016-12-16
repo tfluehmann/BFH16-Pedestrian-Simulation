@@ -117,7 +117,7 @@ public class PathManager {
                     possibleVertex = vertex;
             }
         }
-        if (possibleVertex == null) System.out.println("possible vertex null");
+        //if (possibleVertex == null) System.out.println("possible vertex null");
         return possibleVertex;
     }
 
