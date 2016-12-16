@@ -203,9 +203,7 @@ public abstract class Person extends Circle {
     }
 
     public boolean isInGoalArea() {
-        Vertex targetVertex = nextVertex.getNextHopForTarget(this.target);
-        if (targetVertex != null) return false;
-        return nextVertex.getPosition().isInRange(this.currentPosition, getDiameter());
+        return this.target.getPosition().isInRange(this.currentPosition, getDiameter());
     }
 
     public LinkedList<Position> getOldPositions() {

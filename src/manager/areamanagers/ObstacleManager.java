@@ -49,4 +49,8 @@ public class ObstacleManager extends AreaManager {
             }
         return isCrossing;
     }
+
+    public void clear() {
+        this.obstacles.clear();
+    }
 }

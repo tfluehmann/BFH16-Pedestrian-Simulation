@@ -120,4 +120,10 @@ public class PerimeterManager {
         }
         return perimetersList;
     }
+
+    public void clear() {
+        this.perimeters.clear();
+        this.numberOfPerimetersY = 0;
+        this.numberOfPerimetersX = 0;
+    }
 }

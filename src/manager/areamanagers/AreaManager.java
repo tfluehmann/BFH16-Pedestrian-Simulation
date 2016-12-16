@@ -34,4 +34,6 @@ public abstract class AreaManager {
     public Room getRoom() {
         return simulationRoom;
     }
+
+    public abstract void clear();
 }

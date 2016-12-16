@@ -50,12 +50,12 @@ public class SpawnManager {
 					this.spawnPerson(pathManager, personTypes[type]);
 				}
 			} else {
-				double personMultiplicator = this.config.getTotalPersons() / 100;
+				double personFactor = this.config.getTotalPersons() / 100;
 				int[] ageDistribution = new int[4];
-				ageDistribution[0] = (int) Math.round(config.getWeightedYoungPersons() * personMultiplicator);
-				ageDistribution[1] = (int) Math.round(config.getWeightedMidAgePersons() * personMultiplicator);
-				ageDistribution[2] = (int) Math.round(config.getWeightedOldPersons() * personMultiplicator);
-				ageDistribution[3] = (int) Math.round(config.getWeightedHandicappedPersons() * personMultiplicator);
+				ageDistribution[0] = (int) Math.round(config.getWeightedYoungPersons() * personFactor);
+				ageDistribution[1] = (int) Math.round(config.getWeightedMidAgePersons() * personFactor);
+				ageDistribution[2] = (int) Math.round(config.getWeightedOldPersons() * personFactor);
+				ageDistribution[3] = (int) Math.round(config.getWeightedHandicappedPersons() * personFactor);
 				if (ageDistribution[0] + ageDistribution[1] + ageDistribution[2] + ageDistribution[3] != config.getTotalPersons())
 					ageDistribution[3] = (int) config.getTotalPersons() - ageDistribution[0] - ageDistribution[1] - ageDistribution[2];
 
@@ -126,9 +126,10 @@ public class SpawnManager {
 	public void handlePersonsInTargetRange() {
 		Vector<Person> newPersons = new Vector<>();
 		for (Person p : this.persons)
-			if (p.isInGoalArea())
+			if (p.isInGoalArea()) {
 				this.passivePersons.add(p);
-			else
+				p.setVisible(false);
+			} else
 				newPersons.add(p);
 		this.persons = newPersons;
 	}

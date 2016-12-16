@@ -38,4 +38,8 @@ public class SpawnAreaManager extends AreaManager {
         super.add(o);
         this.getSpawnAreas().add(o);
     }
+
+    public void clear() {
+        this.spawnAreas.clear();
+    }
 }

@@ -18,7 +18,6 @@ public class SimulationManager {
     private static Thread simulation;
     public static LongProperty speedProperty = new SimpleLongProperty();
 
-
     private SimulationManager() {
     }
 
@@ -56,8 +55,9 @@ public class SimulationManager {
     }
 
     private static boolean isSimulationFinished() {
-        for (Person p : spawnManager.getPersons())
+        for (Person p : spawnManager.getPersons()) {
             if (!p.isInGoalArea()) return false;
+        }
         return true;
     }
 

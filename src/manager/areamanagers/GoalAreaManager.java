@@ -29,5 +29,9 @@ public class GoalAreaManager extends AreaManager {
         this.getGoalAreas().add(o);
     }
 
+    public void clear() {
+        this.goalAreas.clear();
+    }
+
 
 }
