@@ -28,3 +28,4 @@ Datum | Zeitaufwand | Wer | Was
 30.11.2016 | 4 h | fluht1, suter1 | Direction of View DOV (Vector rotation), Stats: Pie chart finished, Bar chart started
 07.12.2016 | 3 h | fluht1, suter1 | DOV refactor, stats completed.
 09.12.2016 | 3 h | suter1 | Fixed spawn position, fixed problem on zoom out areas, styled alert dialog.
+14.12.2016 | 3 h | fluht1, suter1 | spawn fix completed, begin of implementing multiple goal areas.
