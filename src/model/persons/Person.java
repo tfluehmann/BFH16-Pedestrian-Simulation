@@ -31,7 +31,7 @@ public abstract class Person extends Circle {
     private Vertex nextVertex;
 
     //	End Goal
-    private Vertex target;
+    private TargetVertex target;
 
     private double originX;
     private double originY;
@@ -91,7 +91,7 @@ public abstract class Person extends Circle {
     private Position calculateNextPossiblePosition() {
         Position nextTarget = nextVertex.getPosition();
         boolean isJam = this.orientation.isJam();
-        if (isJam && nextVertex.distanceToTarget() != 0) {
+        if (isJam && !(nextVertex instanceof TargetVertex)) {
             System.out.println("JAM detected and target is not goal");
             Vertex nonJamVertex = this.orientation.getDifferentTargetVertex();
             if (nonJamVertex != null) {
@@ -239,8 +239,12 @@ public abstract class Person extends Circle {
         orientation = new Orientation(this);
     }
 
-    public void setTarget(Vertex target) {
+    public void setTarget(TargetVertex target) {
         this.target = target;
+    }
+
+    public TargetVertex getTarget() {
+        return target;
     }
 
     //	@return Twice the radius
