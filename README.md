@@ -4,13 +4,13 @@
 
 **ID:** Schwab-1
 
-## Titel: Fussg�nger-Simulation
+## Titel: Fussgänger-Simulation
 
-**Beschreibung:** Bei der Bewegung von Fussg�ngergruppen entstehen viele interessante Ph�nomene. Das Studium dieser Ph�nomene ist z.B. bei der Planung von Fluchtwegen in Stadien etc. von grosser Bedeutung.
+**Beschreibung:** Bei der Bewegung von Fussgängergruppen entstehen viele interessante Phänomene. Das Studium dieser Phänomene ist z.B. bei der Planung von Fluchtwegen in Stadien etc. von grosser Bedeutung.
 
-Es soll eine Software erstellt werden, welche die Bewegung von Fussg�ngern bei Vorhandensein von Hindernissen und W�nden simuliert. Die Bewegungen sollen grafisch visualisiert werden und es sollen wichtige Kenngr�ssen berechnet werden.
+Es soll eine Software erstellt werden, welche die Bewegung von Fussgängern bei Vorhandensein von Hindernissen und Wünden simuliert. Die Bewegungen sollen grafisch visualisiert werden und es sollen wichtige Kenngrössen berechnet werden.
 
-**Gruppengr�sse:** 2-3
+**Gruppengrösse:** 2-3
 
 **Anzuwendende Technologien:** Java
 
@@ -18,7 +18,7 @@ Es soll eine Software erstellt werden, welche die Bewegung von Fussg�ngern bei
 
 **Betreuer:** Peter Schwab
 
-**Studenten:** Tobias Fl�hmann, Raphael Suter
+**Studenten:** Tobias Flühmann, Raphael Suter
 
 [Requirements Dokument](./Requirements.md)
 
