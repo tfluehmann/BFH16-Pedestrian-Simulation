@@ -122,8 +122,9 @@ public class PerimeterManager {
     }
 
     public void clear() {
-        this.perimeters.clear();
-        this.numberOfPerimetersY = 0;
-        this.numberOfPerimetersX = 0;
+        for (Vector perimeterX : perimeters) {
+            for (Object perimeter : perimeterX)
+                ((Perimeter) perimeter).clear();
+        }
     }
 }

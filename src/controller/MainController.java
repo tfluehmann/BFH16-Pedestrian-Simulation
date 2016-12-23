@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import manager.PathManager;
+import manager.PerimeterManager;
 import manager.SimulationManager;
 import manager.SpawnManager;
 import manager.areamanagers.GoalAreaManager;
@@ -247,6 +248,7 @@ public class MainController implements Initializable {
 		resetButton.setOnAction((event -> {
 			simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
             SpawnManager.getInstance().clear();
+            PerimeterManager.getInstance().clear();
             spawnButton.setDisable(false);
 			startButton.setText("Start");
 			startButton.setDisable(true);

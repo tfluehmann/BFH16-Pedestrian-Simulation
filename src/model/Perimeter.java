@@ -62,4 +62,8 @@ public class Perimeter extends Rectangle {
     public Vector<Person> getRegisteredPersons() {
         return registeredPersons;
     }
+
+    public void clear() {
+        this.registeredPersons.clear();
+    }
 }
