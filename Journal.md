@@ -29,3 +29,5 @@ Datum | Zeitaufwand | Wer | Was
 07.12.2016 | 3 h | fluht1, suter1 | DOV refactor, stats completed.
 09.12.2016 | 3 h | suter1 | Fixed spawn position, fixed problem on zoom out areas, styled alert dialog.
 14.12.2016 | 3 h | fluht1, suter1 | spawn fix completed, begin of implementing multiple goal areas.
+21.12.2016 | 1 h | fluht1, suter1 | Planning and TODO added, further steps
+23.12.2016 | 2 h | fluht1, suter1 | Spawn reset solved, multiple Goalareas ongoing

@@ -2,8 +2,8 @@
 
 Was | Priorität | Wer | Zeitaufwand
 --- | --- | --- | ---
-Fehlverhalten nach n-Starts verhindern | 1 |  | 
-Target-Lost bei Personen verhindern | 1 |  | 
+Fehlverhalten nach n-Starts verhindern | 1 | done | 
+Target-Lost bei Personen verhindern | 1 | probably solved | 
 Raum-Begrenzungen für Areas & Edges einhalten | 1 |  | 
 Mehrere Goal-Areas | 2 |  | 
 nach Spawn: Areas nicht mehr verschiebbar & änderbar bis zum Reset | 2 |  | 
