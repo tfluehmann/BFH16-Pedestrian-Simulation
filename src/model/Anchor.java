@@ -15,10 +15,12 @@ public class Anchor extends Circle {
     private final DoubleProperty x, y;
     private Area area;
     private ConfigModel configModel = ConfigModel.getInstance();
+    private boolean draggable;
 
     public Anchor(Color color, DoubleProperty x, DoubleProperty y, Area area) {
         super(x.get(), y.get(), ConfigModel.getInstance().getAnchorRadius());
         this.area = area;
+        this.draggable = true;
         setFill(color.deriveColor(configModel.getAnchorColorRed(), configModel.getAnchorColorGreen(),
                 configModel.getAnchorColorBlue(), configModel.getAnchorColorOpacity()));
         setStroke(color);
@@ -37,25 +39,31 @@ public class Anchor extends Circle {
     private void enableDrag() {
         final Delta dragDelta = new Delta();
         setOnMousePressed((event) -> {
-            dragDelta.x = getCenterX() - event.getX();
-            dragDelta.y = getCenterY() - event.getY();
-            getScene().setCursor(Cursor.MOVE);
+        	if(this.draggable){
+		        dragDelta.x = getCenterX() - event.getX();
+		        dragDelta.y = getCenterY() - event.getY();
+		        getScene().setCursor(Cursor.MOVE);
+	        }
         });
 
         setOnMouseReleased((event) -> {
-            getScene().setCursor(Cursor.HAND);
-            area.calculateEdges();
+        	if(this.draggable){
+		        getScene().setCursor(Cursor.HAND);
+		        area.calculateEdges();
+	        }
         });
         setOnMouseDragged((event) -> {
-            double newX = event.getX() + dragDelta.x;
-            if (newX > 0 && newX < getScene().getWidth())
-                setCenterX(newX);
-            double newY = event.getY() + dragDelta.y;
-            if (newY > 0 && newY < getScene().getHeight())
-                setCenterY(newY);
+        	if(this.draggable){
+		        double newX = event.getX() + dragDelta.x;
+		        if (newX > 0 && newX < getScene().getWidth())
+			        setCenterX(newX);
+		        double newY = event.getY() + dragDelta.y;
+		        if (newY > 0 && newY < getScene().getHeight())
+			        setCenterY(newY);
+	        }
         });
         setOnMouseEntered((event) -> {
-            if (!event.isPrimaryButtonDown()) getScene().setCursor(Cursor.HAND);
+	        if (!event.isPrimaryButtonDown()) getScene().setCursor(Cursor.HAND);
         });
         setOnMouseExited((event) -> {
             if (!event.isPrimaryButtonDown()) getScene().setCursor(Cursor.DEFAULT);
@@ -64,5 +72,9 @@ public class Anchor extends Circle {
 
     private class Delta {
         double x, y;
+    }
+
+    public void setDraggable(boolean value){
+    	this.draggable = value;
     }
 }
