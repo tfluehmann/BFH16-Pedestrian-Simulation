@@ -1,5 +1,6 @@
 package manager;
 
+import events.FinishedEvent;
 import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -7,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import model.persons.Person;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -17,6 +19,7 @@ public class SimulationManager {
     private static SpawnManager spawnManager = SpawnManager.getInstance();
     private static Thread simulation;
     public static LongProperty speedProperty = new SimpleLongProperty();
+    private static ArrayList<FinishedEvent> finishedListeners = new ArrayList();
 
     private SimulationManager() {
     }
@@ -58,10 +61,20 @@ public class SimulationManager {
         for (Person p : spawnManager.getPersons()) {
             if (!p.isInGoalArea()) return false;
         }
+        sendEvents();
         return true;
+    }
+
+    private static void sendEvents() {
+        for (FinishedEvent fe : finishedListeners)
+            fe.finished();
     }
 
     public Thread getSimulationThread() {
         return simulation;
+    }
+
+    public static void addEventListener(FinishedEvent finishedEvent) {
+        finishedListeners.add(finishedEvent);
     }
 }

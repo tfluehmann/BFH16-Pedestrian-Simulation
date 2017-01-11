@@ -1,5 +1,6 @@
 package controller;
 
+import events.FinishedEvent;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -269,8 +270,8 @@ public class MainController implements Initializable {
 		resetButton.setDisable(false);
 	}
 
-	private void stopPressed(){
-		startButton.setText("Start");
+    public void stopPressed() {
+        startButton.setText("Start");
 		simulationManager.getSimulationThread().interrupt();
 		for(Person p:spMgr.getPersons()){
 			p.setDraggable(true);
@@ -285,8 +286,9 @@ public class MainController implements Initializable {
 		for(Person p:spMgr.getPersons()){
 			p.setDraggable(false);
 		}
-		simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
-		startButton.setDisable(false);
+        new FinishedEvent(this);
+        simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
+        startButton.setDisable(false);
 	}
 
 	private void resetPressed(){

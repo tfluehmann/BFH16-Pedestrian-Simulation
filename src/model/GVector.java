@@ -132,7 +132,7 @@ public class GVector extends Line {
      * .---->x
      * <p>
      * vector = (5, 3)
-     * start + norm(3, -5) * length and end + norm(3, -5) * length
+     * start + norm(3, -5) * length and finished + norm(3, -5) * length
      */
     public GVector moveParallelLeft(Position target) {
         GVector parallelNormVector = new GVector(target.getYValue() - getStartPointY(),
