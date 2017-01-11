@@ -5,6 +5,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
+import manager.areamanagers.SpawnAreaManager;
 import model.GVector;
 import model.Position;
 
@@ -34,8 +35,8 @@ public abstract class Area extends DraggablePolygon {
 		        this.setCursor(Cursor.CLOSED_HAND);
 		        this.originX = e.getSceneX();
 		        this.originY = e.getSceneY();
-		        e.consume();
-	        }
+                e.consume();
+            }
         });
         this.setOnMouseReleased((e) -> {
         	if(this.draggable){
@@ -49,6 +50,7 @@ public abstract class Area extends DraggablePolygon {
 		        double offsetY = event.getSceneY() - this.originY;
 		        this.originX = event.getSceneX();
 		        this.originY = event.getSceneY();
+
 		        this.edges.clear();
 		        this.calculateEdges();
 		        translatePoints(offsetX, offsetY);
@@ -67,6 +69,21 @@ public abstract class Area extends DraggablePolygon {
 		        e.consume();
 	        }
         });
+    }
+
+    protected boolean pointsInBounds(double[] points) {
+        SpawnAreaManager am = SpawnAreaManager.getInstance();
+        double roomHeight = am.getRoom().getHeight();
+        double roomWidth = am.getRoom().getWidth();
+        double originX = am.getRoom().getLayoutX();
+        double originY = am.getRoom().getLayoutY();
+        for (int x = 0, y = 1; x < points.length - 2; x += 2, y += 2) {
+            double xCoordinate = points[x] + originX;
+            double yCoordinate = points[y] + originY;
+            if (xCoordinate < originX || xCoordinate > originX + roomWidth) return false;
+            if (yCoordinate < originY || yCoordinate > originY + roomHeight) return false;
+        }
+        return true;
     }
 
     protected void scalePoints(double x, double y, double pivotX, double pivotY) {
@@ -92,17 +109,21 @@ public abstract class Area extends DraggablePolygon {
         for (int i = 0; i < getPoints().size(); i++)
             points[i] = getPoints().get(i);
         t.transform2DPoints(points, 0, newPoints, 0, getPoints().size() / 2);
-        getPoints().clear();
-        for (double d : newPoints)
-            getPoints().add(d);
 
-        this.calculateEdges();
-        if (this instanceof Obstacle) {
-            Obstacle obst = (Obstacle) this;
-            obst.getEdgePoints().clear();
-            obst.getCorners().clear();
+        if (pointsInBounds(newPoints)) {
+
+            getPoints().clear();
+            for (double d : newPoints)
+                getPoints().add(d);
+
+            this.calculateEdges();
+            if (this instanceof Obstacle) {
+                Obstacle obst = (Obstacle) this;
+                obst.getEdgePoints().clear();
+                obst.getCorners().clear();
+            }
+            moveControlAnchors();
         }
-        moveControlAnchors();
     }
 
     public abstract List<Position> getCorners();
@@ -137,8 +158,8 @@ public abstract class Area extends DraggablePolygon {
         double phi = 360 / edges;
         double rad = phi / 180 * Math.PI;
         for (int i = 0, counter = 0; i < edges; i++, counter += 2) {
-            newAreaPoints[counter] = Math.cos(i * rad) * radius; //x value
-            newAreaPoints[counter + 1] = Math.sin(i * rad) * radius; //y value
+            newAreaPoints[counter] = Math.cos(i * rad) * radius + radius; //x value
+            newAreaPoints[counter + 1] = Math.sin(i * rad) * radius + radius; //y value
         }
         try {
             return type.getDeclaredConstructor(double[].class).newInstance(newAreaPoints);
