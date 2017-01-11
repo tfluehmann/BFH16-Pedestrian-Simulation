@@ -5,6 +5,7 @@ import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
+import manager.areamanagers.SpawnAreaManager;
 import model.areas.Area;
 
 
@@ -37,6 +38,7 @@ public class Anchor extends Circle {
 
     // make a node movable by dragging it around with the mouse.
     private void enableDrag() {
+        SpawnAreaManager am = SpawnAreaManager.getInstance();
         final Delta dragDelta = new Delta();
         setOnMousePressed((event) -> {
         	if(this.draggable){
@@ -55,11 +57,11 @@ public class Anchor extends Circle {
         setOnMouseDragged((event) -> {
         	if(this.draggable){
 		        double newX = event.getX() + dragDelta.x;
-		        if (newX > 0 && newX < getScene().getWidth())
-			        setCenterX(newX);
+                if (newX > 0 && newX < am.getRoom().getWidth())
+                    setCenterX(newX);
 		        double newY = event.getY() + dragDelta.y;
-		        if (newY > 0 && newY < getScene().getHeight())
-			        setCenterY(newY);
+                if (newY > 0 && newY < am.getRoom().getHeight())
+                    setCenterY(newY);
 	        }
         });
         setOnMouseEntered((event) -> {
