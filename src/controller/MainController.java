@@ -463,5 +463,6 @@ public class MainController implements Initializable, SimulationFinishedListener
     @Override
     public void simulationFinished() {
         stopPressed();
+        startButton.setDisable(true);
     }
 }
