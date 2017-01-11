@@ -185,136 +185,157 @@ public class MainController implements Initializable {
 		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
 
 		spawnButton.setOnAction((event) -> {
-			if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
-                new MissingAreasAlert(this.basePane);
-                return;
-			}
-			for(SpawnArea sp : spawnAreaManger.getSpawnAreas()) {
-				sp.setDraggable(false);
-				for(Anchor a:sp.getAnchors()){
-					a.setDraggable(false);
-				}
-			}
-			PathManager pathManager = spMgr.getPathManager();
-			for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
-				pathManager.addTarget(new TargetVertex(ga.getPosition()));
-				ga.setDraggable(false);
-				for(Anchor a:ga.getAnchors()){
-					a.setDraggable(false);
-				}
-			}
-			for (Obstacle obstacle : obstacleManager.getObstacles()) {
-				obstacle.setDraggable(false);
-				for(Anchor a:obstacle.getAnchors()){
-					a.setDraggable(false);
-				}
-				obstacle.calculateCornersAndVertices();
-				for (Position p : obstacle.getEdgePoints())
-					pathManager.getVertexList().add(new Vertex(p));
-				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
-			}
-
-			pathManager.findValidEdges(simulationRoom);
-            pathManager.calculatePaths();
-
-			/**
-			 * Save data form the config window for usage in simulation.
-			 */
-			cfg.setTotalPersons(getTotalPersons());
-			cfg.setWeighted(getIsWeighted());
-			cfg.setWeightedYoungPersons(getWeightYoung());
-			cfg.setWeightedMidAgePersons(getWeightMidage());
-			cfg.setWeightedOldPersons(getWeightOld());
-			cfg.setWeightedHandicappedPersons(getWeightHandicap());
-
-			spMgr.createPersons();
-			for(Person p:spMgr.getPersons()){
-				p.setDraggable(true);
-			}
-			this.simulationRoom.getChildren().addAll(spMgr.getPersons());
-
-			Statistic stats = Statistic.getInstance();
-			stats.calculatePersons();
-			statTotalPersons.textProperty().set("" + stats.getTotalPersons());
-			statYoungPersons.textProperty().set("" + stats.getNumberYoungPersons());
-			statMidagePersons.textProperty().set("" + stats.getNumberMidagePersons());
-			statOldPersons.textProperty().set("" + stats.getNumberOldPersons());
-			statHandicappedPersons.textProperty().set("" + stats.getNumberHandicappedPersons());
-
-			statTime.textProperty().setValue("0 s");
-
-			spawnButton.setDisable(true);
-			startButton.setDisable(false);
-			resetButton.setDisable(false);
+			spawnPressed();
 		});
 
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
-				startButton.setText("Pause");
-				showStats.setDisable(true);
-				for(Person p:spMgr.getPersons()){
-					p.setDraggable(false);
-				}
-				simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
+				startPressed();
 			} else {
-				startButton.setText("Start");
-				simulationManager.getSimulationThread().interrupt();
-				for(Person p:spMgr.getPersons()){
-					p.setDraggable(true);
-				}
-				enableStatsButton();
+				stopPressed();
 			}
-			startButton.setDisable(false);
 		});
 
 		resetButton.setOnAction((event -> {
-			simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
-            SpawnManager.getInstance().clear();
-            PerimeterManager.getInstance().clear();
-            spawnButton.setDisable(false);
-			startButton.setText("Start");
-			startButton.setDisable(true);
-			showStats.setDisable(true);
-			statTime.textProperty().unbind();
-			statTime.textProperty().setValue("0 s");
-			for(SpawnArea spawn: spawnAreaManger.getSpawnAreas()){
-				spawn.setDraggable(true);
-				for(Anchor a:spawn.getAnchors()){
-					a.setDraggable(true);
-				}
-			}
-			for(GoalArea goal:goalAreaManager.getGoalAreas()){
-				goal.setDraggable(true);
-				for(Anchor a:goal.getAnchors()){
-					a.setDraggable(true);
-				}
-			}
-			for(Obstacle obstacle:obstacleManager.getObstacles()){
-				obstacle.setDraggable(true);
-				for(Anchor a:obstacle.getAnchors()){
-					a.setDraggable(true);
-				}
-			}
+			resetPressed();
 		}));
 
 		showStats.setOnAction(event -> {
-			try {
-				Statistic.getInstance();
-				FXMLLoader ldr = new FXMLLoader();
-				ldr.setLocation(getClass().getResource("/view/Statistics.fxml"));
-				AnchorPane page = ldr.load();
-				Stage dialogStage = new Stage();
-				dialogStage.initOwner(this.basePane.getScene().getWindow());
-				dialogStage.setTitle("Statistics");
-				dialogStage.initModality(Modality.WINDOW_MODAL);
-				Scene scene = new Scene(page);
-				dialogStage.setScene(scene);
-				dialogStage.show();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			showStatsPressed();
 		});
+	}
+
+	private void spawnPressed(){
+		if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
+			new MissingAreasAlert(this.basePane);
+			return;
+		}
+		for(SpawnArea sp : spawnAreaManger.getSpawnAreas()) {
+			sp.setDraggable(false);
+			for(Anchor a:sp.getAnchors()){
+				a.setDraggable(false);
+			}
+		}
+		PathManager pathManager = spMgr.getPathManager();
+		for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
+			pathManager.addTarget(new TargetVertex(ga.getPosition()));
+			ga.setDraggable(false);
+			for(Anchor a:ga.getAnchors()){
+				a.setDraggable(false);
+			}
+		}
+		for (Obstacle obstacle : obstacleManager.getObstacles()) {
+			obstacle.setDraggable(false);
+			for(Anchor a:obstacle.getAnchors()){
+				a.setDraggable(false);
+			}
+			obstacle.calculateCornersAndVertices();
+			for (Position p : obstacle.getEdgePoints())
+				pathManager.getVertexList().add(new Vertex(p));
+			pathManager.getObstacleEdges().addAll(obstacle.getEdges());
+		}
+
+		pathManager.findValidEdges(simulationRoom);
+		pathManager.calculatePaths();
+
+		/**
+		 * Save data form the config window for usage in simulation.
+		 */
+		cfg.setTotalPersons(getTotalPersons());
+		cfg.setWeighted(getIsWeighted());
+		cfg.setWeightedYoungPersons(getWeightYoung());
+		cfg.setWeightedMidAgePersons(getWeightMidage());
+		cfg.setWeightedOldPersons(getWeightOld());
+		cfg.setWeightedHandicappedPersons(getWeightHandicap());
+
+		spMgr.createPersons();
+		for(Person p:spMgr.getPersons()){
+			p.setDraggable(true);
+		}
+		this.simulationRoom.getChildren().addAll(spMgr.getPersons());
+
+		Statistic stats = Statistic.getInstance();
+		stats.calculatePersons();
+		statTotalPersons.textProperty().set("" + stats.getTotalPersons());
+		statYoungPersons.textProperty().set("" + stats.getNumberYoungPersons());
+		statMidagePersons.textProperty().set("" + stats.getNumberMidagePersons());
+		statOldPersons.textProperty().set("" + stats.getNumberOldPersons());
+		statHandicappedPersons.textProperty().set("" + stats.getNumberHandicappedPersons());
+
+		statTime.textProperty().setValue("0 s");
+
+		spawnButton.setDisable(true);
+		startButton.setDisable(false);
+		resetButton.setDisable(false);
+	}
+
+	private void stopPressed(){
+		startButton.setText("Start");
+		simulationManager.getSimulationThread().interrupt();
+		for(Person p:spMgr.getPersons()){
+			p.setDraggable(true);
+		}
+		enableStatsButton();
+		startButton.setDisable(false);
+	}
+
+	private void startPressed(){
+		startButton.setText("Pause");
+		showStats.setDisable(true);
+		for(Person p:spMgr.getPersons()){
+			p.setDraggable(false);
+		}
+		simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
+		startButton.setDisable(false);
+	}
+
+	private void resetPressed(){
+		simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
+		SpawnManager.getInstance().clear();
+		PerimeterManager.getInstance().clear();
+		spawnButton.setDisable(false);
+		startButton.setText("Start");
+		startButton.setDisable(true);
+		showStats.setDisable(true);
+		statTime.textProperty().unbind();
+		statTime.textProperty().setValue("0 s");
+		for(SpawnArea spawn: spawnAreaManger.getSpawnAreas()){
+			spawn.setDraggable(true);
+			for(Anchor a:spawn.getAnchors()){
+				a.setDraggable(true);
+			}
+		}
+		for(GoalArea goal:goalAreaManager.getGoalAreas()){
+			goal.setDraggable(true);
+			for(Anchor a:goal.getAnchors()){
+				a.setDraggable(true);
+			}
+		}
+		for(Obstacle obstacle:obstacleManager.getObstacles()){
+			obstacle.setDraggable(true);
+			for(Anchor a:obstacle.getAnchors()){
+				a.setDraggable(true);
+			}
+		}
+	}
+
+	private void showStatsPressed(){
+		try {
+			Statistic.getInstance();
+			FXMLLoader ldr = new FXMLLoader();
+			ldr.setLocation(getClass().getResource("/view/Statistics.fxml"));
+			AnchorPane page = ldr.load();
+			Stage dialogStage = new Stage();
+			dialogStage.initOwner(this.basePane.getScene().getWindow());
+			dialogStage.setTitle("Statistics");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+			dialogStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private int sliderSum() {
