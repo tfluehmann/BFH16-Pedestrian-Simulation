@@ -189,17 +189,31 @@ public class MainController implements Initializable {
                 new MissingAreasAlert(this.basePane);
                 return;
 			}
-
+			for(SpawnArea sp : spawnAreaManger.getSpawnAreas()) {
+				sp.setDraggable(false);
+				for(Anchor a:sp.getAnchors()){
+					a.setDraggable(false);
+				}
+			}
 			PathManager pathManager = spMgr.getPathManager();
 			for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
-                pathManager.addTarget(new TargetVertex(ga.getPosition()));
-            }
+				pathManager.addTarget(new TargetVertex(ga.getPosition()));
+				ga.setDraggable(false);
+				for(Anchor a:ga.getAnchors()){
+					a.setDraggable(false);
+				}
+			}
 			for (Obstacle obstacle : obstacleManager.getObstacles()) {
+				obstacle.setDraggable(false);
+				for(Anchor a:obstacle.getAnchors()){
+					a.setDraggable(false);
+				}
 				obstacle.calculateCornersAndVertices();
 				for (Position p : obstacle.getEdgePoints())
 					pathManager.getVertexList().add(new Vertex(p));
 				pathManager.getObstacleEdges().addAll(obstacle.getEdges());
 			}
+
 			pathManager.findValidEdges(simulationRoom);
             pathManager.calculatePaths();
 
@@ -214,6 +228,9 @@ public class MainController implements Initializable {
 			cfg.setWeightedHandicappedPersons(getWeightHandicap());
 
 			spMgr.createPersons();
+			for(Person p:spMgr.getPersons()){
+				p.setDraggable(true);
+			}
 			this.simulationRoom.getChildren().addAll(spMgr.getPersons());
 
 			Statistic stats = Statistic.getInstance();
@@ -235,11 +252,16 @@ public class MainController implements Initializable {
 			if (startButton.getText().equals("Start")) {
 				startButton.setText("Pause");
 				showStats.setDisable(true);
-				String time = statTime.getText();
-				simulationManager.start(statTime, Integer.parseInt(time.replace(" s", "")));
+				for(Person p:spMgr.getPersons()){
+					p.setDraggable(false);
+				}
+				simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
 			} else {
 				startButton.setText("Start");
 				simulationManager.getSimulationThread().interrupt();
+				for(Person p:spMgr.getPersons()){
+					p.setDraggable(true);
+				}
 				enableStatsButton();
 			}
 			startButton.setDisable(false);
@@ -255,6 +277,24 @@ public class MainController implements Initializable {
 			showStats.setDisable(true);
 			statTime.textProperty().unbind();
 			statTime.textProperty().setValue("0 s");
+			for(SpawnArea spawn: spawnAreaManger.getSpawnAreas()){
+				spawn.setDraggable(true);
+				for(Anchor a:spawn.getAnchors()){
+					a.setDraggable(true);
+				}
+			}
+			for(GoalArea goal:goalAreaManager.getGoalAreas()){
+				goal.setDraggable(true);
+				for(Anchor a:goal.getAnchors()){
+					a.setDraggable(true);
+				}
+			}
+			for(Obstacle obstacle:obstacleManager.getObstacles()){
+				obstacle.setDraggable(true);
+				for(Anchor a:obstacle.getAnchors()){
+					a.setDraggable(true);
+				}
+			}
 		}));
 
 		showStats.setOnAction(event -> {

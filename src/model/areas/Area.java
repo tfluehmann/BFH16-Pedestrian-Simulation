@@ -18,45 +18,54 @@ import java.util.Set;
  */
 public abstract class Area extends DraggablePolygon {
     protected Set<GVector> edges = new HashSet<>();
-
+	private boolean draggable;
     private double originX;
     private double originY;
 
     public Area(double... points) {
         super(points);
+        this.draggable = true;
         this.initDragAndDrop();
     }
 
     private void initDragAndDrop() {
         this.setOnMousePressed((e) -> {
-            this.setCursor(Cursor.CLOSED_HAND);
-            this.originX = e.getSceneX();
-            this.originY = e.getSceneY();
-            e.consume();
+        	if(this.draggable){
+		        this.setCursor(Cursor.CLOSED_HAND);
+		        this.originX = e.getSceneX();
+		        this.originY = e.getSceneY();
+		        e.consume();
+	        }
         });
         this.setOnMouseReleased((e) -> {
-            this.setCursor(Cursor.HAND);
-            e.consume();
+        	if(this.draggable){
+		        this.setCursor(Cursor.HAND);
+		        e.consume();
+	        }
         });
         this.setOnMouseDragged((event) -> {
-            double offsetX = event.getSceneX() - this.originX;
-            double offsetY = event.getSceneY() - this.originY;
-            this.originX = event.getSceneX();
-            this.originY = event.getSceneY();
-            this.edges.clear();
-            this.calculateEdges();
-            translatePoints(offsetX, offsetY);
-            event.consume();
+        	if(this.draggable){
+		        double offsetX = event.getSceneX() - this.originX;
+		        double offsetY = event.getSceneY() - this.originY;
+		        this.originX = event.getSceneX();
+		        this.originY = event.getSceneY();
+		        this.edges.clear();
+		        this.calculateEdges();
+		        translatePoints(offsetX, offsetY);
+		        event.consume();
+	        }
         });
 
         this.setOnScroll((e) -> {
-            double factor = 1.01;
-            if (e.getDeltaY() < 0) factor = (2.0 - factor);
-            double pivotX = e.getX();
-            double pivotY = e.getY();
-            if (e.isAltDown()) this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
-            else this.scalePoints((factor), (factor), pivotX, pivotY);
-            e.consume();
+        	if(this.draggable){
+		        double factor = 1.01;
+		        if (e.getDeltaY() < 0) factor = (2.0 - factor);
+		        double pivotX = e.getX();
+		        double pivotY = e.getY();
+		        if (e.isAltDown()) this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
+		        else this.scalePoints((factor), (factor), pivotX, pivotY);
+		        e.consume();
+	        }
         });
     }
 
@@ -138,6 +147,10 @@ public abstract class Area extends DraggablePolygon {
             System.exit(0);
         }
         return null;
+    }
+
+    public void setDraggable(Boolean value){
+    	this.draggable = value;
     }
 
     public Set<GVector> getEdges() {

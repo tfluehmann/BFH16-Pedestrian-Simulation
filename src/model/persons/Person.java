@@ -33,6 +33,8 @@ public abstract class Person extends Circle {
     //	End Goal
     private TargetVertex target;
 
+    private boolean draggable;
+
     private double originX;
     private double originY;
 
@@ -46,25 +48,30 @@ public abstract class Person extends Circle {
         this.setCurrentPosition(pos);
         this.centerXProperty().bind(this.getCurrentPosition().getXProperty());
         this.centerYProperty().bind(this.getCurrentPosition().getYProperty());
+        this.draggable = true;
         this.setCursor(Cursor.HAND);
         initDragAndDrop();
     }
 
     private void initDragAndDrop() {
         this.setOnMousePressed((e) -> {
-            this.setCursor(Cursor.CLOSED_HAND);
-            this.originX = e.getSceneX();
-            this.originY = e.getSceneY();
-            this.targetX = this.getCurrentPosition().getXValue();
-            this.targetY = this.getCurrentPosition().getYValue();
+        	if(this.draggable){
+		        this.setCursor(Cursor.CLOSED_HAND);
+		        this.originX = e.getSceneX();
+		        this.originY = e.getSceneY();
+		        this.targetX = this.getCurrentPosition().getXValue();
+		        this.targetY = this.getCurrentPosition().getYValue();
+	        }
         });
         this.setOnMouseReleased((e) -> this.setCursor(Cursor.HAND));
         this.setOnMouseDragged((e) -> {
-            double offsetX = e.getSceneX() - this.originX;
-            double offsetY = e.getSceneY() - this.originY;
-            double newTranslateX = this.targetX + offsetX;
-            double newTranslateY = this.targetY + offsetY;
-            this.setPosition(new Position(newTranslateX, newTranslateY));
+        	if(this.draggable){
+		        double offsetX = e.getSceneX() - this.originX;
+		        double offsetY = e.getSceneY() - this.originY;
+		        double newTranslateX = this.targetX + offsetX;
+		        double newTranslateY = this.targetY + offsetY;
+		        this.setPosition(new Position(newTranslateX, newTranslateY));
+	        }
         });
     }
 
@@ -256,5 +263,9 @@ public abstract class Person extends Circle {
 
     public Orientation getOrientation() {
         return orientation;
+    }
+
+    public void setDraggable(boolean value){
+    	this.draggable = value;
     }
 }
