@@ -50,6 +50,11 @@ public class ObstacleManager extends AreaManager {
         return isCrossing;
     }
 
+	public void remove(Obstacle obstacle) {
+		super.remove(obstacle);
+		this.getObstacles().remove(obstacle);
+	}
+
     public void clear() {
         this.obstacles.clear();
     }

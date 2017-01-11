@@ -1,5 +1,6 @@
 package model.areas;
 
+import manager.areamanagers.ObstacleManager;
 import model.ConfigModel;
 import model.GVector;
 import model.Position;
@@ -18,7 +19,7 @@ public class Obstacle extends Area {
      * Created by suter1 on 06.10.2016.
      */
     public Obstacle(double... points) {
-        super(points);
+        super(ObstacleManager.getInstance(), points);
         corners = new ArrayList<>();
         edgePoints = new ArrayList<>();
         getStyleClass().add("obstacle");

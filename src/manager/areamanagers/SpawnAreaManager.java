@@ -39,6 +39,11 @@ public class SpawnAreaManager extends AreaManager {
         this.getSpawnAreas().add(o);
     }
 
+	public void remove(SpawnArea area) {
+		super.remove(area);
+		this.getSpawnAreas().remove(area);
+	}
+
     public void clear() {
         this.spawnAreas.clear();
     }

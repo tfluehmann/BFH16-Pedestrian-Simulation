@@ -1,5 +1,6 @@
 package model.areas;
 
+import manager.areamanagers.SpawnAreaManager;
 import model.Position;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public class SpawnArea extends Area {
 
     public SpawnArea(double... points) {
-        super(points);
+        super(SpawnAreaManager.getInstance(), points);
 		super.rotatePoints(-135, points[0], points[1]);
 		getStyleClass().add("spawn-area");
 	}

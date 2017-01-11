@@ -1,5 +1,6 @@
 package model.areas;
 
+import manager.areamanagers.GoalAreaManager;
 import model.Position;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public class GoalArea extends Area {
 
 	public GoalArea(double... points) {
-		super(points);
+		super(GoalAreaManager.getInstance(), points);
 		super.rotatePoints(-135, points[0], points[1]);
 		getStyleClass().add("goal-area");
 	}

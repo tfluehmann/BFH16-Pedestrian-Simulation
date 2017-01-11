@@ -36,4 +36,9 @@ public abstract class AreaManager {
     }
 
     public abstract void clear();
+
+	public void remove(Area a){
+		getRoom().getChildren().removeAll(a.getAnchors());
+		getRoom().getChildren().remove(a);
+	};
 }

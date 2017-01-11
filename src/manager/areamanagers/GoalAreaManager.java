@@ -33,5 +33,9 @@ public class GoalAreaManager extends AreaManager {
         this.goalAreas.clear();
     }
 
+	public void remove(GoalArea area) {
+		super.remove(area);
+		this.getGoalAreas().remove(area);
+	}
 
 }
