@@ -2,203 +2,239 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import model.Room?>
-<AnchorPane fx:id="basePane" styleClass="background" stylesheets="@default.css" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane fx:id="basePane" styleClass="background" stylesheets="@default.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
                 <AnchorPane fx:id="config" maxHeight="-Infinity" maxWidth="400.0" minHeight="-Infinity" minWidth="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
-                    <VBox maxWidth="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="35.0" BorderPane.alignment="CENTER">
-                        <children>
-                            <HBox alignment="TOP_CENTER">
-                                <children>
-                                    <Label maxHeight="25.0" maxWidth="150.0" minHeight="25.0" text="Total persons" />
-                                    <TextField fx:id="totalPersons" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" minWidth="40.0" text="10">
-                                        <HBox.margin>
-                                            <Insets left="5.0" />
-                                        </HBox.margin>
-                                    </TextField>
-                                </children>
-                                <VBox.margin>
-                                    <Insets bottom="20.0"/>
-                                </VBox.margin>
-                            </HBox>
-                            <CheckBox fx:id="isWeighted" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" text="use weighted person creation">
-                                <VBox.margin>
-                                    <Insets bottom="10.0"/>
-                                </VBox.margin>
-                            </CheckBox>
-                            <HBox>
-                                <children>
-                                    <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="under 30 years" textAlignment="CENTER" />
-                                    <Slider fx:id="sliderYoung" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="30.0" />
-                                    <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="30">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </TextField>
-                                    <Label maxHeight="25.0" text="\%">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </Label>
-                                </children>
-                                <VBox.margin>
-                                    <Insets bottom="10.0"/>
-                                </VBox.margin>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="30 to 50 years" textAlignment="CENTER" />
-                                    <Slider fx:id="sliderMidage" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="40.0" />
-                                    <TextField fx:id="weightMidage" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="40">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </TextField>
-                                    <Label maxHeight="25.0" text="\%">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </Label>
-                                </children>
-                                <VBox.margin>
-                                    <Insets bottom="10.0"/>
-                                </VBox.margin>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="over 50 years" textAlignment="CENTER" />
-                                    <Slider fx:id="sliderOld" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="25.0" />
-                                    <TextField fx:id="weightOld" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="25">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </TextField>
-                                    <Label maxHeight="25.0" text="\%">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </Label>
-                                </children>
-                                <VBox.margin>
-                                    <Insets bottom="10.0"/>
-                                </VBox.margin>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="handicapped persons" textAlignment="CENTER" />
-                                    <Slider fx:id="sliderHandicap" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="5.0" />
-                                    <TextField fx:id="weightHandicap" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="5">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </TextField>
-                                    <Label maxHeight="25.0" text="\%">
-                                        <HBox.margin>
-                                            <Insets left="5.0"/>
-                                        </HBox.margin>
-                                    </Label>
-                                </children>
-                                <VBox.margin>
-                                    <Insets bottom="10.0"/>
-                                </VBox.margin>
-                            </HBox>
-                            <VBox alignment="TOP_RIGHT">
-                                <Button fx:id="spawnButton" mnemonicParsing="false" text="Spawn">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="20.0"/>
-                                    </VBox.margin>
-                                </Button>
-                                <HBox alignment="TOP_RIGHT">
-                                    <Button fx:id="resetButton" mnemonicParsing="false" text="Reset" />
-                                    <Button fx:id="startButton" mnemonicParsing="false" text="Start">
-                                        <VBox.margin>
-                                            <Insets bottom="10.0"/>
-                                        </VBox.margin>
-                                        <HBox.margin>
-                                            <Insets left="10.0"/>
-                                        </HBox.margin>
-                                    </Button>
-                                    <VBox.margin>
-                                        <Insets top="20.0"/>
-                                    </VBox.margin>
-                                </HBox>
-                                <VBox.margin>
-                                    <Insets bottom="10.0" right="20.0" top="10.0"/>
-                                </VBox.margin>
-                            </VBox>
-                        </children>
-                        <padding>
-                            <Insets left="20.0" top="20.0" />
-                        </padding>
-                        <BorderPane.margin>
-                            <Insets/>
-                        </BorderPane.margin>
-                        <VBox alignment="TOP_LEFT">
-                            <Label alignment="TOP_LEFT" layoutX="0.0" layoutY="280.0" maxHeight="25.0" prefHeight="25.0" text="Simulation speed">
-                                <VBox.margin>
-                                    <Insets top="20.0"/>
-                                </VBox.margin>
-                            </Label>
-                            <Slider fx:id="simulationSpeed" layoutX="0.0" layoutY="280.0" max="1000" min="20" minorTickCount="10" prefHeight="25.0" prefWidth="300.0" showTickMarks="true" snapToTicks="true" value="20" />
-                            <VBox.margin>
-                                <Insets right="5.0"/>
-                            </VBox.margin>
-                        </VBox>
-                    </VBox>
+                   <children>
+                       <VBox maxWidth="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="35.0" BorderPane.alignment="CENTER">
+                           <children>
+                               <HBox alignment="TOP_CENTER">
+                                   <children>
+                                       <Label maxHeight="25.0" maxWidth="150.0" minHeight="25.0" text="Total persons" />
+                                       <TextField fx:id="totalPersons" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" minWidth="40.0" text="10">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </TextField>
+                                   </children>
+                                   <VBox.margin>
+                                       <Insets bottom="20.0" />
+                                   </VBox.margin>
+                               </HBox>
+                               <CheckBox fx:id="isWeighted" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" text="use weighted person creation">
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                   </VBox.margin>
+                               </CheckBox>
+                               <HBox>
+                                   <children>
+                                       <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="under 30 years" textAlignment="CENTER" />
+                                       <Slider fx:id="sliderYoung" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="30.0" />
+                                       <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="30">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </TextField>
+                                       <Label maxHeight="25.0" text="\%">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </Label>
+                                   </children>
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                   </VBox.margin>
+                               </HBox>
+                               <HBox>
+                                   <children>
+                                       <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="30 to 50 years" textAlignment="CENTER" />
+                                       <Slider fx:id="sliderMidage" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="40.0" />
+                                       <TextField fx:id="weightMidage" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="40">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </TextField>
+                                       <Label maxHeight="25.0" text="\%">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </Label>
+                                   </children>
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                   </VBox.margin>
+                               </HBox>
+                               <HBox>
+                                   <children>
+                                       <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="over 50 years" textAlignment="CENTER" />
+                                       <Slider fx:id="sliderOld" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="25.0" />
+                                       <TextField fx:id="weightOld" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="25">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </TextField>
+                                       <Label maxHeight="25.0" text="\%">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </Label>
+                                   </children>
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                   </VBox.margin>
+                               </HBox>
+                               <HBox>
+                                   <children>
+                                       <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="handicapped persons" textAlignment="CENTER" />
+                                       <Slider fx:id="sliderHandicap" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="5.0" />
+                                       <TextField fx:id="weightHandicap" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="5">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </TextField>
+                                       <Label maxHeight="25.0" text="\%">
+                                           <HBox.margin>
+                                               <Insets left="5.0" />
+                                           </HBox.margin>
+                                       </Label>
+                                   </children>
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                   </VBox.margin>
+                               </HBox>
+                               <VBox alignment="TOP_RIGHT">
+                                  <children>
+                                      <Button fx:id="spawnButton" mnemonicParsing="false" text="Spawn">
+                                          <VBox.margin>
+                                              <Insets bottom="10.0" top="20.0" />
+                                          </VBox.margin>
+                                      </Button>
+                                      <HBox alignment="TOP_RIGHT">
+                                         <children>
+                                             <Button fx:id="resetButton" mnemonicParsing="false" text="Reset" />
+                                             <Button fx:id="startButton" mnemonicParsing="false" text="Start">
+                                                 <VBox.margin>
+                                                     <Insets bottom="10.0" />
+                                                 </VBox.margin>
+                                                 <HBox.margin>
+                                                     <Insets left="10.0" />
+                                                 </HBox.margin>
+                                             </Button>
+                                         </children>
+                                          <VBox.margin>
+                                              <Insets top="20.0" />
+                                          </VBox.margin>
+                                      </HBox>
+                                  </children>
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" right="20.0" top="10.0" />
+                                   </VBox.margin>
+                               </VBox>
+                           </children>
+                           <padding>
+                               <Insets left="20.0" top="20.0" />
+                           </padding>
+                           <BorderPane.margin>
+                               <Insets />
+                           </BorderPane.margin>
+                          <children>
+                              <VBox alignment="TOP_LEFT">
+                                 <children>
+                                     <Label alignment="TOP_LEFT" layoutX="0.0" layoutY="280.0" maxHeight="25.0" prefHeight="25.0" text="Simulation speed">
+                                         <VBox.margin>
+                                             <Insets top="20.0" />
+                                         </VBox.margin>
+                                     </Label>
+                                     <Slider fx:id="simulationSpeed" layoutX="0.0" layoutY="280.0" max="1000" min="20" minorTickCount="10" prefHeight="25.0" prefWidth="300.0" showTickMarks="true" snapToTicks="true" value="20" />
+                                 </children>
+                                  <VBox.margin>
+                                      <Insets right="5.0" />
+                                  </VBox.margin>
+                              </VBox>
+                              <HBox alignment="BOTTOM_LEFT">
+                                 <children>
+                                     <ImageView>
+                                         <image>
+                                             <Image url="/img/pedestrianSim_logo.jpg" />
+                                         </image>
+                                     </ImageView>
+                                     <VBox alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label styleClass="logo" text="Pedestrian" />
+                                            <Label styleClass="logo" text="Simulation" />
+                                        </children>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                     </VBox>
+                                 </children>
+                           <VBox.margin>
+                              <Insets top="360.0" />
+                           </VBox.margin>
+                              </HBox>
+                          </children>
+                       </VBox>
+                   </children>
                 </AnchorPane>
             </left>
             <center>
-                <Room fx:id="simulationRoom" styleClass="room" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" />
+                <Room fx:id="simulationRoom" styleClass="room" xmlns="http://javafx.com/javafx"
+                      xmlns:fx="http://javafx.com/fxml/1"/>
             </center>
             <right>
                 <AnchorPane maxHeight="-Infinity" maxWidth="200.0" minHeight="-Infinity" minWidth="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
-                    <VBox AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="45.0" BorderPane.alignment="CENTER">
-                        <children>
-                            <Label styleClass="label-header" text="Statistics">
-                                <VBox.margin>
-                                    <Insets bottom="10.0"/>
-                                </VBox.margin>
-                            </Label>
-                            <GridPane>
-                                <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                <children>
-                                    <Label maxHeight="25.0" text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                    <Label fx:id="statTime" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label maxHeight="25.0" text="Total Persons:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                    <Label fx:id="statTotalPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label maxHeight="25.0" text="Under 30y:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                    <Label fx:id="statYoungPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label maxHeight="25.0" text="30 to 50y:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                                    <Label fx:id="statMidagePersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label maxHeight="25.0" text="Over 50y:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                                    <Label fx:id="statOldPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label maxHeight="25.0" text="Handicap:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                                    <Label fx:id="statHandicappedPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                </children>
-                            </GridPane>
-                     <Button fx:id="showStats" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" stylesheets="@default.css" text="Show more statistics" textAlignment="CENTER">
-                        <VBox.margin>
-                           <Insets bottom="10.0" top="30.0" />
-                        </VBox.margin>
-                     </Button>
-                        </children>
-                    </VBox>
+                   <children>
+                       <VBox AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="45.0" BorderPane.alignment="CENTER">
+                           <children>
+                               <Label styleClass="label-header" text="Statistics">
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                   </VBox.margin>
+                               </Label>
+                               <GridPane>
+                                   <columnConstraints>
+                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                                   </columnConstraints>
+                                   <rowConstraints>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   </rowConstraints>
+                                   <children>
+                                       <Label maxHeight="25.0" text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                       <Label fx:id="statTime" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                       <Label maxHeight="25.0" text="Total Persons:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                       <Label fx:id="statTotalPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                       <Label maxHeight="25.0" text="Under 30y:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                       <Label fx:id="statYoungPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       <Label maxHeight="25.0" text="30 to 50y:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                       <Label fx:id="statMidagePersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                       <Label maxHeight="25.0" text="Over 50y:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                       <Label fx:id="statOldPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                       <Label maxHeight="25.0" text="Handicap:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                       <Label fx:id="statHandicappedPersons" alignment="CENTER_RIGHT" minWidth="30.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                   </children>
+                               </GridPane>
+                               <Button fx:id="showStats" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" stylesheets="@default.css" text="Show more statistics" textAlignment="CENTER">
+                                   <VBox.margin>
+                                       <Insets bottom="10.0" top="30.0" />
+                                   </VBox.margin>
+                               </Button>
+                           </children>
+                       </VBox>
+                   </children>
                     <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                     </padding>
                 </AnchorPane>
             </right>

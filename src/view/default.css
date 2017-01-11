@@ -281,3 +281,10 @@
     -fx-text-fill: white;
     -fx-fill: #1d1d1d;
 }
+
+.logo {
+    -fx-alignment: center-left;
+    -fx-text-fill: white;
+    -fx-font-weight: bolder;
+    -fx-font-size: 30pt;
+}
