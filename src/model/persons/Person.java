@@ -76,9 +76,6 @@ public abstract class Person extends Circle {
     public void calculateStep() {
         Position newPos = this.calculateNextPossiblePosition();
         if (newPos != null) {
-            double x, y;
-            x = newPos.getXValue() - getCurrentPosition().getXValue();
-            y = newPos.getYValue() - getCurrentPosition().getYValue();
             this.setPosition(newPos);
         }
     }
@@ -92,7 +89,7 @@ public abstract class Person extends Circle {
         Position nextTarget = nextVertex.getPosition();
         boolean isJam = this.orientation.isJam();
         if (isJam && !(nextVertex instanceof TargetVertex)) {
-            // System.out.println("JAM detected and target is not goal");
+            System.out.println("JAM detected and target is not goal");
             Vertex nonJamVertex = this.orientation.getDifferentTargetVertex();
             if (nonJamVertex != null) {
                 //System.out.println("reset target");

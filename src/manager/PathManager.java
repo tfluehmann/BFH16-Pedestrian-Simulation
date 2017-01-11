@@ -104,21 +104,24 @@ public class PathManager {
      * @return
      */
     public Vertex getClosestVertex(Position currentPosition) {
-        Vertex possibleVertex = null;
+        ArrayList<Vertex> possibleVertex = new ArrayList<>();
+        double possibleDist = Double.MAX_VALUE;
         for (TargetVertex targetVertex : targetVertices) {
-            double possibleDist = 0;
             for (Vertex vertex : getVertexList()) {
                 GVector vect = new GVector(vertex.getPosition(), currentPosition);
                 if (ObstacleManager.getInstance().isCrossingAnyObstacle(vect)) continue;
-                if (possibleVertex == null) {
-                    possibleVertex = vertex;
-                    possibleDist = possibleVertex.getDistance(targetVertex);
-                } else if (possibleDist > vertex.getDistance(targetVertex))
-                    possibleVertex = vertex;
+                if (possibleDist > vertex.getDistance(targetVertex)) {
+                    possibleVertex.clear();
+                    possibleVertex.add(vertex);
+                    possibleDist = vertex.getDistance(targetVertex);
+                } else if (possibleDist == vertex.getDistance(targetVertex)) {
+                    possibleVertex.add(vertex);
+                }
             }
         }
+
         //if (possibleVertex == null) System.out.println("possible vertex null");
-        return possibleVertex;
+        return possibleVertex.get(possibleVertex.size() - 1);
     }
 
     public Collection<GVector> getObstacleEdges() {
