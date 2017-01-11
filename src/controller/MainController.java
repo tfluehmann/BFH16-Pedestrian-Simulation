@@ -1,5 +1,6 @@
 package controller;
 
+import EventListener.SimulationFinishedListener;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -36,7 +37,7 @@ import java.util.ResourceBundle;
 /**
  * Created by suter1 on 28.10.2016.
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable, SimulationFinishedListener {
 
 	private ObstacleManager obstacleManager = ObstacleManager.getInstance();
 	private SpawnAreaManager spawnAreaManger = SpawnAreaManager.getInstance();
@@ -183,6 +184,7 @@ public class MainController implements Initializable {
 		weightOld.textProperty().addListener(forceNumberListener);
 		weightHandicap.textProperty().addListener(forceNumberListener);
 		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
+        simulationManager.addSimulationFinishedListener(this);
 
 		spawnButton.setOnAction((event) -> {
 			spawnPressed();
@@ -269,8 +271,8 @@ public class MainController implements Initializable {
 		resetButton.setDisable(false);
 	}
 
-	private void stopPressed(){
-		startButton.setText("Start");
+    public void stopPressed() {
+        startButton.setText("Start");
 		simulationManager.getSimulationThread().interrupt();
 		for(Person p:spMgr.getPersons()){
 			p.setDraggable(true);
@@ -285,8 +287,8 @@ public class MainController implements Initializable {
 		for(Person p:spMgr.getPersons()){
 			p.setDraggable(false);
 		}
-		simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
-		startButton.setDisable(false);
+        simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
+        startButton.setDisable(false);
 	}
 
 	private void resetPressed(){
@@ -458,4 +460,9 @@ public class MainController implements Initializable {
 		this.showStats.setDisable(false);
 	}
 
+    @Override
+    public void simulationFinished() {
+        stopPressed();
+        startButton.setDisable(true);
+    }
 }
