@@ -3,8 +3,10 @@ package model.persons;
 import javafx.scene.Cursor;
 import javafx.scene.shape.Circle;
 import manager.PerimeterManager;
+import manager.areamanagers.GoalAreaManager;
 import manager.areamanagers.ObstacleManager;
 import model.*;
+import model.areas.GoalArea;
 import model.areas.Obstacle;
 
 import java.util.ArrayList;
@@ -55,23 +57,23 @@ public abstract class Person extends Circle {
 
     private void initDragAndDrop() {
         this.setOnMousePressed((e) -> {
-        	if(this.draggable){
-		        this.setCursor(Cursor.CLOSED_HAND);
-		        this.originX = e.getSceneX();
-		        this.originY = e.getSceneY();
-		        this.targetX = this.getCurrentPosition().getXValue();
-		        this.targetY = this.getCurrentPosition().getYValue();
-	        }
+            if (this.draggable) {
+                this.setCursor(Cursor.CLOSED_HAND);
+                this.originX = e.getSceneX();
+                this.originY = e.getSceneY();
+                this.targetX = this.getCurrentPosition().getXValue();
+                this.targetY = this.getCurrentPosition().getYValue();
+            }
         });
         this.setOnMouseReleased((e) -> this.setCursor(Cursor.HAND));
         this.setOnMouseDragged((e) -> {
-        	if(this.draggable){
-		        double offsetX = e.getSceneX() - this.originX;
-		        double offsetY = e.getSceneY() - this.originY;
-		        double newTranslateX = this.targetX + offsetX;
-		        double newTranslateY = this.targetY + offsetY;
-		        this.setPosition(new Position(newTranslateX, newTranslateY));
-	        }
+            if (this.draggable) {
+                double offsetX = e.getSceneX() - this.originX;
+                double offsetY = e.getSceneY() - this.originY;
+                double newTranslateX = this.targetX + offsetX;
+                double newTranslateY = this.targetY + offsetY;
+                this.setPosition(new Position(newTranslateX, newTranslateY));
+            }
         });
     }
 
@@ -82,9 +84,7 @@ public abstract class Person extends Circle {
      */
     public void calculateStep() {
         Position newPos = this.calculateNextPossiblePosition();
-        if (newPos != null) {
-            this.setPosition(newPos);
-        }
+        if (newPos != null) this.setPosition(newPos);
     }
 
     /**
@@ -207,7 +207,17 @@ public abstract class Person extends Circle {
     }
 
     public boolean isInGoalArea() {
-        return this.target.getPosition().isInRange(this.currentPosition, getDiameter());
+        GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
+        GoalArea currentGoal = null;
+        for (GoalArea goalArea : goalAreaManager.getGoalAreas())
+            if (goalArea.inGoalArea(this.target.getPosition())) {
+                currentGoal = goalArea;
+                break;
+            }
+        if (currentGoal == null)
+            return this.target.getPosition().isInRange(this.currentPosition, getDiameter());
+        else
+            return currentGoal.inGoalArea(this.currentPosition);
     }
 
     public LinkedList<Position> getOldPositions() {
@@ -265,7 +275,7 @@ public abstract class Person extends Circle {
         return orientation;
     }
 
-    public void setDraggable(boolean value){
-    	this.draggable = value;
+    public void setDraggable(boolean value) {
+        this.draggable = value;
     }
 }

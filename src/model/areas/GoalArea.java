@@ -16,6 +16,10 @@ public class GoalArea extends Area {
 		getStyleClass().add("goal-area");
 	}
 
+    public boolean inGoalArea(Position p) {
+        return this.intersects(p.getXValue(), p.getYValue(), 1, 1);
+    }
+
 	@Override
 	public List<Position> getCorners() {
 		return null;

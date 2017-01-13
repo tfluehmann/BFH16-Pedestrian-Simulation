@@ -10,3 +10,4 @@ nach Spawn: Areas nicht mehr verschiebbar & änderbar bis zum Reset | 2 | done |
 Obstacles vor Spawn mit Rechtsklick löschen | 3 | done | 
 Wenn Simulation beendet, soll der Stop-Button-Event ausgelöst werden | 2 | done | 
 Slider optimieren resp. korrigieren | 2 |  |
+Personen sollen verschwinden wenn Intersect mit Goal festgestellt wird | 2 | done |

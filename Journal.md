@@ -33,3 +33,5 @@ Datum | Zeitaufwand | Wer | Was
 23.12.2016 | 2 h | fluht1, suter1 | Spawn reset solved, multiple Goalareas ongoing
 05.01.2017 | 2 h | suter1 | Draggable Objects blocked while running and released on stop/reset.
 10.01.2017 | 2 h | fluht1 | Multiple Goalareas are possible and they are chosen by correctly
+11.01.2017 | 3 h | fluht1, suter1 | Stop Event, Areas stay within the Room, Logo, Favicon|
+13.01.2017 | 3 h | fluht1, suter1 | Logo positioned variable, Refactoring, Person hidden if intersect with goal |
