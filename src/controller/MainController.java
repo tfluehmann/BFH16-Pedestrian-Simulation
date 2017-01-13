@@ -36,6 +36,7 @@ import java.util.ResourceBundle;
 
 /**
  * Created by suter1 on 28.10.2016.
+ * Initializes the full window and manages all the buttons
  */
 public class MainController implements Initializable, SimulationFinishedListener {
 
@@ -169,8 +170,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 				cm.show(simulationRoom, event.getScreenX(), event.getSceneY());
 		});
 
-		/**
-		 * Numberlistener from user "javasuns"
+		/*
+         * Numberlistener from user "javasuns"
 		 * on: http://stackoverflow.com/a/37360657
 		 */
 		ChangeListener<String> forceNumberListener = (observable, oldValue, newValue) -> {
@@ -183,12 +184,10 @@ public class MainController implements Initializable, SimulationFinishedListener
 		weightMidage.textProperty().addListener(forceNumberListener);
 		weightOld.textProperty().addListener(forceNumberListener);
 		weightHandicap.textProperty().addListener(forceNumberListener);
-		simulationManager.speedProperty.bind(simulationSpeed.valueProperty());
+        simulationManager.getSpeedProperty().bind(simulationSpeed.valueProperty());
         simulationManager.addSimulationFinishedListener(this);
 
-		spawnButton.setOnAction((event) -> {
-			spawnPressed();
-		});
+        spawnButton.setOnAction((event) -> spawnPressed());
 
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
@@ -198,14 +197,9 @@ public class MainController implements Initializable, SimulationFinishedListener
 			}
 		});
 
-		resetButton.setOnAction((event -> {
-			resetPressed();
-		}));
-
-		showStats.setOnAction(event -> {
-			showStatsPressed();
-		});
-	}
+        resetButton.setOnAction((event -> resetPressed()));
+        showStats.setOnAction(event -> showStatsPressed());
+    }
 
 	private void spawnPressed(){
 		if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
@@ -240,10 +234,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 		pathManager.findValidEdges(simulationRoom);
 		pathManager.calculatePaths();
 
-		/**
-		 * Save data form the config window for usage in simulation.
-		 */
-		cfg.setTotalPersons(getTotalPersons());
+        //Save data form the config window for usage in simulation.
+        cfg.setTotalPersons(getTotalPersons());
 		cfg.setWeighted(getIsWeighted());
 		cfg.setWeightedYoungPersons(getWeightYoung());
 		cfg.setWeightedMidAgePersons(getWeightMidage());
@@ -271,7 +263,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		resetButton.setDisable(false);
 	}
 
-    public void stopPressed() {
+    private void stopPressed() {
         startButton.setText("Start");
 		simulationManager.getSimulationThread().interrupt();
 		for(Person p:spMgr.getPersons()){
@@ -360,12 +352,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 			}
 	}
 
-	public Boolean getIsWeighted() {
-		return this.isWeighted.isSelected();
-	}
-
-	private TextField doubleToTextfield(Double value) {
-		return new TextField("" + value);
+    private Boolean getIsWeighted() {
+        return this.isWeighted.isSelected();
 	}
 
 	private double textFieldToDouble(TextField text) {
@@ -376,88 +364,28 @@ public class MainController implements Initializable, SimulationFinishedListener
 		return new Integer(text.getText());
 	}
 
-	private TextField intToTextfield(int value) {
-		return new TextField("" + value);
+    private double getTotalPersons() {
+        return textFieldToDouble(this.totalPersons);
 	}
 
-	public double getTotalPersons() {
-		return textFieldToDouble(this.totalPersons);
+    private double getWeightYoung() {
+        return textFieldToInt(this.weightYoung);
 	}
 
-	public void setTotalPersons(double totalPersons) {
-		this.totalPersons = doubleToTextfield(totalPersons);
+    private int getWeightMidage() {
+        return textFieldToInt(this.weightMidage);
 	}
 
-	public double getSliderYoungValue() {
-		return this.sliderYoung.getValue();
+    private int getWeightOld() {
+        return textFieldToInt(this.weightOld);
 	}
 
-	public void setSliderYoungValue(double sliderYoung) {
-		this.sliderYoung.setValue(sliderYoung);
+    private int getWeightHandicap() {
+        return textFieldToInt(this.weightHandicap);
 	}
 
-	public double getSliderMidageValue() {
-		return this.sliderMidage.getValue();
-	}
-
-	public void setSliderMidageValue(double sliderMidage) {
-		this.sliderMidage.setValue(sliderMidage);
-	}
-
-	public double getSliderOldValue() {
-		return this.sliderOld.getValue();
-	}
-
-	public void setSliderOldValue(double sliderOld) {
-		this.sliderOld.setValue(sliderOld);
-	}
-
-	public double getSliderHandicapValue() {
-		return this.sliderHandicap.getValue();
-	}
-
-	public void setSliderHandicapValue(double sliderHandicap) {
-		this.sliderHandicap.setValue(sliderHandicap);
-	}
-
-	public double getWeightYoung() {
-		return textFieldToInt(this.weightYoung);
-	}
-
-	public void setWeightYoung(int weightYoung) {
-		this.weightYoung = intToTextfield(weightYoung);
-	}
-
-	public int getWeightMidage() {
-		return textFieldToInt(this.weightMidage);
-	}
-
-	public void setWeightMidage(int weightMidage) {
-		this.weightMidage = intToTextfield(weightMidage);
-	}
-
-	public int getWeightOld() {
-		return textFieldToInt(this.weightOld);
-	}
-
-	public void setWeightOld(int weightOld) {
-		this.weightOld = intToTextfield(weightOld);
-	}
-
-	public int getWeightHandicap() {
-		return textFieldToInt(this.weightHandicap);
-	}
-
-	public void setWeightHandicap(int weightHandicap) {
-		this.weightHandicap = intToTextfield(weightHandicap);
-	}
-
-	public Button getSpawnButton() {
-		return this.spawnButton;
-	}
-
-	public void enableStatsButton() {
-		this.showStats.setDisable(false);
+    private void enableStatsButton() {
+        this.showStats.setDisable(false);
 	}
 
     @Override

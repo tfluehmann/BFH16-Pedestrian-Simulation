@@ -1,5 +1,6 @@
 package manager.areamanagers;
 
+import model.areas.Area;
 import model.areas.GoalArea;
 
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ public class GoalAreaManager extends AreaManager {
         this.goalAreas.clear();
     }
 
-	public void remove(GoalArea area) {
-		super.remove(area);
-		this.getGoalAreas().remove(area);
-	}
-
+    @Override
+    public void remove(Area a) {
+        super.remove(a);
+        this.getGoalAreas().remove(a);
+    }
 }

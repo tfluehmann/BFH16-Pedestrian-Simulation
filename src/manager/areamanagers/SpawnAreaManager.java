@@ -1,6 +1,7 @@
 package manager.areamanagers;
 
 import model.Room;
+import model.areas.Area;
 import model.areas.SpawnArea;
 
 import java.util.ArrayList;
@@ -39,12 +40,13 @@ public class SpawnAreaManager extends AreaManager {
         this.getSpawnAreas().add(o);
     }
 
-	public void remove(SpawnArea area) {
-		super.remove(area);
-		this.getSpawnAreas().remove(area);
-	}
-
     public void clear() {
         this.spawnAreas.clear();
+    }
+
+    @Override
+    public void remove(Area a) {
+        super.remove(a);
+        this.getSpawnAreas().remove(a);
     }
 }

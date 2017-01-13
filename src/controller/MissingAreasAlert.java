@@ -4,9 +4,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 
 /**
- * Created by tgdflto1 on 14/12/16.
+ * Created by fluht1 on 14/12/16.
+ * alert in case no obstacles are placed in the room
  */
-public class MissingAreasAlert extends Alert {
+class MissingAreasAlert extends Alert {
 
     public MissingAreasAlert(Pane basePane) {
         super(AlertType.ERROR);

@@ -36,8 +36,8 @@ public abstract class Area extends DraggablePolygon {
     private void initContextMenu(AreaManager manager){
 	    ContextMenu cm = new ContextMenu();
 	    MenuItem deleteItem = new MenuItem("Delete");
-	    deleteItem.setOnAction((event -> manager.remove(this)));
-	    cm.getItems().add(deleteItem);
+        deleteItem.setOnAction((event -> manager.remove(this))); //TODO interface or find another solution
+        cm.getItems().add(deleteItem);
 	    cm.setStyle("-fx-background-color: #1d1d1d");
 	    deleteItem.setStyle("-fx-text-fill: #fff");
 	    this.setOnMouseClicked((event) -> {

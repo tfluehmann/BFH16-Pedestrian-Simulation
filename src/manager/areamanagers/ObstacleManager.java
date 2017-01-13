@@ -3,6 +3,7 @@ package manager.areamanagers;
 import manager.SpawnManager;
 import model.GVector;
 import model.Room;
+import model.areas.Area;
 import model.areas.Obstacle;
 
 import java.util.ArrayList;
@@ -50,12 +51,13 @@ public class ObstacleManager extends AreaManager {
         return isCrossing;
     }
 
-	public void remove(Obstacle obstacle) {
-		super.remove(obstacle);
-		this.getObstacles().remove(obstacle);
-	}
-
     public void clear() {
         this.obstacles.clear();
+    }
+
+    @Override
+    public void remove(Area a) {
+        super.remove(a);
+        this.getObstacles().remove(a);
     }
 }

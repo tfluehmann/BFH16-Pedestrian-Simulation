@@ -28,7 +28,7 @@ public class MainApp extends Application {
 			// creating view for the initial configuration
 			FXMLLoader configLoader = new FXMLLoader();
 			configLoader.setLocation(MainApp.class.getResource("view/ConfigWindow.fxml"));
-			InputStream iconPath = getClass().getResourceAsStream("img/pedestrianSim_icon.jpg");
+			InputStream iconPath = getClass().getResourceAsStream("resources/img/pedestrianSim_icon.jpg");
 			Image favicon = new Image(iconPath);
 			configScene = new Scene(configLoader.load());
 			configStage = new Stage();

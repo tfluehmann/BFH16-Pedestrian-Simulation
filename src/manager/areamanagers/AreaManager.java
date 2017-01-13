@@ -8,9 +8,10 @@ import java.util.List;
 
 /**
  * Created by tgdflto1 on 09/11/16.
+ * Abstract class that handles the simulation room and its areas
  */
 public abstract class AreaManager {
-    protected Room simulationRoom;
+    private Room simulationRoom;
 
     public void add(Area a) {
         if (!getRoom().getChildren().containsAll(a.getAnchors())) getRoom().getChildren().addAll(a.getAnchors());
@@ -38,7 +39,7 @@ public abstract class AreaManager {
     public abstract void clear();
 
 	public void remove(Area a){
-		getRoom().getChildren().removeAll(a.getAnchors());
-		getRoom().getChildren().remove(a);
-	};
+        getRoom().getChildren().removeAll(a.getAnchors());
+        getRoom().getChildren().remove(a);
+    }
 }

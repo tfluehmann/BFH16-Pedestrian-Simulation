@@ -1,8 +1,9 @@
 package EventListener;
 
 /**
- * Created by tgdflto1 on 11/01/17.
+ * Created by fluht1 on 11/01/17.
+ * Provides a method that is called on finish
  */
 public interface SimulationFinishedListener {
-    public void simulationFinished();
+    void simulationFinished();
 }

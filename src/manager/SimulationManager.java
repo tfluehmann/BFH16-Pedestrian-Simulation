@@ -11,14 +11,14 @@ import java.util.ArrayList;
 
 /**
  * Created by tgdflto1 on 26/10/16.
+ * runs the simulation and notifies event listeners on finish
  */
 public class SimulationManager {
     private static SimulationManager instance;
-    private static SpawnManager spawnManager = SpawnManager.getInstance();
     private static Thread simulation;
-    public static LongProperty speedProperty = new SimpleLongProperty();
+    private LongProperty speedProperty = new SimpleLongProperty();
 
-    private static ArrayList<SimulationFinishedListener> finishedListeners = new ArrayList();
+    private static ArrayList<SimulationFinishedListener> finishedListeners = new ArrayList<>();
 
     private SimulationManager() {
     }
@@ -32,8 +32,8 @@ public class SimulationManager {
      * shuffle before every run because there might be
      * unsolvable issues if it is always the same order
      */
-    public static void start(Label time, int oldTime) {
-        Task task = new SimulationFactory(time, oldTime, speedProperty);
+    public void start(Label time, int oldTime) {
+        Task task = new SimulationFactory(oldTime, speedProperty);
 
         task.setOnSucceeded((event) -> {
             for (SimulationFinishedListener sfl : finishedListeners)
@@ -53,7 +53,11 @@ public class SimulationManager {
         return simulation;
     }
 
-    public static void addSimulationFinishedListener(SimulationFinishedListener sfl) {
+    public void addSimulationFinishedListener(SimulationFinishedListener sfl) {
         finishedListeners.add(sfl);
+    }
+
+    public LongProperty getSpeedProperty() {
+        return speedProperty;
     }
 }
