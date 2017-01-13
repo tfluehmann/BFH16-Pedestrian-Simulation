@@ -157,26 +157,28 @@
                                       <Insets right="5.0" />
                                   </VBox.margin>
                               </VBox>
-                              <HBox alignment="BOTTOM_LEFT">
-                                 <children>
-                                     <ImageView>
-                                         <image>
-                                             <Image url="/resources/img/pedestrianSim_logo.jpg"/>
-                                         </image>
-                                     </ImageView>
-                                     <VBox alignment="CENTER_LEFT">
-                                        <children>
-                                            <Label styleClass="logo" text="Pedestrian" />
-                                            <Label styleClass="logo" text="Simulation" />
-                                        </children>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                                     </VBox>
-                                 </children>
-                              </HBox>
                           </children>
                        </VBox>
+                       <AnchorPane fx:id="logoPane" layoutX="25.0" layoutY="0.0">
+                           <HBox alignment="BOTTOM_LEFT">
+                               <children>
+                                   <ImageView>
+                                       <image>
+                                           <Image url="/resources/img/pedestrianSim_logo.jpg"/>
+                                       </image>
+                                   </ImageView>
+                                   <VBox alignment="CENTER_LEFT">
+                                       <children>
+                                           <Label styleClass="logo" text="Pedestrian" />
+                                           <Label styleClass="logo" text="Simulation" />
+                                       </children>
+                                       <HBox.margin>
+                                           <Insets left="10.0" />
+                                       </HBox.margin>
+                                   </VBox>
+                               </children>
+                           </HBox>
+                       </AnchorPane>
                    </children>
                 </AnchorPane>
             </left>

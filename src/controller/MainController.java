@@ -113,6 +113,9 @@ public class MainController implements Initializable, SimulationFinishedListener
 	@FXML
 	private Button showStats;
 
+	@FXML
+	private AnchorPane logoPane;
+
 	private SimulationManager simulationManager = SimulationManager.getInstance();
 	private SpawnManager spMgr = SpawnManager.getInstance();
 	private ConfigModel cfg = ConfigModel.getInstance();
@@ -128,6 +131,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
 		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
+		logoPane.setLayoutY(configModel.getRoomHeight() - 70);
 		startButton.setDisable(true);
 		resetButton.setDisable(true);
 		showStats.setDisable(true);
@@ -156,7 +160,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
 		for (int corners = configModel.getMinObstacleCorners(), i = 0;
-			 corners <= configModel.getMaxObstacleCorners(); corners++, i++) {
+		     corners <= configModel.getMaxObstacleCorners(); corners++, i++) {
 			MenuItem item = new MenuItem(polygonNames[i]);
 			final int cornerCount = corners;
 			item.setOnAction((e) -> obstacleManager.add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));
@@ -171,7 +175,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		});
 
 		/*
-         * Numberlistener from user "javasuns"
+	     * Numberlistener from user "javasuns"
 		 * on: http://stackoverflow.com/a/37360657
 		 */
 		ChangeListener<String> forceNumberListener = (observable, oldValue, newValue) -> {
@@ -184,10 +188,10 @@ public class MainController implements Initializable, SimulationFinishedListener
 		weightMidage.textProperty().addListener(forceNumberListener);
 		weightOld.textProperty().addListener(forceNumberListener);
 		weightHandicap.textProperty().addListener(forceNumberListener);
-        simulationManager.getSpeedProperty().bind(simulationSpeed.valueProperty());
-        simulationManager.addSimulationFinishedListener(this);
+		simulationManager.getSpeedProperty().bind(simulationSpeed.valueProperty());
+		simulationManager.addSimulationFinishedListener(this);
 
-        spawnButton.setOnAction((event) -> spawnPressed());
+		spawnButton.setOnAction((event) -> spawnPressed());
 
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
@@ -197,18 +201,18 @@ public class MainController implements Initializable, SimulationFinishedListener
 			}
 		});
 
-        resetButton.setOnAction((event -> resetPressed()));
-        showStats.setOnAction(event -> showStatsPressed());
-    }
+		resetButton.setOnAction((event -> resetPressed()));
+		showStats.setOnAction(event -> showStatsPressed());
+	}
 
-	private void spawnPressed(){
+	private void spawnPressed() {
 		if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
 			new MissingAreasAlert(this.basePane);
 			return;
 		}
-		for(SpawnArea sp : spawnAreaManger.getSpawnAreas()) {
+		for (SpawnArea sp : spawnAreaManger.getSpawnAreas()) {
 			sp.setDraggable(false);
-			for(Anchor a:sp.getAnchors()){
+			for (Anchor a : sp.getAnchors()) {
 				a.setDraggable(false);
 			}
 		}
@@ -216,13 +220,13 @@ public class MainController implements Initializable, SimulationFinishedListener
 		for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
 			pathManager.addTarget(new TargetVertex(ga.getPosition()));
 			ga.setDraggable(false);
-			for(Anchor a:ga.getAnchors()){
+			for (Anchor a : ga.getAnchors()) {
 				a.setDraggable(false);
 			}
 		}
 		for (Obstacle obstacle : obstacleManager.getObstacles()) {
 			obstacle.setDraggable(false);
-			for(Anchor a:obstacle.getAnchors()){
+			for (Anchor a : obstacle.getAnchors()) {
 				a.setDraggable(false);
 			}
 			obstacle.calculateCornersAndVertices();
@@ -234,8 +238,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 		pathManager.findValidEdges(simulationRoom);
 		pathManager.calculatePaths();
 
-        //Save data form the config window for usage in simulation.
-        cfg.setTotalPersons(getTotalPersons());
+		//Save data form the config window for usage in simulation.
+		cfg.setTotalPersons(getTotalPersons());
 		cfg.setWeighted(getIsWeighted());
 		cfg.setWeightedYoungPersons(getWeightYoung());
 		cfg.setWeightedMidAgePersons(getWeightMidage());
@@ -243,7 +247,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		cfg.setWeightedHandicappedPersons(getWeightHandicap());
 
 		spMgr.createPersons();
-		for(Person p:spMgr.getPersons()){
+		for (Person p : spMgr.getPersons()) {
 			p.setDraggable(true);
 		}
 		this.simulationRoom.getChildren().addAll(spMgr.getPersons());
@@ -263,27 +267,27 @@ public class MainController implements Initializable, SimulationFinishedListener
 		resetButton.setDisable(false);
 	}
 
-    private void stopPressed() {
-        startButton.setText("Start");
+	private void stopPressed() {
+		startButton.setText("Start");
 		simulationManager.getSimulationThread().interrupt();
-		for(Person p:spMgr.getPersons()){
+		for (Person p : spMgr.getPersons()) {
 			p.setDraggable(true);
 		}
 		enableStatsButton();
 		startButton.setDisable(false);
 	}
 
-	private void startPressed(){
+	private void startPressed() {
 		startButton.setText("Pause");
 		showStats.setDisable(true);
-		for(Person p:spMgr.getPersons()){
+		for (Person p : spMgr.getPersons()) {
 			p.setDraggable(false);
 		}
-        simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
-        startButton.setDisable(false);
+		simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
+		startButton.setDisable(false);
 	}
 
-	private void resetPressed(){
+	private void resetPressed() {
 		simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
 		SpawnManager.getInstance().clear();
 		PerimeterManager.getInstance().clear();
@@ -293,27 +297,27 @@ public class MainController implements Initializable, SimulationFinishedListener
 		showStats.setDisable(true);
 		statTime.textProperty().unbind();
 		statTime.textProperty().setValue("0 s");
-		for(SpawnArea spawn: spawnAreaManger.getSpawnAreas()){
+		for (SpawnArea spawn : spawnAreaManger.getSpawnAreas()) {
 			spawn.setDraggable(true);
-			for(Anchor a:spawn.getAnchors()){
+			for (Anchor a : spawn.getAnchors()) {
 				a.setDraggable(true);
 			}
 		}
-		for(GoalArea goal:goalAreaManager.getGoalAreas()){
+		for (GoalArea goal : goalAreaManager.getGoalAreas()) {
 			goal.setDraggable(true);
-			for(Anchor a:goal.getAnchors()){
+			for (Anchor a : goal.getAnchors()) {
 				a.setDraggable(true);
 			}
 		}
-		for(Obstacle obstacle:obstacleManager.getObstacles()){
+		for (Obstacle obstacle : obstacleManager.getObstacles()) {
 			obstacle.setDraggable(true);
-			for(Anchor a:obstacle.getAnchors()){
+			for (Anchor a : obstacle.getAnchors()) {
 				a.setDraggable(true);
 			}
 		}
 	}
 
-	private void showStatsPressed(){
+	private void showStatsPressed() {
 		try {
 			Statistic.getInstance();
 			FXMLLoader ldr = new FXMLLoader();
@@ -352,8 +356,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 			}
 	}
 
-    private Boolean getIsWeighted() {
-        return this.isWeighted.isSelected();
+	private Boolean getIsWeighted() {
+		return this.isWeighted.isSelected();
 	}
 
 	private double textFieldToDouble(TextField text) {
@@ -364,33 +368,33 @@ public class MainController implements Initializable, SimulationFinishedListener
 		return new Integer(text.getText());
 	}
 
-    private double getTotalPersons() {
-        return textFieldToDouble(this.totalPersons);
+	private double getTotalPersons() {
+		return textFieldToDouble(this.totalPersons);
 	}
 
-    private double getWeightYoung() {
-        return textFieldToInt(this.weightYoung);
+	private double getWeightYoung() {
+		return textFieldToInt(this.weightYoung);
 	}
 
-    private int getWeightMidage() {
-        return textFieldToInt(this.weightMidage);
+	private int getWeightMidage() {
+		return textFieldToInt(this.weightMidage);
 	}
 
-    private int getWeightOld() {
-        return textFieldToInt(this.weightOld);
+	private int getWeightOld() {
+		return textFieldToInt(this.weightOld);
 	}
 
-    private int getWeightHandicap() {
-        return textFieldToInt(this.weightHandicap);
+	private int getWeightHandicap() {
+		return textFieldToInt(this.weightHandicap);
 	}
 
-    private void enableStatsButton() {
-        this.showStats.setDisable(false);
+	private void enableStatsButton() {
+		this.showStats.setDisable(false);
 	}
 
-    @Override
-    public void simulationFinished() {
-        stopPressed();
-        startButton.setDisable(true);
-    }
+	@Override
+	public void simulationFinished() {
+		stopPressed();
+		startButton.setDisable(true);
+	}
 }
