@@ -52,11 +52,11 @@ public class Position implements Cloneable {
     /**
      * http://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
      *
-     * @param p1
-     * @param p2
-     * @param p3
+     * @param p1 position 1
+     * @param p2 position 2
+     * @param p3 position 3
      *
-     * @return
+     * @return sign double
      */
     private static double sign(Position p1, Position p2, Position p3) {
         return (p1.getXValue() - p3.getXValue()) * (p2.getYValue() - p3.getYValue()) - (p2.getXValue() - p3.getXValue()) * (p1.getYValue() - p3.getYValue());
@@ -67,10 +67,10 @@ public class Position implements Cloneable {
      *
      * @param pt position to determine
      * @param v1 positions of triangle
-     * @param v2
-     * @param v3
+     * @param v2 position of triangle
+     * @param v3 position of triangle
      *
-     * @return
+     * @return boolean if given position is in triangle
      */
     public static boolean inTriangle(Position pt, Position v1, Position v2, Position v3) {
         boolean b1, b2, b3;

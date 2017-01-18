@@ -27,7 +27,7 @@ public class GoalArea extends Area {
      *
      * @param circle to check for an intersection with goal
      *
-     * @return
+     * @return a boolean if the circle intersects or not
      */
     public boolean intersects(Circle circle) {
         double circleDistX = Math.abs(circle.getCenterX() - this.getPoints().get(0));

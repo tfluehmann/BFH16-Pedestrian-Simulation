@@ -99,9 +99,9 @@ public class PathManager {
     }
 
     /**
-     * @param currentPosition
+     * @param currentPosition the person has
      *
-     * @return
+     * @return a vertex that is closest to the given position
      */
     public Vertex getClosestVertex(Position currentPosition) {
         ArrayList<Vertex> possibleVertex = new ArrayList<>();

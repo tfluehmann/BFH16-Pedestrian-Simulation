@@ -162,10 +162,10 @@ public class GVector extends Line {
     /**
      * https://en.wikipedia.org/wiki/Rotation_(mathematics)
      *
-     * @param vector
-     * @param angle
+     * @param vector initial vector
+     * @param angle angle to rotate
      *
-     * @return
+     * @return a new rotated vector
      */
     public static GVector newAfterRotation(GVector vector, double angle) {
         double newEndX = vector.getEndPointX() * Math.cos(angle) - vector.getEndPointY() * Math.sin(angle);
