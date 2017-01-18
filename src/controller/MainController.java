@@ -270,7 +270,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 	private void stopPressed() {
 		startButton.setText("Start");
-        simulationManager.getSimulationThread().cancel();
+        simulationManager.getSimulationTask().cancel();
         for (Person p : spMgr.getPersons()) {
 			p.setDraggable(true);
 		}
