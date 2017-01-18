@@ -27,21 +27,20 @@ public class SimulationFactory extends Task {
         int i = oldTime;
         while (!isSimulationFinished()) {
             Collections.shuffle(spawnManager.getPersons());
-            spawnManager.handlePersonsInTargetRange();
             Platform.runLater(() -> {
                 for (Person p : spawnManager.getPersons())
                     p.calculateStep();
             });
             this.updateMessage(++i + " s");
+            spawnManager.handlePersonsInTargetRange();
             Thread.sleep(speedProperty.getValue());
         }
         return null;
     }
 
     private static boolean isSimulationFinished() {
-        for (Person p : spawnManager.getPersons()) {
-            if (!p.isInGoalArea()) return false;
-        }
+        for (Person p : spawnManager.getPersons())
+            if (!p.isInGoal()) return false;
         return true;
     }
 }

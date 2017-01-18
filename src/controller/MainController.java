@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -274,6 +275,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 			p.setDraggable(true);
 		}
 		enableStatsButton();
+		toggleGoalAndSpawnAreas(true);
 		startButton.setDisable(false);
 	}
 
@@ -284,7 +286,17 @@ public class MainController implements Initializable, SimulationFinishedListener
 			p.setDraggable(false);
 		}
 		simulationManager.start(statTime, Integer.parseInt(statTime.getText().replace(" s", "")));
+		toggleGoalAndSpawnAreas(false);
 		startButton.setDisable(false);
+	}
+
+	private void toggleGoalAndSpawnAreas(boolean visible) {
+		for (GoalArea goal : GoalAreaManager.getInstance().getGoalAreas())
+			goal.setVisible(visible);
+		for (SpawnArea goal : SpawnAreaManager.getInstance().getSpawnAreas())
+			goal.setVisible(visible);
+		for (Node node : simulationRoom.getChildren())
+			if (node instanceof Anchor) node.setVisible(visible);
 	}
 
 	private void resetPressed() {

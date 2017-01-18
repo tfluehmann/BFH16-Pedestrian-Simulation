@@ -22,71 +22,71 @@ import java.util.Set;
  */
 public abstract class Area extends DraggablePolygon {
     protected Set<GVector> edges = new HashSet<>();
-	private boolean draggable;
+    private boolean draggable;
     private double originX;
     private double originY;
 
     public Area(AreaManager manager, double... points) {
         super(points);
         this.draggable = true;
-	    initContextMenu(manager);
+        initContextMenu(manager);
         this.initDragAndDrop();
     }
 
-    private void initContextMenu(AreaManager manager){
-	    ContextMenu cm = new ContextMenu();
-	    MenuItem deleteItem = new MenuItem("Delete");
+    private void initContextMenu(AreaManager manager) {
+        ContextMenu cm = new ContextMenu();
+        MenuItem deleteItem = new MenuItem("Delete");
         deleteItem.setOnAction((event -> manager.remove(this))); //TODO interface or find another solution
         cm.getItems().add(deleteItem);
-	    cm.setStyle("-fx-background-color: #1d1d1d");
-	    deleteItem.setStyle("-fx-text-fill: #fff");
-	    this.setOnMouseClicked((event) -> {
-		    if (event.getButton().toString().equals("SECONDARY")){
-			    cm.show(this, event.getScreenX(), event.getSceneY());
-			    event.consume();
-		    }
-	    });
+        cm.setStyle("-fx-background-color: #1d1d1d");
+        deleteItem.setStyle("-fx-text-fill: #fff");
+        this.setOnMouseClicked((event) -> {
+            if (event.getButton().toString().equals("SECONDARY")) {
+                cm.show(this, event.getScreenX(), event.getSceneY());
+                event.consume();
+            }
+        });
     }
 
     private void initDragAndDrop() {
         this.setOnMousePressed((e) -> {
-        	if(this.draggable){
-		        this.setCursor(Cursor.CLOSED_HAND);
-		        this.originX = e.getSceneX();
-		        this.originY = e.getSceneY();
+            if (this.draggable) {
+                this.setCursor(Cursor.CLOSED_HAND);
+                this.originX = e.getSceneX();
+                this.originY = e.getSceneY();
                 e.consume();
             }
         });
         this.setOnMouseReleased((e) -> {
-        	if(this.draggable){
-		        this.setCursor(Cursor.HAND);
-		        e.consume();
-	        }
+            if (this.draggable) {
+                this.setCursor(Cursor.HAND);
+                e.consume();
+            }
         });
         this.setOnMouseDragged((event) -> {
-        	if(this.draggable){
-		        double offsetX = event.getSceneX() - this.originX;
-		        double offsetY = event.getSceneY() - this.originY;
-		        this.originX = event.getSceneX();
-		        this.originY = event.getSceneY();
+            if (this.draggable) {
+                double offsetX = event.getSceneX() - this.originX;
+                double offsetY = event.getSceneY() - this.originY;
+                this.originX = event.getSceneX();
+                this.originY = event.getSceneY();
 
-		        this.edges.clear();
-		        this.calculateEdges();
-		        translatePoints(offsetX, offsetY);
-		        event.consume();
-	        }
+                this.edges.clear();
+                this.calculateEdges();
+                translatePoints(offsetX, offsetY);
+                event.consume();
+            }
         });
 
         this.setOnScroll((e) -> {
-        	if(this.draggable){
-		        double factor = 1.01;
-		        if (e.getDeltaY() < 0) factor = (2.0 - factor);
-		        double pivotX = e.getX();
-		        double pivotY = e.getY();
-		        if (e.isAltDown()) this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
-		        else this.scalePoints((factor), (factor), pivotX, pivotY);
-		        e.consume();
-	        }
+            if (this.draggable) {
+                double factor = 1.01;
+                if (e.getDeltaY() < 0) factor = (2.0 - factor);
+                double pivotX = e.getX();
+                double pivotY = e.getY();
+                if (e.isAltDown()) this.rotatePoints(this.getRotate() + factor, pivotX, pivotY);
+                else this.scalePoints((factor), (factor), pivotX, pivotY);
+                e.consume();
+            }
         });
     }
 
@@ -165,6 +165,51 @@ public abstract class Area extends DraggablePolygon {
     }
 
     /**
+     * https://de.wikipedia.org/wiki/Punkt-in-Polygon-Test_nach_Jordan
+     *
+     * @param position
+     *
+     * @return
+     */
+    public boolean pointInArea(Position position) {
+        int t = -1;
+        for (int x = 0, y = 1; x <= this.getPoints().size() - 2; x += 2, y += 2) {
+            Position b = new Position(this.getPoints().get(x), this.getPoints().get(y));
+            Position c;
+            if (x < this.getPoints().size() - 2)
+                c = new Position(this.getPoints().get(x + 2), this.getPoints().get(y + 2));
+            else
+                c = new Position(this.getPoints().get(0), this.getPoints().get(1));
+            t = t * crossProduct(position, b, c);
+        }
+        return t == 0;
+    }
+
+    private int crossProduct(Position a, Position b, Position c) {
+        if (a.getYValue() == b.getYValue() && b.getYValue() == c.getYValue()) {
+            if ((a.getXValue() <= b.getXValue() && b.getXValue() <= c.getXValue()) ||
+                    (c.getXValue() <= a.getXValue() && a.getXValue() <= b.getXValue()))
+                return 0;
+            else
+                return 1;
+        }
+        if (b.getYValue() > c.getYValue()) {
+            Position tmp = c;
+            c = b;
+            b = tmp;
+        }
+        if (a.getYValue() == b.getYValue() && a.getXValue() == b.getXValue()) return 0;
+        if (a.getYValue() <= b.getYValue() || a.getYValue() > c.getYValue()) return 1;
+        double delta = (b.getXValue() - a.getXValue()) * (c.getYValue() - a.getYValue()) -
+                (b.getYValue() - a.getYValue()) * (c.getXValue() - a.getXValue());
+        if (delta > 0)
+            return -1;
+        else if (delta < 0)
+            return 1;
+        else return 0;
+    }
+
+    /**
      * returns a new object with the given edges or corners
      *
      * @param edges, type of object
@@ -189,8 +234,8 @@ public abstract class Area extends DraggablePolygon {
         return null;
     }
 
-    public void setDraggable(Boolean value){
-    	this.draggable = value;
+    public void setDraggable(Boolean value) {
+        this.draggable = value;
     }
 
     public Set<GVector> getEdges() {
@@ -199,5 +244,9 @@ public abstract class Area extends DraggablePolygon {
 
     public Position getPosition() {
         return new Position(getPoints().get(0), getPoints().get(1));
+    }
+
+    public String toString() {
+        return this.getPoints().toString();
     }
 }
