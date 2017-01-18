@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable, SimulationFinishedListener {
 
 	private ObstacleManager obstacleManager = ObstacleManager.getInstance();
-	private SpawnAreaManager spawnAreaManger = SpawnAreaManager.getInstance();
+	private SpawnAreaManager spawnAreaManager = SpawnAreaManager.getInstance();
 	private GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
 
 	@FXML
@@ -127,7 +127,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 	public void initialize(URL location, ResourceBundle resources) {
 		obstacleManager.setRoom(simulationRoom);
 		goalAreaManager.setRoom(simulationRoom);
-		spawnAreaManger.setRoom(simulationRoom);
+		spawnAreaManager.setRoom(simulationRoom);
 		ConfigModel configModel = ConfigModel.getInstance();
 
 		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
@@ -151,29 +151,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 			});
 		}
 
-		ContextMenu cm = new ContextMenu();
-		MenuItem goalItem = new MenuItem("Goal area");
-		MenuItem spawnItem = new MenuItem("Spawn area");
-		Menu obstacleMenu = new Menu("Obstacles");
 
-		goalItem.setOnAction((e) -> goalAreaManager.add(GoalArea.createWithNEdges(4, GoalArea.class)));
-		spawnItem.setOnAction((e) -> spawnAreaManger.add(SpawnArea.createWithNEdges(4, SpawnArea.class)));
-
-		String[] polygonNames = {"Triangle", "Rectangle", "Pentagon", "Hexagon", "Heptagon", "Octagon"};
-		for (int corners = configModel.getMinObstacleCorners(), i = 0;
-		     corners <= configModel.getMaxObstacleCorners(); corners++, i++) {
-			MenuItem item = new MenuItem(polygonNames[i]);
-			final int cornerCount = corners;
-			item.setOnAction((e) -> obstacleManager.add(Obstacle.createWithNEdges(cornerCount, Obstacle.class)));
-			obstacleMenu.getItems().add(item);
-		}
-
-		cm.getItems().addAll(goalItem, spawnItem, obstacleMenu);
-
-		simulationRoom.setOnMouseClicked((event) -> {
-			if (event.getButton().toString().equals("SECONDARY"))
-				cm.show(simulationRoom, event.getScreenX(), event.getSceneY());
-		});
+		new CreateContextMenu(goalAreaManager, spawnAreaManager, obstacleManager, configModel, simulationRoom);
 
 		/*
 	     * Numberlistener from user "javasuns"
@@ -207,11 +186,11 @@ public class MainController implements Initializable, SimulationFinishedListener
 	}
 
 	private void spawnPressed() {
-		if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
+		if (spawnAreaManager.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
 			new MissingAreasAlert(this.basePane);
 			return;
 		}
-		for (SpawnArea sp : spawnAreaManger.getSpawnAreas()) {
+		for (SpawnArea sp : spawnAreaManager.getSpawnAreas()) {
 			sp.setDraggable(false);
 			for (Anchor a : sp.getAnchors()) {
 				a.setDraggable(false);
@@ -309,7 +288,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		showStats.setDisable(true);
 		statTime.textProperty().unbind();
 		statTime.textProperty().setValue("0 s");
-		for (SpawnArea spawn : spawnAreaManger.getSpawnAreas()) {
+		for (SpawnArea spawn : spawnAreaManager.getSpawnAreas()) {
 			spawn.setDraggable(true);
 			for (Anchor a : spawn.getAnchors()) {
 				a.setDraggable(true);
