@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by tgdflto1 on 09/11/16.
+ * Manages all the goal areas
  */
 public class GoalAreaManager extends AreaManager {
     private static GoalAreaManager instance;

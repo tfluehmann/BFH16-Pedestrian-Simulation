@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by tgdflto1 on 28/10/16.
+ * handles and manages all the obstacles
  */
 public class ObstacleManager extends AreaManager {
     private static ObstacleManager instance;

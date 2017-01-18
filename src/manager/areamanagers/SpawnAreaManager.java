@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by tgdflto1 on 09/11/16.
+ * Created by fluht1 on 09/11/16.
+ * Handles the spawn areas
  */
 public class SpawnAreaManager extends AreaManager {
     private static SpawnAreaManager instance;

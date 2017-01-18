@@ -9,11 +9,10 @@ import manager.PerimeterManager;
  */
 public class Room extends Pane {
 
-	private final PerimeterManager perimeterManager = PerimeterManager.getInstance();
-	private final ConfigModel config = ConfigModel.getInstance();
-
 	public Room() {
-		this.perimeterManager.initializeAll();
+		PerimeterManager perimeterManager = PerimeterManager.getInstance();
+		perimeterManager.initializeAll();
+		ConfigModel config = ConfigModel.getInstance();
 		this.setPrefHeight(config.getRoomHeight());
 		this.setPrefWidth(config.getRoomWidth());
 		this.setMaxHeight(config.getRoomHeight());

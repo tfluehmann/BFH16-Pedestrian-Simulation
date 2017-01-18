@@ -9,6 +9,7 @@ import java.util.Properties;
 
 /**
  * Created by suter1 on 07.10.2016.
+ * Initializes the properties from the file and delivers them
  */
 public class ConfigModel {
 

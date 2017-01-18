@@ -18,6 +18,7 @@ import java.util.Vector;
 
 /**
  * Created by suter1 on 25.11.2016.
+ * Controller for the statistic window
  */
 public class StatisticController implements Initializable {
 
@@ -33,11 +34,9 @@ public class StatisticController implements Initializable {
 	@FXML
 	private AnchorPane paneSpeedByType;
 
-	private Statistic stats;
-
 
 	public void initialize(URL location, ResourceBundle resources) {
-		stats = Statistic.getInstance();
+		Statistic stats = Statistic.getInstance();
 		stats.calculatePersons();
 
 		ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(

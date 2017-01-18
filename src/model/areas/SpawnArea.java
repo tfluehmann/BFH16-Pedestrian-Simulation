@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * representation of a spawn area
  */
 public class SpawnArea extends Area {
 
