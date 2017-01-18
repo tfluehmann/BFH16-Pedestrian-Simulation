@@ -35,3 +35,5 @@ Datum | Zeitaufwand | Wer | Was
 10.01.2017 | 2 h | fluht1 | Multiple Goalareas are possible and they are chosen by correctly
 11.01.2017 | 3 h | fluht1, suter1 | Stop Event, Areas stay within the Room, Logo, Favicon|
 13.01.2017 | 3 h | fluht1, suter1 | Logo positioned variable, Refactoring, Person hidden if intersect with goal |
+18.01.2017 | 3 h | fluht1, suter1 | Fixed sliders, refactored a few classes, removed warnings, positioned target vertex in goal, task cancel does not disable start button|
+18.01.2017 | 0 h | fluht1, suter1 | finished.
