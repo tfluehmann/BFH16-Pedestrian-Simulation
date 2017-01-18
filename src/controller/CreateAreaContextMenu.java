@@ -16,10 +16,10 @@ import model.areas.SpawnArea;
  * Created by fluht1 on 18/01/17.
  * Creates the context menu to create obstacles and other areas
  */
-class CreateContextMenu extends ContextMenu {
+class CreateAreaContextMenu extends ContextMenu {
 
-    CreateContextMenu(GoalAreaManager goalAreaManager, SpawnAreaManager spawnAreaManager,
-                      ObstacleManager obstacleManager, ConfigModel configModel, Room simulationRoom) {
+    CreateAreaContextMenu(GoalAreaManager goalAreaManager, SpawnAreaManager spawnAreaManager,
+                          ObstacleManager obstacleManager, ConfigModel configModel, Room simulationRoom) {
         ContextMenu cm = new ContextMenu();
         MenuItem goalItem = new MenuItem("Goal area");
         MenuItem spawnItem = new MenuItem("Spawn area");

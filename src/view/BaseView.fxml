@@ -35,7 +35,9 @@
                                <HBox>
                                    <children>
                                        <Label alignment="TOP_LEFT" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" text="under 30 years" textAlignment="CENTER" />
-                                       <Slider fx:id="sliderYoung" maxHeight="25.0" maxWidth="150.0" minorTickCount="1" prefHeight="25.0" prefWidth="150.0" showTickMarks="true" snapToTicks="true" value="30.0" />
+                                       <Slider fx:id="sliderYoung" maxHeight="25.0" maxWidth="150.0" minorTickCount="1"
+                                               prefHeight="25.0" prefWidth="150.0" showTickMarks="true"
+                                               snapToTicks="true" value="30.0"/>
                                        <TextField fx:id="weightYoung" alignment="CENTER_RIGHT" maxHeight="25.0" maxWidth="40.0" minHeight="25.0" text="30">
                                            <HBox.margin>
                                                <Insets left="5.0" />
