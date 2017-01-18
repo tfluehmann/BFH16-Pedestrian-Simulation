@@ -34,11 +34,9 @@ public class SimulationManager {
      */
     public void start(Label time, int oldTime) {
         task = new SimulationFactory(oldTime, speedProperty);
-
         task.setOnSucceeded((event) -> notifyFinishedListeners(false));
         task.setOnFailed((event) -> notifyFinishedListeners(false));
         task.setOnCancelled((event) -> notifyFinishedListeners(true));
-
         time.textProperty().bind(task.messageProperty());
         new Thread(task).start();
     }
@@ -48,7 +46,7 @@ public class SimulationManager {
             sfl.simulationFinished(cancelled);
     }
 
-    public Task getSimulationThread() {
+    public Task getSimulationTask() {
         return task;
     }
 
