@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class SimulationManager {
     private static SimulationManager instance;
-    private static Thread simulation;
+    private static Task task;
     private LongProperty speedProperty = new SimpleLongProperty();
 
     private static ArrayList<SimulationFinishedListener> finishedListeners = new ArrayList<>();
@@ -33,24 +33,23 @@ public class SimulationManager {
      * unsolvable issues if it is always the same order
      */
     public void start(Label time, int oldTime) {
-        Task task = new SimulationFactory(oldTime, speedProperty);
+        task = new SimulationFactory(oldTime, speedProperty);
 
-        task.setOnSucceeded((event) -> {
-            for (SimulationFinishedListener sfl : finishedListeners)
-                sfl.simulationFinished();
-        });
-        task.setOnFailed((event) -> {
-            for (SimulationFinishedListener sfl : finishedListeners)
-                sfl.simulationFinished();
-        });
+        task.setOnSucceeded((event) -> notifyFinishedListeners(false));
+        task.setOnFailed((event) -> notifyFinishedListeners(false));
+        task.setOnCancelled((event) -> notifyFinishedListeners(true));
 
         time.textProperty().bind(task.messageProperty());
-        simulation = new Thread(task);
-        simulation.start();
+        new Thread(task).start();
     }
 
-    public Thread getSimulationThread() {
-        return simulation;
+    private void notifyFinishedListeners(boolean cancelled) {
+        for (SimulationFinishedListener sfl : finishedListeners)
+            sfl.simulationFinished(cancelled);
+    }
+
+    public Task getSimulationThread() {
+        return task;
     }
 
     public void addSimulationFinishedListener(SimulationFinishedListener sfl) {

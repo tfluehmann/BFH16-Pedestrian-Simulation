@@ -270,8 +270,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 	private void stopPressed() {
 		startButton.setText("Start");
-		simulationManager.getSimulationThread().interrupt();
-		for (Person p : spMgr.getPersons()) {
+        simulationManager.getSimulationThread().cancel();
+        for (Person p : spMgr.getPersons()) {
 			p.setDraggable(true);
 		}
 		enableStatsButton();
@@ -405,8 +405,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 	}
 
 	@Override
-	public void simulationFinished() {
-		stopPressed();
-		startButton.setDisable(true);
-	}
+    public void simulationFinished(boolean isCancelled) {
+        stopPressed();
+        startButton.setDisable(!isCancelled);
+    }
 }

@@ -5,5 +5,5 @@ package EventListener;
  * Provides a method that is called on finish
  */
 public interface SimulationFinishedListener {
-    void simulationFinished();
+    void simulationFinished(boolean cancelled);
 }

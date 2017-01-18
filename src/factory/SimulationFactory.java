@@ -38,7 +38,7 @@ public class SimulationFactory extends Task {
         return null;
     }
 
-    private static boolean isSimulationFinished() {
+    public boolean isSimulationFinished() {
         for (Person p : spawnManager.getPersons())
             if (!p.isInGoal()) return false;
         return true;
