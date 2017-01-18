@@ -147,7 +147,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		for (Slider slider : sliders) {
 			slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 				slider.setValue(Math.round(newValue.doubleValue()));
-				calculateSlider();
+//				calculateSlider();
 			});
 		}
 
@@ -204,9 +204,15 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		resetButton.setOnAction((event -> resetPressed()));
 		showStats.setOnAction(event -> showStatsPressed());
+
 	}
 
 	private void spawnPressed() {
+		if ((sliderSum() != 100) && isWeighted.isSelected()) {
+			new SliderAlert(this.basePane);
+			return;
+		}
+
 		if (spawnAreaManger.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
 			new MissingAreasAlert(this.basePane);
 			return;
@@ -358,14 +364,15 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 	private void calculateSlider() {
 		int sum = sliderSum();
-		int operator;
-		operator = (sum > 100) ? -1 : 1;
-		while (sum != 100)
-			for (Slider slider : sliders) {
-				slider.setValue(slider.getValue() + operator);
-				sum += operator;
-				if (sum == 100) break;
-			}
+		if (sliderSum() != 100) new SliderAlert(this.basePane);
+//		int operator;
+//		operator = (sum > 100) ? -1 : 1;
+//		while (sum != 100)
+//			for (Slider slider : sliders) {
+//				slider.setValue(slider.getValue() + operator);
+//				sum += operator;
+//				if (sum == 100) break;
+//			}
 	}
 
 	private Boolean getIsWeighted() {
