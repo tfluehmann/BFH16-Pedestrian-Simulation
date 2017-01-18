@@ -1,8 +1,7 @@
 package model.areas;
 
+import controller.DeleteContextMenu;
 import javafx.scene.Cursor;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
@@ -30,23 +29,8 @@ public abstract class Area extends DraggablePolygon {
     public Area(AreaManager manager, double... points) {
         super(points);
         this.draggable = true;
-        initContextMenu(manager);
+        new DeleteContextMenu(manager, this);
         this.initDragAndDrop();
-    }
-
-    private void initContextMenu(AreaManager manager) {
-        ContextMenu cm = new ContextMenu();
-        MenuItem deleteItem = new MenuItem("Delete");
-        deleteItem.setOnAction((event -> manager.remove(this)));
-        cm.getItems().add(deleteItem);
-        cm.setStyle("-fx-background-color: #1d1d1d");
-        deleteItem.setStyle("-fx-text-fill: #fff");
-        this.setOnMouseClicked((event) -> {
-            if (event.getButton().toString().equals("SECONDARY")) {
-                cm.show(this, event.getScreenX(), event.getSceneY());
-                event.consume();
-            }
-        });
     }
 
     private void initDragAndDrop() {
