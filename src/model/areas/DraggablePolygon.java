@@ -4,7 +4,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import manager.areamanagers.SpawnAreaManager;
 import model.Anchor;
@@ -39,7 +38,7 @@ public abstract class DraggablePolygon extends Polygon {
             xProperty.addListener((ov, oldX, x) -> getPoints().set(idx, (double) x));
             yProperty.addListener((ov, oldY, y) -> getPoints().set(idx + 1, (double) y));
 
-            anchors.add(new Anchor(Color.GOLD, xProperty, yProperty, (Area) this));
+            anchors.add(new Anchor(xProperty, yProperty, (Area) this));
         }
         this.anchors = anchors;
     }

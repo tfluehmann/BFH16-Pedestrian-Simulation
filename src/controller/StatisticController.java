@@ -34,17 +34,23 @@ public class StatisticController implements Initializable {
 	@FXML
 	private AnchorPane paneSpeedByType;
 
+    final static String YOUNG_PERSONS = "Persons under 30 years";
+    final static String MIDAGE_PERSONS = "Persons between 30 and 50 years";
+    final static String OLD_PERSONS = "Persons over 50 years";
+    final static String HANDICAPPED_PERSONS = "Handicapped persons";
+
+
 
 	public void initialize(URL location, ResourceBundle resources) {
 		Statistic stats = Statistic.getInstance();
 		stats.calculatePersons();
 
 		ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-				new PieChart.Data("Persons under 30 years", stats.getNumberYoungPersons()),
-				new PieChart.Data("Persons between 30 and 50 years", stats.getNumberMidagePersons()),
-				new PieChart.Data("Persons over 50 years", stats.getNumberOldPersons()),
-				new PieChart.Data("Handicapped persons", stats.getNumberHandicappedPersons())
-		);
+                new PieChart.Data(YOUNG_PERSONS, stats.getNumberYoungPersons()),
+                new PieChart.Data(MIDAGE_PERSONS, stats.getNumberMidagePersons()),
+                new PieChart.Data(OLD_PERSONS, stats.getNumberOldPersons()),
+                new PieChart.Data(HANDICAPPED_PERSONS, stats.getNumberHandicappedPersons())
+        );
 		pieData.forEach(data ->
 				data.nameProperty().bind(
 						Bindings.concat(
@@ -54,7 +60,6 @@ public class StatisticController implements Initializable {
 		);
 		personsByType.setData(pieData);
 
-		double val = 0.0;
 		double young = 0.0;
 		double midage = 0.0;
 		double old = 0.0;
@@ -68,12 +73,12 @@ public class StatisticController implements Initializable {
 		if (midageStat > 0.0) midage = midageStat;
 		if (oldStat > 0.0) old = oldStat;
 		if (handicapStat > 0.0) handicap = handicapStat;
-		BarChart.Series typeValues = new BarChart.Series<>();
-		typeValues.getData().add(new BarChart.Data<>("persons under 30 years", young));
-		typeValues.getData().add(new BarChart.Data<>("persons between 30 and 50 years", midage));
-		typeValues.getData().add(new BarChart.Data<>("persons over 50 years", old));
-		typeValues.getData().add(new BarChart.Data<>("handicapped persons", handicap));
-		typeValues.setName("average speed by group of persontype");
+        BarChart.Series<BarChart, Double> typeValues = new BarChart.Series<>();
+        typeValues.getData().add(new BarChart.Data(YOUNG_PERSONS, young));
+        typeValues.getData().add(new BarChart.Data(MIDAGE_PERSONS, midage));
+        typeValues.getData().add(new BarChart.Data(OLD_PERSONS, old));
+        typeValues.getData().add(new BarChart.Data(HANDICAPPED_PERSONS, handicap));
+        typeValues.setName("average speed by group of persontype");
 		speedByType.getYAxis().setLabel("speed [m/s]");
 		speedByType.getData().addAll(typeValues);
 
