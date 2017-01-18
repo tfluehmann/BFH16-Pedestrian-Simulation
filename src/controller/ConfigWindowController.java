@@ -29,7 +29,6 @@ public class ConfigWindowController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		ConfigModel cfg = ConfigModel.getInstance();
 
-
 		buttonOK.setOnAction((event) -> {
             /*
 			 * Save data form the config window for usage in simulation.
