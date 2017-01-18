@@ -218,7 +218,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		}
 		PathManager pathManager = spMgr.getPathManager();
 		for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
-			pathManager.addTarget(new TargetVertex(ga.getPosition()));
+			pathManager.addTarget(new TargetVertex(ga.getMiddle()));
 			ga.setDraggable(false);
 			for (Anchor a : ga.getAnchors()) {
 				a.setDraggable(false);
