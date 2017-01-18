@@ -22,6 +22,7 @@ import manager.areamanagers.GoalAreaManager;
 import manager.areamanagers.ObstacleManager;
 import manager.areamanagers.SpawnAreaManager;
 import model.*;
+import model.areas.Area;
 import model.areas.GoalArea;
 import model.areas.Obstacle;
 import model.areas.SpawnArea;
@@ -125,7 +126,10 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		obstacleManager.setRoom(simulationRoom);
+        //	SimpleBooleanProperty validateStartProperty = new SimpleBooleanProperty(validateSpawn());
+//		System.out.println("set to"+validateSpawn());
+        //	spawnButton.disableProperty().bind(validateStartProperty);
+        obstacleManager.setRoom(simulationRoom);
 		goalAreaManager.setRoom(simulationRoom);
 		spawnAreaManager.setRoom(simulationRoom);
 		ConfigModel configModel = ConfigModel.getInstance();
@@ -144,13 +148,15 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		Slider[] slid = {sliderYoung, sliderMidage, sliderOld, sliderHandicap};
 		sliders.addAll(Arrays.asList(slid));
+
 		for (Slider slider : sliders) {
 			slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 				slider.setValue(Math.round(newValue.doubleValue()));
 //				calculateSlider();
-			});
+                //		System.out.println("Set to "+ validateSpawn());
+                //		validateStartProperty.setValue(validateSpawn());
+            });
 		}
-
 
 		new CreateContextMenu(goalAreaManager, spawnAreaManager, obstacleManager, configModel, simulationRoom);
 
@@ -173,6 +179,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		spawnButton.setOnAction((event) -> spawnPressed());
 
+
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
 				startPressed();
@@ -187,21 +194,13 @@ public class MainController implements Initializable, SimulationFinishedListener
 	}
 
 	private void spawnPressed() {
-		if ((sliderSum() != 100) && isWeighted.isSelected()) {
-			new SliderAlert(this.basePane);
-			return;
-		}
-		if (spawnAreaManager.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
+        validateStart();
+        if (spawnAreaManager.getSpawnAreas().isEmpty() || goalAreaManager.getGoalAreas().isEmpty()) {
 			new MissingAreasAlert(this.basePane);
 			return;
 		}
-		for (SpawnArea sp : spawnAreaManager.getSpawnAreas()) {
-			sp.setDraggable(false);
-			for (Anchor a : sp.getAnchors()) {
-				a.setDraggable(false);
-			}
-		}
-		PathManager pathManager = spMgr.getPathManager();
+        setDraggable(spawnAreaManager.getSpawnAreas(), false);
+        PathManager pathManager = spMgr.getPathManager();
 		for (GoalArea ga : GoalAreaManager.getInstance().getGoalAreas()) {
 			pathManager.addTarget(new TargetVertex(ga.getMiddle()));
 			ga.setDraggable(false);
@@ -293,25 +292,18 @@ public class MainController implements Initializable, SimulationFinishedListener
 		showStats.setDisable(true);
 		statTime.textProperty().unbind();
 		statTime.textProperty().setValue("0 s");
-		for (SpawnArea spawn : spawnAreaManager.getSpawnAreas()) {
-			spawn.setDraggable(true);
-			for (Anchor a : spawn.getAnchors()) {
-				a.setDraggable(true);
-			}
-		}
-		for (GoalArea goal : goalAreaManager.getGoalAreas()) {
-			goal.setDraggable(true);
-			for (Anchor a : goal.getAnchors()) {
-				a.setDraggable(true);
-			}
-		}
-		for (Obstacle obstacle : obstacleManager.getObstacles()) {
-			obstacle.setDraggable(true);
-			for (Anchor a : obstacle.getAnchors()) {
-				a.setDraggable(true);
-			}
-		}
-	}
+        setDraggable(spawnAreaManager.getSpawnAreas(), true);
+        setDraggable(goalAreaManager.getGoalAreas(), true);
+        setDraggable(obstacleManager.getObstacles(), true);
+    }
+
+    private void setDraggable(List<? extends Area> areaList, boolean draggable) {
+        for (Area area : areaList) {
+            area.setDraggable(draggable);
+            for (Anchor a : area.getAnchors())
+                a.setDraggable(draggable);
+        }
+    }
 
 	private void showStatsPressed() {
 		try {
@@ -340,18 +332,20 @@ public class MainController implements Initializable, SimulationFinishedListener
 		return sum;
 	}
 
-	private void calculateSlider() {
-		int sum = sliderSum();
-		if (sliderSum() != 100) new SliderAlert(this.basePane);
-//		int operator;
-//		operator = (sum > 100) ? -1 : 1;
-//		while (sum != 100)
-//			for (Slider slider : sliders) {
-//				slider.setValue(slider.getValue() + operator);
-//				sum += operator;
-//				if (sum == 100) break;
-//			}
-	}
+    private void validateStart() {
+        TextField[] textFields = {weightOld, weightYoung, weightMidage, weightHandicap};
+        if ((sliderSum() != 100) && isWeighted.isSelected()) {
+            for (TextField t : textFields)
+                t.getStyleClass().add("error");
+            new SliderAlert(this.basePane);
+        }
+        for (TextField t : textFields)
+            t.getStyleClass().remove("error");
+    }
+
+    private boolean spawnAllowed() {
+        return sliderSum() == 100 && getIsWeighted();
+    }
 
 	private Boolean getIsWeighted() {
 		return this.isWeighted.isSelected();
