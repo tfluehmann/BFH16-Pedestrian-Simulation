@@ -26,8 +26,11 @@ public abstract class Person extends Circle {
     protected PerimeterManager pm = PerimeterManager.getInstance();
     protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
     protected ObstacleManager obstacleManager = ObstacleManager.getInstance();
-
+    private GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
     protected ConfigModel config = ConfigModel.getInstance();
+    private boolean inGoal;
+    private GoalArea goalArea;
+
 
     //	Current Target Vertex
     private Vertex nextVertex;
@@ -85,6 +88,7 @@ public abstract class Person extends Circle {
     public void calculateStep() {
         Position newPos = this.calculateNextPossiblePosition();
         if (newPos != null) this.setPosition(newPos);
+        if (this.nextVertex == null || this.isInGoalArea()) setInGoal(true);
     }
 
     /**
@@ -96,7 +100,6 @@ public abstract class Person extends Circle {
         Position nextTarget = nextVertex.getPosition();
         boolean isJam = this.orientation.isJam();
         if (isJam && !(nextVertex instanceof TargetVertex)) {
-            System.out.println("JAM detected and target is not goal");
             Vertex nonJamVertex = this.orientation.getDifferentTargetVertex();
             if (nonJamVertex != null) {
                 //System.out.println("reset target");
@@ -189,7 +192,7 @@ public abstract class Person extends Circle {
         this.currentPosition.setX(position.getXValue());
         this.currentPosition.setY(position.getYValue());
         this.orientation.updateView();
-        if (this.isInNextPathArea() && !this.isInGoalArea())
+        if (this.isInNextPathArea() && !this.isInGoal())
             this.nextVertex = nextVertex.getNextHopForTarget(this.target);
         pm.registerPerson(this);
     }
@@ -198,7 +201,7 @@ public abstract class Person extends Circle {
         double minimalDistance = getDiameter();
         return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
                 Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < minimalDistance &&
-                !otherPerson.isInGoalArea());
+                !otherPerson.isInGoal());
     }
 
     public boolean isInNextPathArea() {
@@ -207,17 +210,25 @@ public abstract class Person extends Circle {
     }
 
     public boolean isInGoalArea() {
-        GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
-        GoalArea currentGoal = null;
-        for (GoalArea goalArea : goalAreaManager.getGoalAreas())
-            if (goalArea.inGoalArea(this.target.getPosition())) {
-                currentGoal = goalArea;
-                break;
-            }
+        if (isInGoal() || nextVertex == null) return true;
+        GoalArea currentGoal = getGoalArea();
+        boolean isInGoal;
         if (currentGoal == null)
-            return this.target.getPosition().isInRange(this.currentPosition, getDiameter());
+            isInGoal = this.target.getPosition().isInRange(this.currentPosition, getDiameter());
         else
-            return currentGoal.inGoalArea(this.currentPosition);
+            isInGoal = currentGoal.intersects(this);
+        if (isInGoal) this.setInGoal(true);
+        return isInGoal;
+    }
+
+    private GoalArea getGoalArea() {
+        if (this.goalArea != null) return this.goalArea;
+        for (GoalArea goalArea : goalAreaManager.getGoalAreas())
+            if (goalArea.intersects(this.target.getPosition().getXValue(), this.target.getPosition().getYValue(), 1, 1)) {
+                this.goalArea = goalArea;
+                return goalArea;
+            }
+        return null;
     }
 
     public LinkedList<Position> getOldPositions() {
@@ -277,5 +288,14 @@ public abstract class Person extends Circle {
 
     public void setDraggable(boolean value) {
         this.draggable = value;
+    }
+
+    public boolean isInGoal() {
+        return inGoal;
+    }
+
+    public void setInGoal(boolean inGoal) {
+        this.setVisible(false);
+        this.inGoal = inGoal;
     }
 }

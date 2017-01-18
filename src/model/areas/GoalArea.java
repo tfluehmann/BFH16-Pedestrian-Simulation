@@ -1,5 +1,6 @@
 package model.areas;
 
+import javafx.scene.shape.Circle;
 import manager.areamanagers.GoalAreaManager;
 import model.Position;
 
@@ -17,8 +18,26 @@ public class GoalArea extends Area {
 	}
 
     public boolean inGoalArea(Position p) {
-        return this.intersects(p.getXValue(), p.getYValue(), 1, 1);
-    }
+		boolean inArea = super.pointInArea(p);
+		return inArea;
+	}
+
+	public boolean intersects(Circle circle) {
+		double circleDistX = Math.abs(circle.getCenterX() - this.getPoints().get(0));
+		double circleDistY = Math.abs(circle.getCenterY() - this.getPoints().get(1));
+
+		double areaWidth = Math.abs(this.getPoints().get(2) - this.getPoints().get(0));
+		double areaHeight = Math.abs(this.getPoints().get(3) - this.getPoints().get(1));
+
+		if (circleDistX > (areaWidth / 2 + circle.getRadius())) return false;
+		if (circleDistY > (areaHeight / 2 + circle.getRadius())) return false;
+
+		if (circleDistX <= (areaWidth / 2)) return true;
+		if (circleDistY <= (areaHeight / 2)) return true;
+
+		double cornerDistSqare = Math.sqrt(circleDistX - areaWidth / 2) + Math.sqrt(circleDistY - areaHeight / 2);
+		return cornerDistSqare <= Math.sqrt(circle.getRadius());
+	}
 
     public Position getMiddle (){
 		List<Double> pos = this.getPoints();

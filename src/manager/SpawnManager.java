@@ -128,9 +128,8 @@ public class SpawnManager {
 	public void handlePersonsInTargetRange() {
 		Vector<Person> newPersons = new Vector<>();
 		for (Person p : this.persons)
-			if (p.isInGoalArea()) {
+			if (p.isInGoal()) {
 				this.passivePersons.add(p);
-				p.setVisible(false);
 			} else
 				newPersons.add(p);
 		this.persons = newPersons;
