@@ -39,6 +39,13 @@ public class GoalArea extends Area {
 		return cornerDistSqare <= Math.sqrt(circle.getRadius());
 	}
 
+    public Position getMiddle (){
+		List<Double> pos = this.getPoints();
+		double x = (Math.max(pos.get(0), pos.get(4)) - Math.min(pos.get(0), pos.get(4))) / 2;
+		double y = (Math.max(pos.get(1), pos.get(7)) - Math.min(pos.get(1), pos.get(7))) / 2;
+		return new Position(this.getPosition().getXValue()+x, this.getPosition().getYValue()+y);
+    }
+
 	@Override
 	public List<Position> getCorners() {
 		return null;
