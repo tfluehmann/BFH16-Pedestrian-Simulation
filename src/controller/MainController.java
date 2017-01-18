@@ -126,9 +126,6 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        //	SimpleBooleanProperty validateStartProperty = new SimpleBooleanProperty(validateSpawn());
-//		System.out.println("set to"+validateSpawn());
-        //	spawnButton.disableProperty().bind(validateStartProperty);
         obstacleManager.setRoom(simulationRoom);
 		goalAreaManager.setRoom(simulationRoom);
 		spawnAreaManager.setRoom(simulationRoom);
@@ -137,9 +134,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		basePane.setPrefHeight(Screen.getPrimary().getVisualBounds().getHeight() - 40);
 		basePane.setPrefWidth(Screen.getPrimary().getVisualBounds().getWidth() - 20);
 		logoPane.setLayoutY(configModel.getRoomHeight() - 70);
-		startButton.setDisable(true);
-		resetButton.setDisable(true);
-		showStats.setDisable(true);
+        setButtons(false, true, true, true);
 
 		weightYoung.textProperty().bindBidirectional(sliderYoung.valueProperty(), NumberFormat.getNumberInstance());
 		weightMidage.textProperty().bindBidirectional(sliderMidage.valueProperty(), NumberFormat.getNumberInstance());
@@ -149,16 +144,9 @@ public class MainController implements Initializable, SimulationFinishedListener
 		Slider[] slid = {sliderYoung, sliderMidage, sliderOld, sliderHandicap};
 		sliders.addAll(Arrays.asList(slid));
 
-		for (Slider slider : sliders) {
-			slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-				slider.setValue(Math.round(newValue.doubleValue()));
-//				calculateSlider();
-                //		System.out.println("Set to "+ validateSpawn());
-                //		validateStartProperty.setValue(validateSpawn());
-            });
-		}
-
-		new CreateContextMenu(goalAreaManager, spawnAreaManager, obstacleManager, configModel, simulationRoom);
+        for (Slider slider : sliders)
+            slider.valueProperty().addListener((observable, oldValue, newValue) -> slider.setValue(Math.round(newValue.doubleValue())));
+        new CreateAreaContextMenu(goalAreaManager, spawnAreaManager, obstacleManager, configModel, simulationRoom);
 
 		/*
 	     * Numberlistener from user "javasuns"
@@ -179,7 +167,6 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		spawnButton.setOnAction((event) -> spawnPressed());
 
-
 		startButton.setOnAction((event) -> {
 			if (startButton.getText().equals("Start")) {
 				startPressed();
@@ -190,7 +177,6 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		resetButton.setOnAction((event -> resetPressed()));
 		showStats.setOnAction(event -> showStatsPressed());
-
 	}
 
 	private void spawnPressed() {
@@ -246,10 +232,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 
 		statTime.textProperty().setValue("0 s");
 
-		spawnButton.setDisable(true);
-		startButton.setDisable(false);
-		resetButton.setDisable(false);
-	}
+        setButtons(true, false, false, false);
+    }
 
 	private void stopPressed() {
 		startButton.setText("Start");
@@ -286,11 +270,8 @@ public class MainController implements Initializable, SimulationFinishedListener
 		simulationRoom.getChildren().removeIf(item -> (item instanceof Person || item instanceof Line));
 		SpawnManager.getInstance().clear();
 		PerimeterManager.getInstance().clear();
-		spawnButton.setDisable(false);
-		startButton.setText("Start");
-		startButton.setDisable(true);
-		showStats.setDisable(true);
-		statTime.textProperty().unbind();
+        setButtons(false, false, true, true);
+        statTime.textProperty().unbind();
 		statTime.textProperty().setValue("0 s");
         setDraggable(spawnAreaManager.getSpawnAreas(), true);
         setDraggable(goalAreaManager.getGoalAreas(), true);
@@ -323,6 +304,13 @@ public class MainController implements Initializable, SimulationFinishedListener
 			e.printStackTrace();
 		}
 	}
+
+    private void setButtons(boolean spawnButtonDisabled, boolean resetButtonDisabled, boolean startButtonDisabled, boolean statisticButtonDisabled) {
+        spawnButton.setDisable(spawnButtonDisabled);
+        resetButton.setDisable(resetButtonDisabled);
+        startButton.setDisable(startButtonDisabled);
+        showStats.setDisable(statisticButtonDisabled);
+    }
 
 	private int sliderSum() {
 		int sum = 0;
