@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 /**
  * Created by tgdflto1 on 21/10/16.
+ * Node with a vertex and a weight
  */
 public class Node implements Comparator<Node> {
     private Vertex vertex;

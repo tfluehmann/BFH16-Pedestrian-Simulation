@@ -7,6 +7,7 @@ import java.util.Vector;
 
 /**
  * Created by suter1 on 25.11.2016.
+ * Statistic representation
  */
 public class Statistic {
 

@@ -74,7 +74,7 @@ public class PathManager {
             Node element = pq.poll();
             Vertex candidate = element.getVertex();//Getting next node from heap
             double cost = element.getWeight();
-            candidate.setVisited(target, true);
+            candidate.setVisited(target);
             settledNodes.add(candidate);
             for (Vertex z : candidate.getNeighbors().keySet()) {
                 if (candidate.equals(z)) continue;

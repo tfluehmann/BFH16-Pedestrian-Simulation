@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by suter1 on 05.10.2016.
+ * Handicapped Person
  */
 public class HandicappedPerson extends Person {
 

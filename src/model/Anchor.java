@@ -10,7 +10,7 @@ import model.areas.Area;
 
 
 /**
- * Class copied from here: https://gist.github.com/jewelsea/5375786
+ * Class mostly copied from here: https://gist.github.com/jewelsea/5375786
  */
 public class Anchor extends Circle {
     private final DoubleProperty x, y;

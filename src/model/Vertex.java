@@ -52,8 +52,8 @@ public class Vertex extends Observable {
         distanceToTarget.put(target, newDist);
     }
 
-    public void setVisited(TargetVertex targetVertex, boolean visited) {
-        visitedForTarget.put(targetVertex, visited);
+    public void setVisited(TargetVertex targetVertex) {
+        visitedForTarget.put(targetVertex, true);
     }
 
     public boolean isVisited(TargetVertex target) {

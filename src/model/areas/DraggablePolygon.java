@@ -12,19 +12,22 @@ import model.Anchor;
 import java.util.List;
 
 /**
- * Created by tgdflto1 on 23/11/16.
+ * Created by fluht1 on 23/11/16.
+ * A polygon that has anchors to drag around
  */
 public abstract class DraggablePolygon extends Polygon {
-    protected List<Anchor> anchors;
-    protected SpawnAreaManager spawnAreaManager = SpawnAreaManager.getInstance();
+    private List<Anchor> anchors;
+    private SpawnAreaManager spawnAreaManager = SpawnAreaManager.getInstance();
 
-    public DraggablePolygon(double... points) {
+    DraggablePolygon(double... points) {
         super(points);
         createControlAnchors();
     }
 
-    // @return a list of anchors which can be dragged around to modify points in the format [x1, y1, x2, y2...]
-    protected void createControlAnchors() {
+    /**
+     * @return a list of anchors which can be dragged around to modify points in the format [x1, y1, x2, y2...]
+     */
+    private void createControlAnchors() {
         ObservableList<Anchor> anchors = FXCollections.observableArrayList();
 
         for (int i = 0; i < getPoints().size(); i += 2) {
@@ -41,7 +44,7 @@ public abstract class DraggablePolygon extends Polygon {
         this.anchors = anchors;
     }
 
-    protected void moveControlAnchors() {
+    void moveControlAnchors() {
         spawnAreaManager.removeAnchors(this.anchors);
         this.anchors.clear();
         createControlAnchors();

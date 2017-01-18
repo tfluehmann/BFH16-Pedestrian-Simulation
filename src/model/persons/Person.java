@@ -16,16 +16,17 @@ import java.util.Set;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * A representation of a person in the simulation
  */
 public abstract class Person extends Circle {
-    protected Orientation orientation;
-    protected LinkedList<Position> oldPositions = new LinkedList<>();
-    protected Position currentPosition;
-    protected int age;
-    protected double speed;
-    protected PerimeterManager pm = PerimeterManager.getInstance();
-    protected PerimeterManager perimeterManager = PerimeterManager.getInstance();
-    protected ObstacleManager obstacleManager = ObstacleManager.getInstance();
+    private Orientation orientation;
+    private LinkedList<Position> oldPositions = new LinkedList<>();
+    private Position currentPosition;
+    //    protected int age;
+    private double speed;
+    private PerimeterManager pm = PerimeterManager.getInstance();
+    private PerimeterManager perimeterManager = PerimeterManager.getInstance();
+    private ObstacleManager obstacleManager = ObstacleManager.getInstance();
     private GoalAreaManager goalAreaManager = GoalAreaManager.getInstance();
     protected ConfigModel config = ConfigModel.getInstance();
     private boolean inGoal;
@@ -82,19 +83,17 @@ public abstract class Person extends Circle {
 
     /**
      * Calculates the vector and the next position depending on the step size
-     *
-     * @return next Position
      */
     public void calculateStep() {
         Position newPos = this.calculateNextPossiblePosition();
         if (newPos != null) this.setPosition(newPos);
-        if (this.nextVertex == null || this.isInGoalArea()) setInGoal(true);
+        if (this.nextVertex == null || this.isInGoalArea()) setInGoal();
     }
 
     /**
      * calculate the next position by reducing the speed if needed
      *
-     * @return
+     * @return new position
      */
     private Position calculateNextPossiblePosition() {
         Position nextTarget = nextVertex.getPosition();
@@ -116,7 +115,7 @@ public abstract class Person extends Circle {
             if (this.isNewPositionAllowed(newPosition))
                 return newPosition;
 
-            /**
+            /*
              * Try to walk into the left or right hand position
              */
             Position leftPos = vToNextTarget.moveParallelLeft(newPosition).getEndPosition();
@@ -164,7 +163,7 @@ public abstract class Person extends Circle {
      * x = cx + r * cos(a)
      * y = cy + r * sin(a)
      *
-     * @return
+     * @return list of positions on the radius
      */
     private List<Position> getPointsOnRadius(Position pos) {
         double numberOfPoints = 7;
@@ -183,7 +182,7 @@ public abstract class Person extends Circle {
      * moves the person
      * unregisters in the current perimeter and registers in the new one if needed
      *
-     * @param position
+     * @param position a new position for the person
      */
     public void setPosition(Position position) {
         pm.unregisterPerson(this, pm.getCurrentPerimeter(this.currentPosition));
@@ -197,19 +196,19 @@ public abstract class Person extends Circle {
         pm.registerPerson(this);
     }
 
-    public boolean isColliding(double x, double y, Person otherPerson) {
+    private boolean isColliding(double x, double y, Person otherPerson) {
         double minimalDistance = getDiameter();
         return (Math.abs(x - otherPerson.getCurrentPosition().getXValue()) < minimalDistance &&
                 Math.abs(y - otherPerson.getCurrentPosition().getYValue()) < minimalDistance &&
                 !otherPerson.isInGoal());
     }
 
-    public boolean isInNextPathArea() {
+    private boolean isInNextPathArea() {
         Position nextPosition = nextVertex.getPosition();
         return nextPosition.isInRange(this.currentPosition, getDiameter());
     }
 
-    public boolean isInGoalArea() {
+    private boolean isInGoalArea() {
         if (isInGoal() || nextVertex == null) return true;
         GoalArea currentGoal = getGoalArea();
         boolean isInGoal;
@@ -217,7 +216,7 @@ public abstract class Person extends Circle {
             isInGoal = this.target.getPosition().isInRange(this.currentPosition, getDiameter());
         else
             isInGoal = currentGoal.intersects(this);
-        if (isInGoal) this.setInGoal(true);
+        if (isInGoal) this.setInGoal();
         return isInGoal;
     }
 
@@ -239,24 +238,8 @@ public abstract class Person extends Circle {
         return this.currentPosition;
     }
 
-    public void setCurrentPosition(Position currentPosition) {
+    private void setCurrentPosition(Position currentPosition) {
         this.currentPosition = currentPosition;
-    }
-
-    public int getAge() {
-        return this.age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public double getSpeed() {
-        return this.speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
 
     public void setNextVertex(Vertex nextVertex) {
@@ -273,17 +256,13 @@ public abstract class Person extends Circle {
     }
 
     //	@return Twice the radius
-    public double getDiameter() {
+    private double getDiameter() {
         return 2 * this.config.getPersonRadius();
     }
 
 
     public Position getNextVertexPosition() {
         return nextVertex.getPosition();
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
     }
 
     public void setDraggable(boolean value) {
@@ -294,8 +273,8 @@ public abstract class Person extends Circle {
         return inGoal;
     }
 
-    public void setInGoal(boolean inGoal) {
+    private void setInGoal() {
         this.setVisible(false);
-        this.inGoal = inGoal;
+        this.inGoal = true;
     }
 }

@@ -55,7 +55,7 @@ public class ConfigModel {
 
     private ConfigModel() {
         props = new Properties();
-        InputStream is = null;
+        InputStream is;
         // First try loading from the current directory
         try {
             File f = new File("simulation.properties");

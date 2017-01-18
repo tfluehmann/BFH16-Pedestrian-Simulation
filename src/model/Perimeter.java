@@ -31,7 +31,6 @@ public class Perimeter extends Rectangle {
         this.widthProperty().set(this.width);
         this.xProperty().bind(this.position.getXProperty());
         this.yProperty().bind(this.position.getYProperty());
-        this.setStyle("-fx-stroke: aqua; -fx-background-color: transparent;");
         this.setFill(Color.TRANSPARENT);
 
     }

@@ -5,6 +5,7 @@ import manager.PerimeterManager;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * Simulation room
  */
 public class Room extends Pane {
 

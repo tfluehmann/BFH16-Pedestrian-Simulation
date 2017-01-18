@@ -16,14 +16,6 @@ public class SpawnArea extends Area {
 		getStyleClass().add("spawn-area");
 	}
 
-	public double getHeight() {
-		return Math.abs(getPoints().get(getPoints().size() - 1) - getPoints().get(1));
-	}
-
-	public double getWidth() {
-		return Math.abs(getPoints().get(2) - getPoints().get(0));
-	}
-
 	public List<Position> getCorners() {
 		return null;
     }

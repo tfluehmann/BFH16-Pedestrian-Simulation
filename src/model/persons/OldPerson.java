@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by suter1 on 05.10.2016.
+ * Old Person over 50
  */
 public class OldPerson extends Person{
 

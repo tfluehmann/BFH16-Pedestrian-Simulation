@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * A polygon with 4 corners rotated -135 degrees to have a certain rectangle
  */
 public class GoalArea extends Area {
 
@@ -18,8 +19,7 @@ public class GoalArea extends Area {
 	}
 
     public boolean inGoalArea(Position p) {
-		boolean inArea = super.pointInArea(p);
-		return inArea;
+		return super.pointInArea(p);
 	}
 
 	public boolean intersects(Circle circle) {

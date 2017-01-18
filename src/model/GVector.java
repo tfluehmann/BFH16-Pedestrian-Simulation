@@ -121,7 +121,6 @@ public class GVector extends Line {
     private boolean isOnVector(Position position) {
         double lambdaX = (position.getXValue() - startPointX) / endPointX;
         double lambdaY = (position.getYValue() - startPointY) / endPointY;
-//        System.out.println("lx = " + lambdaX + " ly= " + lambdaY);
         return lambdaX >= 0.0 && lambdaX <= 1.0 && lambdaY >= 0.0 && lambdaY <= 1.0;
     }
 

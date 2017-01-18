@@ -19,9 +19,10 @@ import java.util.Set;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * An abstract representation of an Area in the simulation, for example goal or spawn area
  */
 public abstract class Area extends DraggablePolygon {
-    protected Set<GVector> edges = new HashSet<>();
+    private Set<GVector> edges = new HashSet<>();
     private boolean draggable;
     private double originX;
     private double originY;
@@ -36,7 +37,7 @@ public abstract class Area extends DraggablePolygon {
     private void initContextMenu(AreaManager manager) {
         ContextMenu cm = new ContextMenu();
         MenuItem deleteItem = new MenuItem("Delete");
-        deleteItem.setOnAction((event -> manager.remove(this))); //TODO interface or find another solution
+        deleteItem.setOnAction((event -> manager.remove(this)));
         cm.getItems().add(deleteItem);
         cm.setStyle("-fx-background-color: #1d1d1d");
         deleteItem.setStyle("-fx-text-fill: #fff");
@@ -90,7 +91,7 @@ public abstract class Area extends DraggablePolygon {
         });
     }
 
-    protected boolean pointsInBounds(double[] points) {
+    private boolean pointsInBounds(double[] points) {
         SpawnAreaManager am = SpawnAreaManager.getInstance();
         double roomHeight = am.getRoom().getHeight();
         double roomWidth = am.getRoom().getWidth();
@@ -105,11 +106,11 @@ public abstract class Area extends DraggablePolygon {
         return true;
     }
 
-    protected void scalePoints(double x, double y, double pivotX, double pivotY) {
+    private void scalePoints(double x, double y, double pivotX, double pivotY) {
         movePoints(new Scale(x, y, pivotX, pivotY));
     }
 
-    protected void translatePoints(double translateX, double translateY) {
+    private void translatePoints(double translateX, double translateY) {
         movePoints(new Translate(translateX, translateY));
     }
 
@@ -117,7 +118,7 @@ public abstract class Area extends DraggablePolygon {
      * Translate back to origin, Rotate, translate back
      * https://de.wikipedia.org/wiki/Drehmatrix
      */
-    protected void rotatePoints(double angle, double pivotX, double pivotY) {
+    void rotatePoints(double angle, double pivotX, double pivotY) {
         movePoints(new Rotate(angle, pivotX, pivotY));
     }
 
@@ -137,9 +138,9 @@ public abstract class Area extends DraggablePolygon {
 
             this.calculateEdges();
             if (this instanceof Obstacle) {
-                Obstacle obst = (Obstacle) this;
-                obst.getEdgePoints().clear();
-                obst.getCorners().clear();
+                Obstacle obstacle = (Obstacle) this;
+                obstacle.getEdgePoints().clear();
+                obstacle.getCorners().clear();
             }
             moveControlAnchors();
         }
@@ -167,11 +168,11 @@ public abstract class Area extends DraggablePolygon {
     /**
      * https://de.wikipedia.org/wiki/Punkt-in-Polygon-Test_nach_Jordan
      *
-     * @param position
+     * @param position the position you want to check in the area
      *
-     * @return
+     * @return a boolean that says if the position is in the area or not
      */
-    public boolean pointInArea(Position position) {
+    boolean pointInArea(Position position) {
         int t = -1;
         for (int x = 0, y = 1; x <= this.getPoints().size() - 2; x += 2, y += 2) {
             Position b = new Position(this.getPoints().get(x), this.getPoints().get(y));
@@ -226,7 +227,7 @@ public abstract class Area extends DraggablePolygon {
             newAreaPoints[counter + 1] = Math.sin(i * rad) * radius + radius; //y value
         }
         try {
-            return type.getDeclaredConstructor(double[].class).newInstance(newAreaPoints);
+            return type.getDeclaredConstructor(double[].class).newInstance((Object) newAreaPoints);
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
             System.exit(0);

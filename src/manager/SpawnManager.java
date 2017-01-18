@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by suter1 on 21.10.2016.
+ * The spawnmanager handles the initial placement of the persons
  */
 public class SpawnManager {
 	private static SpawnManager instance = null;
@@ -36,7 +37,7 @@ public class SpawnManager {
 	}
 
 	public void createPersons() {
-		/**
+        /*
 		 * spawn persons randomly or weighted
 		 */
 		try {
@@ -97,8 +98,8 @@ public class SpawnManager {
 
 	/**
 	 * calculate possible spawn position in a selected SpawnArea
-	 * @param spawn
-	 * @return Position
+     * @param spawn spawnarea to give the boundaries where to place the start
+     * @return Position
 	 */
 	private Position getSpawnPosition(SpawnArea spawn) {
 		Random r = new Random();

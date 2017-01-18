@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 /**
  * Created by fluth1 on 30/09/16.
+ * Our Position with an x and y coordinate
  */
 public class Position implements Cloneable {
 

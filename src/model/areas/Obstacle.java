@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by suter1 on 06.10.2016.
+ * An obstacle that cannot be passed from a person
  */
 public class Obstacle extends Area {
     private final ArrayList<Position> corners;
@@ -57,7 +58,7 @@ public class Obstacle extends Area {
     /**
      * check if position in room
      */
-    public boolean includes(Position position) {
+    private boolean includes(Position position) {
         ConfigModel config = ConfigModel.getInstance();
         return position.getXValue() > 0 &&
                 position.getXValue() < config.getRoomWidth() &&
@@ -65,13 +66,12 @@ public class Obstacle extends Area {
                 position.getYValue() < config.getRoomHeight();
     }
 
-    public List<Position> getEdgePoints() {
-        return this.edgePoints;
-    }
-
     @Override
     public List<Position> getCorners() {
         return this.corners;
     }
 
+    public ArrayList<Position> getEdgePoints() {
+        return edgePoints;
+    }
 }
