@@ -145,7 +145,7 @@ public class MainController implements Initializable, SimulationFinishedListener
 		sliders.addAll(Arrays.asList(slid));
 
         for (Slider slider : sliders)
-            slider.valueProperty().addListener((observable, oldValue, newValue) -> slider.setValue(Math.round(newValue.doubleValue())));
+            slider.valueProperty().addListener((observable, oldValue, newValue) -> slider.setValue(newValue.intValue()));
         new CreateAreaContextMenu(goalAreaManager, spawnAreaManager, obstacleManager, configModel, simulationRoom);
 
 		/*

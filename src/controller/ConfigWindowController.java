@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,14 +29,6 @@ public class ConfigWindowController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		ConfigModel cfg = ConfigModel.getInstance();
 
-		/*
-         * Numberlistener from user "javasuns"
-		 * on: http://stackoverflow.com/a/37360657
-		 */
-		ChangeListener<String> forceNumberListener = (observable, oldValue, newValue) -> {
-			if (!newValue.matches("\\d*"))
-				((StringProperty) observable).set(oldValue);
-		};
 
 		buttonOK.setOnAction((event) -> {
             /*
