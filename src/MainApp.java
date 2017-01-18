@@ -12,18 +12,15 @@ import java.util.logging.Logger;
 
 public class MainApp extends Application {
 
-	private AnchorPane rootLayout;
-	private Scene scene, configScene;
-	private Stage configStage;
-
-
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-
 	@Override
 	public void start(Stage primaryStage) {
+		AnchorPane rootLayout;
+		Scene scene, configScene;
+		Stage configStage;
 		try {
 			// creating view for the initial configuration
 			FXMLLoader configLoader = new FXMLLoader();

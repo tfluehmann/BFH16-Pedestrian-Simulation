@@ -13,7 +13,6 @@ import model.areas.Area;
  * Class mostly copied from here: https://gist.github.com/jewelsea/5375786
  */
 public class Anchor extends Circle {
-    private final DoubleProperty x, y;
     private Area area;
     private boolean draggable;
 
@@ -27,9 +26,6 @@ public class Anchor extends Circle {
         setStroke(color);
         setStrokeWidth(configModel.getAnchorStrokeWidth());
         setStrokeType(StrokeType.OUTSIDE);
-
-        this.x = x;
-        this.y = y;
 
         x.bind(centerXProperty());
         y.bind(centerYProperty());
