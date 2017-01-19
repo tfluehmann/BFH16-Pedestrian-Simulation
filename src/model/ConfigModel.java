@@ -182,8 +182,8 @@ public class ConfigModel {
     }
 
     /**
-     * Pixel -> Meter: Pixel / getPixelPerMeter
-     * Meter -> Pixel: Meter * getPixelPerMeter
+     * Pixel - Meter: Pixel / getPixelPerMeter
+     * Meter - Pixel: Meter * getPixelPerMeter
      *
      * @return pixelPerMeter ratio as double.
      */

@@ -128,10 +128,12 @@ public class GVector extends Line {
      * @return parallel moved new vector object
      *  x
      * /
-     * .---->x
-     * <p>
+     * .----x
+     *
      * vector = (5, 3)
      * start + norm(3, -5) * length and finished + norm(3, -5) * length
+     * @param target position where to move parallel
+     * @return new moved vector
      */
     public GVector moveParallelLeft(Position target) {
         GVector parallelNormVector = new GVector(target.getYValue() - getStartPointY(),
@@ -144,6 +146,8 @@ public class GVector extends Line {
 
     /**
      * same same but different as left above
+     * @param target position where to move parallel
+     * @return new moved vector
      */
     public GVector moveParallelRight(Position target) {
         GVector parallelNormVector = new GVector((target.getYValue() -

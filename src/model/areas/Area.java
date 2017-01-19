@@ -101,6 +101,9 @@ public abstract class Area extends DraggablePolygon {
     /**
      * Translate back to origin, Rotate, translate back
      * https://de.wikipedia.org/wiki/Drehmatrix
+     * @param angle to rotate
+     * @param pivotX x coordinate of the rotation point
+     * @param pivotY y coordinate of the rotation point
      */
     void rotatePoints(double angle, double pivotX, double pivotY) {
         movePoints(new Rotate(angle, pivotX, pivotY));
@@ -133,7 +136,7 @@ public abstract class Area extends DraggablePolygon {
     public abstract List<Position> getCorners();
 
     /**
-     * from each point to next point-> create gvector --> edge
+     * from each point to next point - create g-vector - edge
      */
     public void calculateEdges() {
         this.edges.clear();
@@ -198,7 +201,7 @@ public abstract class Area extends DraggablePolygon {
      * returns a new object with the given edges or corners
      *
      * @param edges, type of object
-     *
+     * @param type type of object it should create
      * @return Any kind of area
      */
     public static <T extends Area> T createWithNEdges(int edges, Class<T> type) {

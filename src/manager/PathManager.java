@@ -6,9 +6,8 @@ import model.*;
 import java.util.*;
 
 /**
- * Created by tgdflto1 on 06/10/16.
- * <p>
- * <p>
+ * Created by fluth1 on 06/10/16.
+ * finds the valid edges and vertices
  */
 public class PathManager {
     private final List<Vertex> vertexList = new ArrayList<>();
@@ -25,12 +24,14 @@ public class PathManager {
     /**
      * Fucking magic just took us 10h of Fluch und Hass
      * we add neighbors in both directions, we do not have to check the ones already done
-     * <p>
+     *
      * a b c d
      * a x - - -
      * b x x - -
      * c x x x -
      * d x x x x
+     *
+     * @param room simulation-room
      **/
     public void findValidEdges(Room room) {
         for (int i = 0; i < this.vertexList.size(); i++) {

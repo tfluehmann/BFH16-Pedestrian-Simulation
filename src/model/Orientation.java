@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author fluth1
- * @apiNote Middle from a person until the radius in the direction of the target
+ * Middle from a person until the radius in the direction of the target
  */
 public class Orientation extends Line {
     private Person person;
@@ -22,11 +22,12 @@ public class Orientation extends Line {
     /**
      * _ _ _
      * |       |
-     * o ->    |
+     * o -x    |
      * | _ _ _ |
-     * <p>
+     *
      * _ = perimeter length
      * room of 2 * 3 Perimeters (probably later in the direction of 60 degrees, simplified)
+     * @param person person that has this orientation
      */
     public Orientation(Person person) {
         this.person = person;

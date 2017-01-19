@@ -18,6 +18,7 @@ public class Obstacle extends Area {
 
     /**
      * Created by suter1 on 06.10.2016.
+     * @param points as array
      */
     public Obstacle(double... points) {
         super(ObstacleManager.getInstance(), points);

@@ -31,6 +31,9 @@ public class SimulationManager {
     /**
      * shuffle before every run because there might be
      * unsolvable issues if it is always the same order
+     *
+     * @param time label to show the time
+     * @param oldTime if pause was clicked we store the time already
      */
     public void start(Label time, int oldTime) {
         task = new SimulationFactory(oldTime, speedProperty);
