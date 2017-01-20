@@ -22,5 +22,5 @@
 
 ## Konfiguration
 
-1. Konfigurationseinstellungen können über das GUI (grösse des Simulationsraumes) oder im simulation.properties im src/ Ordner definiert werden.
+1. Konfigurationseinstellungen können über das GUI (grösse des Simulationsraumes) oder im simulation.properties definiert werden.
    Hier können beispielsweise auch die Kanten ein- und ausgeschalten werden.
