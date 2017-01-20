@@ -52,6 +52,7 @@ public class ConfigModel {
     private double personViewLengthFactor;
     private int minObstacleCorners;
     private int maxObstacleCorners;
+    private boolean displayEdges;
 
 
     private ConfigModel() {
@@ -85,6 +86,7 @@ public class ConfigModel {
         personRadius = Double.parseDouble(props.getProperty("Person.radius"));
         perimeterSize = Double.parseDouble(props.getProperty("Perimeter.size"));
         edgeExtender = Double.parseDouble(props.getProperty("Edge.extender"));
+        displayEdges = Boolean.parseBoolean(props.getProperty("Edge.display", "false"));
         anchorRadius = Double.parseDouble(props.getProperty("Anchor.radius"));
         anchorColorRed = Integer.parseInt(props.getProperty("Anchor.color.red"));
         anchorColorGreen = Integer.parseInt(props.getProperty("Anchor.color.green"));
@@ -314,5 +316,9 @@ public class ConfigModel {
 
     public int getMaxObstacleCorners() {
         return maxObstacleCorners;
+    }
+
+    public boolean displayEdges() {
+        return displayEdges;
     }
 }

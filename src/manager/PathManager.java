@@ -42,8 +42,10 @@ public class PathManager {
                 GVector v = new GVector(vertex.getPosition(), targetVertex.getPosition());
                 boolean isCrossing = ObstacleManager.getInstance().isCrossingAnyObstacle(v);
                 if (!isCrossing) {
-//                    v.setStyle("-fx-stroke: green;");
-                    //                   room.getChildren().add(v);
+                    if (ConfigModel.getInstance().displayEdges()) {
+                        v.setStyle("-fx-stroke: green;");
+                        room.getChildren().add(v);
+                    }
                     double distance = v.length();
                     if (nodes.containsKey(targetVertex)) {
                         if (distance < nodes.get(targetVertex)) nodes.put(targetVertex, distance);
